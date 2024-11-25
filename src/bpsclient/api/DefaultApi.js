@@ -375,52 +375,6 @@ export default class DefaultApi {
       );
     }
     /**
-     * Callback function to receive the result of the getDeviceView operation.
-     * @callback moduleapi/DefaultApi~getDeviceViewCallback
-     * @param {String} error Error message, if any.
-     * @param {'String'{ data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns the device
-     * @param {String} deviceAlias 
-     * @param {module:api/DefaultApi~getDeviceViewCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
-     */
-    getDeviceView(deviceAlias, callback) {
-      
-      let postBody = null;
-      // verify the required parameter 'deviceAlias' is set
-      if (deviceAlias === undefined || deviceAlias === null) {
-        throw new Error("Missing the required parameter 'deviceAlias' when calling getDeviceView");
-      }
-
-      let pathParams = {
-        'device_alias': deviceAlias
-      };
-      let queryParams = {
-        
-      };
-      let headerParams = {
-        
-      };
-      let formParams = {
-        
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['text/html'];
-      let returnType = 'String';
-
-      return this.apiClient.callApi(
-        '/admin/device/{device_alias}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
-    /**
      * Callback function to receive the result of the getDevices operation.
      * @callback moduleapi/DefaultApi~getDevicesCallback
      * @param {String} error Error message, if any.
@@ -430,18 +384,20 @@ export default class DefaultApi {
 
     /**
      * Returns list of device
+     * @param {Object} opts Optional parameters
+     * @param {String} opts.location The shop location ID as a filter - if not given or empty devices of all shops are returned
      * @param {module:api/DefaultApi~getDevicesCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
      */
-    getDevices(callback) {
-      
+    getDevices(opts, callback) {
+      opts = opts || {};
       let postBody = null;
 
       let pathParams = {
         
       };
       let queryParams = {
-        
+        'location': opts['location']
       };
       let headerParams = {
         
