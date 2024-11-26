@@ -28,6 +28,7 @@ export default class Device {
    * @alias module:model/Device
    * @class
    * @param alias {String} 
+   * @param type {String} 
    * @param location {String} 
    * @param name {String} 
    * @param module {module:model/Module} 
@@ -35,8 +36,9 @@ export default class Device {
    * @param softener {module:model/Pump} 
    * @param status {module:model/DeviceStatus} 
    */
-  constructor(alias, location, name, module, detergent, softener, status) {
+  constructor(alias, type, location, name, module, detergent, softener, status) {
     this.alias = alias;
+    this.type = type;
     this.location = location;
     this.name = name;
     this.module = module;
@@ -57,6 +59,8 @@ export default class Device {
       obj = obj || new Device();
       if (data.hasOwnProperty('alias'))
         obj.alias = ApiClient.convertToType(data['alias'], 'String');
+      if (data.hasOwnProperty('type'))
+        obj.type = ApiClient.convertToType(data['type'], 'String');
       if (data.hasOwnProperty('location'))
         obj.location = ApiClient.convertToType(data['location'], 'String');
       if (data.hasOwnProperty('name'))
@@ -83,6 +87,11 @@ Device.prototype.alias = undefined;
  * @member {String} location
  */
 Device.prototype.location = undefined;
+
+/**
+ * @member {String} type
+ */
+Device.prototype.type = undefined;
 
 /**
  * @member {String} name

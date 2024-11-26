@@ -49,8 +49,8 @@
                     </v-col>
                 </v-row>
 
-                <v-expansion-panels multiple>
-                    <v-expansion-panel :title="'Modul ' + device.module.alias">
+                <v-expansion-panels multiple v-model="panel">
+                    <v-expansion-panel :title="'Modul ' + device.module.alias" value="module">
                         <v-expansion-panel-text>
                             <v-row>
                                 <v-col cols="12" md="4" sm="6">
@@ -65,7 +65,7 @@
                         </v-expansion-panel-text>
                     </v-expansion-panel>
 
-                    <v-expansion-panel title="Waschmittel">
+                    <v-expansion-panel title="Waschmittel"  value="detergent">
                         <v-expansion-panel-text>
                             <v-row>
                                 <v-col cols="12" md="4" sm="6">
@@ -92,7 +92,7 @@
                             </v-row>
                         </v-expansion-panel-text>
                     </v-expansion-panel>
-                    <v-expansion-panel title="Weichspüler">
+                    <v-expansion-panel title="Weichspüler" value="softener">
                         <v-expansion-panel-text>
                             <v-row>
                                 <v-col cols="12" md="4" sm="6">
@@ -154,9 +154,11 @@ var busy = ref(props.device.status.door ? 'colorActive' : 'colorNotActive')
 var detergent = ref(props.device.status.detergent ? 'colorActive': 'colorNotActive')
 var softener = ref(props.device.status.softener ? 'colorActive' : 'colorNotActive')
 var allowStart = ref(props.device.status.allowStart ? 'colorActive' : 'colorNotActive')
-
+var panel=ref([])
+panel.value=["module","detergent","softener"]
 const edit = () => {
     props.device.module.mac = "dc:4a:3e:7c:8d:f9"
     dialog.value = true
 }
+
 </script>
