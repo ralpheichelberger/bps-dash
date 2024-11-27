@@ -26,17 +26,13 @@
         </template>
         <v-overlay opacity=".12" contained model-value persistent />
     </v-card>
-
-    <v-dialog v-model="dialog" max-width="600">
-
-
+    <v-dialog v-model="dialog"  max-width="600">
         <v-card>
-        <v-card-title>
-            <v-row dense><v-col><h2 class="text-h5 font-weight-bold">{{ device.alias}}</h2></v-col><v-col></v-col>
-          <v-btn
-            icon="mdi-close"
-            @click="dialog = false"
-          ></v-btn> </v-row>  </v-card-title>      
+            <v-card-title>
+                <v-row dense><v-col>
+                        <h2 class="text-h5 font-weight-bold">{{ device.alias }}</h2>
+                    </v-col><v-col></v-col>
+                    <v-btn icon="mdi-close" @click="dialog = false"></v-btn> </v-row> </v-card-title>
             <v-card-text>
                 <v-row dense>
                     <v-col cols="12" md="4" sm="6">
@@ -65,7 +61,7 @@
                         </v-expansion-panel-text>
                     </v-expansion-panel>
 
-                    <v-expansion-panel title="Waschmittel"  value="detergent">
+                    <v-expansion-panel v-if="device.detergent" title="Waschmittel" value="detergent">
                         <v-expansion-panel-text>
                             <v-row>
                                 <v-col cols="12" md="4" sm="6">
@@ -92,7 +88,7 @@
                             </v-row>
                         </v-expansion-panel-text>
                     </v-expansion-panel>
-                    <v-expansion-panel title="Weichspüler" value="softener">
+                    <v-expansion-panel  v-if="device.softener" title="Weichspüler" value="softener">
                         <v-expansion-panel-text>
                             <v-row>
                                 <v-col cols="12" md="4" sm="6">
@@ -128,12 +124,14 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
 
+                <v-btn text="Delete" variant="plain" @click="emit('delete-device')"></v-btn>
                 <v-btn text="Close" variant="plain" @click="dialog = false"></v-btn>
 
                 <v-btn color="primary" text="Save" variant="tonal" @click="dialog = false"></v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
+
 </template>
 <style>
 .colorActive {
@@ -147,18 +145,18 @@
 <script setup>
 import { ref } from 'vue'
 const props = defineProps(['device'])
-var device_status = ref()
-var dialog = ref(false)
+const emit = defineEmits(['delete-device'])
+
+var panel=ref([])
 var editing = ref(false)
+panel.value=["module","detergent","softener"]
+var dialog=ref(false)
 var busy = ref(props.device.status.door ? 'colorActive' : 'colorNotActive')
 var detergent = ref(props.device.status.detergent ? 'colorActive': 'colorNotActive')
 var softener = ref(props.device.status.softener ? 'colorActive' : 'colorNotActive')
 var allowStart = ref(props.device.status.allowStart ? 'colorActive' : 'colorNotActive')
-var panel=ref([])
-panel.value=["module","detergent","softener"]
 const edit = () => {
-    props.device.module.mac = "dc:4a:3e:7c:8d:f9"
-    dialog.value = true
+  dialog.value=true
 }
 
 </script>
