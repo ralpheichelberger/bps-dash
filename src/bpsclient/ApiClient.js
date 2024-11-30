@@ -33,14 +33,19 @@ export default class ApiClient {
          * @type {String}
          * @default http://localhost:8070
          */
-        this.basePath = 'http://localhost:8070'.replace(/\/+$/, '');
+        const { protocol, hostname, port } = window.location;
+        var apiPort = port
+        if (hostname == "localhost") apiPort = 8070
+        this.basePath = `${protocol}//${hostname}:${apiPort}`.replace(/\/+$/, '');
+
+        // this.basePath = 'https://www.bubblepoint.com'.replace(/\/+$/, '');
 
         /**
          * The authentication methods to be included for all API calls.
          * @type {Array.<String>}
          */
         this.authentications = {
-            'BasicAuth': {type: 'basic'}
+            'BasicAuth': { type: 'basic' }
         }
 
         /**
@@ -77,13 +82,13 @@ export default class ApiClient {
          * if this.enableCookies is set to true.
          */
         if (typeof window === 'undefined') {
-          this.agent = new superagent.agent();
+            this.agent = new superagent.agent();
         }
 
         /*
          * Allow user to override superagent agent
          */
-         this.requestAgent = null;
+        this.requestAgent = null;
 
     }
 
@@ -171,7 +176,7 @@ export default class ApiClient {
             let fs;
             try {
                 fs = require('fs');
-            } catch (err) {}
+            } catch (err) { }
             if (fs && fs.ReadStream && param instanceof fs.ReadStream) {
                 return true;
             }
@@ -320,7 +325,7 @@ export default class ApiClient {
                     break;
                 case 'oauth2':
                     if (auth.accessToken) {
-                        request.set({'Authorization': 'Bearer ' + auth.accessToken});
+                        request.set({ 'Authorization': 'Bearer ' + auth.accessToken });
                     }
 
                     break;
@@ -402,7 +407,7 @@ export default class ApiClient {
 
         // set requestAgent if it is set by user
         if (this.requestAgent) {
-          request.agent(this.requestAgent);
+            request.agent(this.requestAgent);
         }
 
         // set request timeout
@@ -411,7 +416,7 @@ export default class ApiClient {
         var contentType = this.jsonPreferredMime(contentTypes);
         if (contentType) {
             // Issue with superagent and multipart/form-data (https://github.com/visionmedia/superagent/issues/746)
-            if(contentType != 'multipart/form-data') {
+            if (contentType != 'multipart/form-data') {
                 request.type(contentType);
             }
         } else if (!request.header['Content-Type']) {
@@ -442,13 +447,13 @@ export default class ApiClient {
         }
 
         if (returnType === 'Blob') {
-          request.responseType('blob');
+            request.responseType('blob');
         } else if (returnType === 'String') {
-          request.responseType('string');
+            request.responseType('string');
         }
 
         // Attach previously saved cookies, if enabled
-        if (this.enableCookies){
+        if (this.enableCookies) {
             if (typeof window === 'undefined') {
                 this.agent.attachCookies(request);
             }
@@ -457,7 +462,7 @@ export default class ApiClient {
             }
         }
 
-        
+
 
         request.end((error, response) => {
             if (callback) {
@@ -465,7 +470,7 @@ export default class ApiClient {
                 if (!error) {
                     try {
                         data = this.deserialize(response, returnType);
-                        if (this.enableCookies && typeof window === 'undefined'){
+                        if (this.enableCookies && typeof window === 'undefined') {
                             this.agent.saveCookies(response);
                         }
                     } catch (err) {

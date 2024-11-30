@@ -6,7 +6,7 @@
     <v-app-bar-title>Geräte</v-app-bar-title>
     <v-btn elevation="5">Neu</v-btn>
   </v-app-bar>
-  <v-container>
+  <v-container class="sticky-filters">
     <v-row no-gutters>
       <v-col order="first">
         <v-select v-model="shop" label="Shop" :items="locations" variant="underlined"
@@ -17,16 +17,30 @@
       <v-radio :value="type" v-for="type in uniqueTypes" :label="type"></v-radio>
     </v-radio-group>
   </v-container>
-  <v-container>
-    <Device v-for="device in filterDevicesByType()" :device="device" @delete-device="deleteDevice(device.alias)"/>
+  <v-container class="devices-list">
+    <Device v-for="device in filterDevicesByType()" :device="device" @delete-device="deleteDevice(device.alias)" />
   </v-container>
 </template>
+<style scoped>
+.sticky-filters {
+  position: sticky;
+  top: 64px;
+  /* Height of the v-app-bar */
+  z-index: 1;
+  background-color: black;
+  /* Match with your app's background */
+  padding: 16px 0;
+}
 
+.devices-list {
+  padding-bottom: 56px;
+  padding-bottom: 60px;
+}
+</style>
 <script setup>
-import * as bps from '../bpsclient'; // Assuming the `bpsclient` folder is in the `src` directory
+import * as bps from '../bpsclient';
 import { ref, watch } from 'vue'
 import Device from './Device.vue'
-import DeviceEdit from './DeviceEdit.vue'
 
 var defaultClient = bps.ApiClient.instance;
 var BasicAuth = defaultClient.authentications['BasicAuth'];
@@ -51,19 +65,19 @@ const fetchDevices = (all) => {
       if (all == "all") {
         locations.value = [...new Set(devices.value.map(device => device.location))];
         locations.value.sort()
-        devices.value=[]
+        devices.value = []
       }
     }
   };
   var opts = Object();
   opts.location = all == "all" ? null : shop.value
-  var result = api.getDevices(opts, callback);
+  api.getDevices(opts, callback);
 }
 const filterDevicesByType = () => {
   return devices.value.filter(device => device.type === typeOption.value);
 }
-const deleteDevice= (devicealias) => {
-  alert("device "+devicealias+" deleted! (not really)")
+const deleteDevice = (devicealias) => {
+  alert("device " + devicealias + " deleted! (not really)")
 }
 fetchDevices('all')
 </script>

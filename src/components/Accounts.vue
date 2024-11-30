@@ -6,7 +6,6 @@
 
       <v-app-bar-title>Konten</v-app-bar-title>
     </v-app-bar>
-<h2>todo</h2>
 
 </template>
 
@@ -29,6 +28,4 @@ var callback = function (error, data, response) {
     device.value=data;
   }
 };
-var result = api.getDevice("S1W3", callback);
-console.dir(result);
 </script>
