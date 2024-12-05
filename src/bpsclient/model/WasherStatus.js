@@ -15,21 +15,23 @@
 import ApiClient from '../ApiClient';
 
 /**
- * The DeviceStatus model module.
- * @module model/DeviceStatus
+ * The WasherStatus model module.
+ * @module model/WasherStatus
  * @version 0.1.0
  */
-export default class DeviceStatus {
+export default class WasherStatus {
   /**
-   * Constructs a new <code>DeviceStatus</code>.
-   * @alias module:model/DeviceStatus
+   * Constructs a new <code>WasherStatus</code>.
+   * @alias module:model/WasherStatus
    * @class
+   * @param timestamp {Number} 
    * @param allowStart {Boolean} 
    * @param busy {Boolean} 
    * @param wantDetergent {Boolean} 
    * @param wantSoftener {Boolean} 
    */
-  constructor(allowStart, busy, wantDetergent, wantSoftener) {
+  constructor(timestamp, allowStart, busy, wantDetergent, wantSoftener) {
+    this.timestamp = timestamp;
     this.allowStart = allowStart;
     this.busy = busy;
     this.wantDetergent = wantDetergent;
@@ -37,15 +39,17 @@ export default class DeviceStatus {
   }
 
   /**
-   * Constructs a <code>DeviceStatus</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>WasherStatus</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/DeviceStatus} obj Optional instance to populate.
-   * @return {module:model/DeviceStatus} The populated <code>DeviceStatus</code> instance.
+   * @param {module:model/WasherStatus} obj Optional instance to populate.
+   * @return {module:model/WasherStatus} The populated <code>WasherStatus</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new DeviceStatus();
+      obj = obj || new WasherStatus();
+      if (data.hasOwnProperty('timestamp'))
+        obj.timestamp = ApiClient.convertToType(data['timestamp'], 'Number');
       if (data.hasOwnProperty('allow_start'))
         obj.allowStart = ApiClient.convertToType(data['allow_start'], 'Boolean');
       if (data.hasOwnProperty('busy'))
@@ -60,22 +64,27 @@ export default class DeviceStatus {
 }
 
 /**
+ * @member {Number} timestamp
+ */
+WasherStatus.prototype.timestamp = undefined;
+
+/**
  * @member {Boolean} allowStart
  */
-DeviceStatus.prototype.allowStart = undefined;
+WasherStatus.prototype.allowStart = undefined;
 
 /**
  * @member {Boolean} busy
  */
-DeviceStatus.prototype.busy = undefined;
+WasherStatus.prototype.busy = undefined;
 
 /**
  * @member {Boolean} wantDetergent
  */
-DeviceStatus.prototype.wantDetergent = undefined;
+WasherStatus.prototype.wantDetergent = undefined;
 
 /**
  * @member {Boolean} wantSoftener
  */
-DeviceStatus.prototype.wantSoftener = undefined;
+WasherStatus.prototype.wantSoftener = undefined;
 

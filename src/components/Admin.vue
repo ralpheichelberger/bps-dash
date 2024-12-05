@@ -13,7 +13,8 @@
     </v-bottom-navigation>
 </template>
 <script setup>
-import Devices from './Devices.vue'
+import Shops from './Shops.vue'
+import Washer from './Washer.vue'
 import Accounts from './Accounts.vue'
 import Doors from './Doors.vue'
 import { ref } from 'vue'
@@ -23,7 +24,8 @@ const currentTab = ref('Devices')
 
 // Object to map tab names to components
 const tabs = {
-  Devices,
+    Shops,
+  Washer,
   Accounts,
   Doors
 }

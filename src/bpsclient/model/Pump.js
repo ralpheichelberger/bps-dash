@@ -24,21 +24,15 @@ export default class Pump {
    * Constructs a new <code>Pump</code>.
    * @alias module:model/Pump
    * @class
-   * @param location {String} 
-   * @param name {String} 
-   * @param pumpRelayId {String} 
-   * @param relayNumber {Number} 
-   * @param pumpDuration {Number} 
-   * @param lastStart {Number} 
-   * @param count {Number} 
+   * @param id {String} id of the pump relay
+   * @param nr {Number} number of the pump on the pump relay
+   * @param timestamp {Number} last started (will be timely restricted)
+   * @param count {Number} count will be restricted in times started)
    */
-  constructor(location, name, pumpRelayId, relayNumber, pumpDuration, lastStart, count) {
-    this.location = location;
-    this.name = name;
-    this.pumpRelayId = pumpRelayId;
-    this.relayNumber = relayNumber;
-    this.pumpDuration = pumpDuration;
-    this.lastStart = lastStart;
+  constructor(id, nr, timestamp, count) {
+    this.id = id;
+    this.nr = nr;
+    this.timestamp = timestamp;
     this.count = count;
   }
 
@@ -52,18 +46,12 @@ export default class Pump {
   static constructFromObject(data, obj) {
     if (data) {
       obj = obj || new Pump();
-      if (data.hasOwnProperty('location'))
-        obj.location = ApiClient.convertToType(data['location'], 'String');
-      if (data.hasOwnProperty('name'))
-        obj.name = ApiClient.convertToType(data['name'], 'String');
-      if (data.hasOwnProperty('pump_relay_id'))
-        obj.pumpRelayId = ApiClient.convertToType(data['pump_relay_id'], 'String');
-      if (data.hasOwnProperty('relay_number'))
-        obj.relayNumber = ApiClient.convertToType(data['relay_number'], 'Number');
-      if (data.hasOwnProperty('pump_duration'))
-        obj.pumpDuration = ApiClient.convertToType(data['pump_duration'], 'Number');
-      if (data.hasOwnProperty('last_start'))
-        obj.lastStart = ApiClient.convertToType(data['last_start'], 'Number');
+      if (data.hasOwnProperty('id'))
+        obj.id = ApiClient.convertToType(data['id'], 'String');
+      if (data.hasOwnProperty('nr'))
+        obj.nr = ApiClient.convertToType(data['nr'], 'Number');
+      if (data.hasOwnProperty('timestamp'))
+        obj.timestamp = ApiClient.convertToType(data['timestamp'], 'Number');
       if (data.hasOwnProperty('count'))
         obj.count = ApiClient.convertToType(data['count'], 'Number');
     }
@@ -72,36 +60,25 @@ export default class Pump {
 }
 
 /**
- * @member {String} location
+ * id of the pump relay
+ * @member {String} id
  */
-Pump.prototype.location = undefined;
+Pump.prototype.id = undefined;
 
 /**
- * @member {String} name
+ * number of the pump on the pump relay
+ * @member {Number} nr
  */
-Pump.prototype.name = undefined;
+Pump.prototype.nr = undefined;
 
 /**
- * @member {String} pumpRelayId
+ * last started (will be timely restricted)
+ * @member {Number} timestamp
  */
-Pump.prototype.pumpRelayId = undefined;
+Pump.prototype.timestamp = undefined;
 
 /**
- * @member {Number} relayNumber
- */
-Pump.prototype.relayNumber = undefined;
-
-/**
- * @member {Number} pumpDuration
- */
-Pump.prototype.pumpDuration = undefined;
-
-/**
- * @member {Number} lastStart
- */
-Pump.prototype.lastStart = undefined;
-
-/**
+ * count will be restricted in times started)
  * @member {Number} count
  */
 Pump.prototype.count = undefined;

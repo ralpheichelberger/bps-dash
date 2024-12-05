@@ -31,14 +31,13 @@
 
 </style>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import * as bps from '../bpsclient';
 
 var cardID = ref(null);
 var customer = ref(null);
 var balance = ref(0);
 
-// Retrieve cardID from local storage
 cardID.value = localStorage.getItem("cardID");
 if (!cardID.value) cardID.value = "d2gH29R0H"
 

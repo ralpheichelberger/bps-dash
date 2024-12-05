@@ -19,13 +19,13 @@ BasicAuth.username = 'ralph'
 BasicAuth.password = 'APIpassword'
 
 var api = new bps.DefaultApi()
-var device = ref(new bps.Device())
-var callback = function (error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.dir(data)
-    device.value=data;
-  }
-};
+// var device = ref(new bps.Device())
+// var callback = function (error, data, response) {
+//   if (error) {
+//     console.error(error);
+//   } else {
+//     console.dir(data)
+//     device.value=data;
+//   }
+// };
 </script>

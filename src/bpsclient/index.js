@@ -13,16 +13,23 @@
  *
  */
 import ApiClient from './ApiClient';
+import Binary from './model/Binary';
 import CreditJournal from './model/CreditJournal';
 import Customer from './model/Customer';
 import CustomerBody from './model/CustomerBody';
-import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
-import DeviceStatus from './model/DeviceStatus';
+import Dryer from './model/Dryer';
+import DryerStatus from './model/DryerStatus';
 import InlineResponse201 from './model/InlineResponse201';
+// import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
+import PriceLine from './model/PriceLine';
 import Pump from './model/Pump';
+import PumpRelay from './model/PumpRelay';
+import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
+import Washer from './model/Washer';
+import WasherStatus from './model/WasherStatus';
 import DefaultApi from './api/DefaultApi';
 
 /**
@@ -64,6 +71,12 @@ export {
     ApiClient,
 
     /**
+     * The Binary model constructor.
+     * @property {module:model/Binary}
+     */
+    Binary,
+
+    /**
      * The CreditJournal model constructor.
      * @property {module:model/CreditJournal}
      */
@@ -82,22 +95,22 @@ export {
     CustomerBody,
 
     /**
-     * The Device model constructor.
-     * @property {module:model/Device}
-     */
-    Device,
-
-    /**
      * The DeviceInfo model constructor.
      * @property {module:model/DeviceInfo}
      */
     DeviceInfo,
 
     /**
-     * The DeviceStatus model constructor.
-     * @property {module:model/DeviceStatus}
+     * The Dryer model constructor.
+     * @property {module:model/Dryer}
      */
-    DeviceStatus,
+    Dryer,
+
+    /**
+     * The DryerStatus model constructor.
+     * @property {module:model/DryerStatus}
+     */
+    DryerStatus,
 
     /**
      * The InlineResponse201 model constructor.
@@ -106,10 +119,22 @@ export {
     InlineResponse201,
 
     /**
+     * The ModulDurations model constructor.
+     * @property {module:model/ModulDurations}
+     */
+    // ModulDurations,
+
+    /**
      * The Module model constructor.
      * @property {module:model/Module}
      */
     Module,
+
+    /**
+     * The PriceLine model constructor.
+     * @property {module:model/PriceLine}
+     */
+    PriceLine,
 
     /**
      * The Pump model constructor.
@@ -118,10 +143,34 @@ export {
     Pump,
 
     /**
+     * The PumpRelay model constructor.
+     * @property {module:model/PumpRelay}
+     */
+    PumpRelay,
+
+    /**
+     * The PumpRelayStatus model constructor.
+     * @property {module:model/PumpRelayStatus}
+     */
+    PumpRelayStatus,
+
+    /**
      * The Status model constructor.
      * @property {module:model/Status}
      */
     Status,
+
+    /**
+     * The Washer model constructor.
+     * @property {module:model/Washer}
+     */
+    Washer,
+
+    /**
+     * The WasherStatus model constructor.
+     * @property {module:model/WasherStatus}
+     */
+    WasherStatus,
 
     /**
     * The DefaultApi service constructor.

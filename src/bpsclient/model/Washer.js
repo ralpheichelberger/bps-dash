@@ -13,34 +13,32 @@
  *
  */
 import ApiClient from '../ApiClient';
-import DeviceStatus from './DeviceStatus';
 import Module from './Module';
 import Pump from './Pump';
+import WasherStatus from './WasherStatus';
 
 /**
- * The Device model module.
- * @module model/Device
+ * The Washer model module.
+ * @module model/Washer
  * @version 0.1.0
  */
-export default class Device {
+export default class Washer {
   /**
-   * Constructs a new <code>Device</code>.
-   * @alias module:model/Device
+   * Constructs a new <code>Washer</code>.
+   * @alias module:model/Washer
    * @class
-   * @param alias {String} 
-   * @param type {String} 
+   * @param id {String} 
    * @param location {String} 
-   * @param name {String} 
+   * @param priceLine {String} 
    * @param module {module:model/Module} 
    * @param detergent {module:model/Pump} 
    * @param softener {module:model/Pump} 
-   * @param status {module:model/DeviceStatus} 
+   * @param status {module:model/WasherStatus} 
    */
-  constructor(alias, type, location, name, module, detergent, softener, status) {
-    this.alias = alias;
-    this.type = type;
+  constructor(id, location, priceLine, module, detergent, softener, status) {
+    this.id = id;
     this.location = location;
-    this.name = name;
+    this.priceLine = priceLine;
     this.module = module;
     this.detergent = detergent;
     this.softener = softener;
@@ -48,23 +46,21 @@ export default class Device {
   }
 
   /**
-   * Constructs a <code>Device</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>Washer</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/Device} obj Optional instance to populate.
-   * @return {module:model/Device} The populated <code>Device</code> instance.
+   * @param {module:model/Washer} obj Optional instance to populate.
+   * @return {module:model/Washer} The populated <code>Washer</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new Device();
-      if (data.hasOwnProperty('alias'))
-        obj.alias = ApiClient.convertToType(data['alias'], 'String');
-      if (data.hasOwnProperty('type'))
-        obj.type = ApiClient.convertToType(data['type'], 'String');
+      obj = obj || new Washer();
+      if (data.hasOwnProperty('id'))
+        obj.id = ApiClient.convertToType(data['id'], 'String');
       if (data.hasOwnProperty('location'))
         obj.location = ApiClient.convertToType(data['location'], 'String');
-      if (data.hasOwnProperty('name'))
-        obj.name = ApiClient.convertToType(data['name'], 'String');
+      if (data.hasOwnProperty('price_line'))
+        obj.priceLine = ApiClient.convertToType(data['price_line'], 'String');
       if (data.hasOwnProperty('module'))
         obj.module = Module.constructFromObject(data['module']);
       if (data.hasOwnProperty('detergent'))
@@ -72,49 +68,44 @@ export default class Device {
       if (data.hasOwnProperty('softener'))
         obj.softener = Pump.constructFromObject(data['softener']);
       if (data.hasOwnProperty('status'))
-        obj.status = DeviceStatus.constructFromObject(data['status']);
+        obj.status = WasherStatus.constructFromObject(data['status']);
     }
     return obj;
   }
 }
 
 /**
- * @member {String} alias
+ * @member {String} id
  */
-Device.prototype.alias = undefined;
+Washer.prototype.id = undefined;
 
 /**
  * @member {String} location
  */
-Device.prototype.location = undefined;
+Washer.prototype.location = undefined;
 
 /**
- * @member {String} type
+ * @member {String} priceLine
  */
-Device.prototype.type = undefined;
-
-/**
- * @member {String} name
- */
-Device.prototype.name = undefined;
+Washer.prototype.priceLine = undefined;
 
 /**
  * @member {module:model/Module} module
  */
-Device.prototype.module = undefined;
+Washer.prototype.module = undefined;
 
 /**
  * @member {module:model/Pump} detergent
  */
-Device.prototype.detergent = undefined;
+Washer.prototype.detergent = undefined;
 
 /**
  * @member {module:model/Pump} softener
  */
-Device.prototype.softener = undefined;
+Washer.prototype.softener = undefined;
 
 /**
- * @member {module:model/DeviceStatus} status
+ * @member {module:model/WasherStatus} status
  */
-Device.prototype.status = undefined;
+Washer.prototype.status = undefined;
 

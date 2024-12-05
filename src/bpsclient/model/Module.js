@@ -13,6 +13,7 @@
  *
  */
 import ApiClient from '../ApiClient';
+import ModulDurations from './ModulDurations';
 
 /**
  * The Module model module.
@@ -25,14 +26,14 @@ export default class Module {
    * @alias module:model/Module
    * @class
    * @param mac {String} 
-   * @param alias {String} 
+   * @param binaryType {String} 
    * @param lastSeen {Number} 
    * @param lastPing {Number} 
-   * @param relayDuration {Number} 
+   * @param relayDuration {module:model/ModulDurations} 
    */
-  constructor(mac, alias, lastSeen, lastPing, relayDuration) {
+  constructor(mac, binaryType, lastSeen, lastPing, relayDuration) {
     this.mac = mac;
-    this.alias = alias;
+    this.binaryType = binaryType;
     this.lastSeen = lastSeen;
     this.lastPing = lastPing;
     this.relayDuration = relayDuration;
@@ -50,14 +51,14 @@ export default class Module {
       obj = obj || new Module();
       if (data.hasOwnProperty('mac'))
         obj.mac = ApiClient.convertToType(data['mac'], 'String');
-      if (data.hasOwnProperty('alias'))
-        obj.alias = ApiClient.convertToType(data['alias'], 'String');
+      if (data.hasOwnProperty('binary_type'))
+        obj.binaryType = ApiClient.convertToType(data['binary_type'], 'String');
       if (data.hasOwnProperty('last_seen'))
         obj.lastSeen = ApiClient.convertToType(data['last_seen'], 'Number');
       if (data.hasOwnProperty('last_ping'))
         obj.lastPing = ApiClient.convertToType(data['last_ping'], 'Number');
       if (data.hasOwnProperty('relay_duration'))
-        obj.relayDuration = ApiClient.convertToType(data['relay_duration'], 'Number');
+        obj.relayDuration = ModulDurations.constructFromObject(data['relay_duration']);
     }
     return obj;
   }
@@ -69,9 +70,9 @@ export default class Module {
 Module.prototype.mac = undefined;
 
 /**
- * @member {String} alias
+ * @member {String} binaryType
  */
-Module.prototype.alias = undefined;
+Module.prototype.binaryType = undefined;
 
 /**
  * @member {Number} lastSeen
@@ -84,7 +85,7 @@ Module.prototype.lastSeen = undefined;
 Module.prototype.lastPing = undefined;
 
 /**
- * @member {Number} relayDuration
+ * @member {module:model/ModulDurations} relayDuration
  */
 Module.prototype.relayDuration = undefined;
 

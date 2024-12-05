@@ -13,6 +13,7 @@
  *
  */
 import superagent from "superagent";
+import DefaultApi from "./api/DefaultApi";
 
 /**
 * @module ApiClient
@@ -46,7 +47,11 @@ export default class ApiClient {
          */
         this.authentications = {
             'BasicAuth': { type: 'basic' }
-        }
+        };
+
+        // Configure BasicAuth using environment variables
+        this.authentications['BasicAuth'].username = import.meta.env.VITE_API_USERNAME;
+        this.authentications['BasicAuth'].password = import.meta.env.VITE_API_PASSWORD;
 
         /**
          * The default HTTP headers to be included for all API calls.
@@ -586,4 +591,4 @@ export default class ApiClient {
 * The default API client implementation.
 * @type {module:ApiClient}
 */
-ApiClient.instance = new ApiClient();
+ApiClient.instance = new DefaultApi();
