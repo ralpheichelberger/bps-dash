@@ -28,11 +28,13 @@ export default class PumpRelay {
    * @alias module:model/PumpRelay
    * @class
    * @param id {String} 
+   * @param location {String} 
    * @param module {module:model/Module} 
    * @param status {module:model/PumpRelayStatus} 
    */
-  constructor(id, module, status) {
+  constructor(id, location, module, status) {
     this.id = id;
+    this.location = location;
     this.module = module;
     this.status = status;
   }
@@ -49,6 +51,8 @@ export default class PumpRelay {
       obj = obj || new PumpRelay();
       if (data.hasOwnProperty('id'))
         obj.id = ApiClient.convertToType(data['id'], 'String');
+      if (data.hasOwnProperty('location'))
+        obj.location = ApiClient.convertToType(data['location'], 'String');
       if (data.hasOwnProperty('module'))
         obj.module = Module.constructFromObject(data['module']);
       if (data.hasOwnProperty('status'))
@@ -62,6 +66,11 @@ export default class PumpRelay {
  * @member {String} id
  */
 PumpRelay.prototype.id = undefined;
+
+/**
+ * @member {String} location
+ */
+PumpRelay.prototype.location = undefined;
 
 /**
  * @member {module:model/Module} module

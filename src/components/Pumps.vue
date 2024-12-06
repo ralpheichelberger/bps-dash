@@ -21,7 +21,7 @@
     <Device v-for="device in filterDevicesByType()" :device="device" @delete-device="deleteDevice(device.alias)" />
   </v-container>
   <v-container>
-    <WasherEdit :washer="washer" :editing="true" :emit="$emit" v-model:dialog="dialog" />
+    <PumpEdit :washer="washer" :editing="true" :emit="$emit" v-model:dialog="dialog" />
   </v-container>
 </template>
 <style scoped>
@@ -45,38 +45,32 @@ import * as bps from '../bpsclient';
 
 import { ref, watch } from 'vue'
 import Device from './Device.vue'
-import WasherEdit from './WasherEdit.vue'
+import PumpEdit from './PumpEdit.vue'
 
 var client=new bps.ApiClient();
 var api = new bps.DefaultApi(client);
 var shop = ref('')
-var devices = ref([])
+var pumps = ref([])
 var washer = ref([])
 var locations = ref([])
 var uniqueTypes = ref([])
 var typeOption = ref('washer')
 const dialog = ref(false)
 const fetchDevices = (all) => {
-  var callback = function (error, data, response) {
+  var opts = Object();
+  opts.location = all == "all" ? null : shop.value
+  api.getPumprelays(opts).then((error,data,response)=>{
     if (error) {
       console.error(error);
     } else {
-      devices.value = data;
-      uniqueTypes.value = [...new Set(devices.value.map(device => device.type))];
-      uniqueTypes.value.sort()
-      if (all == "all") {
-        locations.value = [...new Set(devices.value.map(device => device.location))];
-        locations.value.sort()
-        devices.value = []
-      }
+      pumps.value = data;
     }
-  };
-  var opts = Object();
-  opts.location = all == "all" ? null : shop.value
-  api.getWashers (opts, callback);
+  }).catch((error)=>{
+    alert(error);
+  });
 }
 const filterDevicesByType = () => {
-  return devices.value.filter(device => device.type === typeOption.value);
+  return pumps.value.filter(device => device.type === typeOption.value);
 }
 const deleteDevice = (devicealias) => {
   alert("device " + devicealias + " deleted! (not really)")
@@ -84,33 +78,33 @@ const deleteDevice = (devicealias) => {
 fetchDevices('all')
 const newWasher = () => {
   washer.value = {
-    id: "test-id-001",
-    priceLine: "test-price-line",
+    id: "",
+    priceLine: "",
     module: {
-      mac: "00:11:22:33:44:55",
-      binaryType: "TestBinaryType",
-      lastSeen: Date.now(),
-      lastPing: Date.now() - 5000, // 5 seconds ago
+      mac: "",
+      binaryType: "",
+      lastSeen: 0,
+      lastPing: 0,
       relayDuration: {
-        self: 50, // Duration in 1/10 seconds (5 seconds)
-        detergent: 100, // Duration in 1/10 seconds (10 seconds)
-        softener: 70, // Duration in 1/10 seconds (7 seconds)
+        self: 0, 
+        detergent: 0, 
+        softener: 0,
       },
     },
     detergent: {
-      id: "detergent-pump-001",
-      nr: 1,
-      timestamp: Date.now(),
-      count: 10,
+      id: "",
+      nr: 0,
+      timestamp: 0,
+      count: 0,
     },
     softener: {
-      id: "softener-pump-001",
-      nr: 2,
-      timestamp: Date.now(),
-      count: 5,
+      id: "",
+      nr: 0,
+      timestamp: 0,
+      count: 0,
     },
     status: {
-      timestamp: Date.now(),
+      timestamp: 0,
       allowStart: true,
       busy: false,
       wantDetergent: false,

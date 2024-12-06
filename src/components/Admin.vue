@@ -14,9 +14,9 @@
 </template>
 <script setup>
 import Shops from './Shops.vue'
-import Washer from './Washer.vue'
+import Washer from './Washers.vue'
+import Pumps from './Pumps.vue'
 import Accounts from './Accounts.vue'
-import Doors from './Doors.vue'
 import { ref } from 'vue'
 
 // Reactive state to track the current tab
@@ -25,8 +25,8 @@ const currentTab = ref('Devices')
 // Object to map tab names to components
 const tabs = {
     Shops,
-  Washer,
-  Accounts,
-  Doors
+    Washer,
+    Accounts,
+    Pumps
 }
 </script>

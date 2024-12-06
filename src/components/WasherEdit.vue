@@ -34,7 +34,7 @@
 			</v-col>
 			<v-col cols="12" md="4" sm="6">
 			  <v-text-field
-				v-model="washer.module.relayDuration.self"
+				v-model.number="washer.module.relayDuration.self"
 				:disabled="!editing"
 				label="Relay Duration Self"
 				required
@@ -56,7 +56,7 @@
 			</v-col>
 			<v-col cols="12" md="4" sm="6">
 			  <v-text-field
-				v-model="washer.detergent.nr"
+				v-model.number="washer.detergent.nr"
 				:disabled="!editing"
 				label="Detergent Relay Number"
 				required
@@ -64,7 +64,7 @@
 			</v-col>
 			<v-col cols="12" md="4" sm="6">
 			  <v-text-field
-				v-model="washer.module.relayDuration.detergent"
+				v-model.number="washer.module.relayDuration.detergent"
 				:disabled="!editing"
 				label="Detergent Relay Duration"
 				required
@@ -86,7 +86,7 @@
 			</v-col>
 			<v-col cols="12" md="4" sm="6">
 			  <v-text-field
-				v-model="washer.softener.nr"
+				v-model.number="washer.softener.nr"
 				:disabled="!editing"
 				label="Softener Relay Number"
 				required
@@ -94,7 +94,7 @@
 			</v-col>
 			<v-col cols="12" md="4" sm="6">
 			  <v-text-field
-				v-model="washer.module.relayDuration.softener"
+				v-model.number="washer.module.relayDuration.softener"
 				:disabled="!editing"
 				label="Softener Relay Duration"
 				required
@@ -115,7 +115,7 @@
 	</v-dialog>
   </template>
   
-  <script setup lang="ts">
+<script setup lang="ts">
 import * as bps from '../bpsclient';
 import type { Washer } from '../bpsclient'
 
