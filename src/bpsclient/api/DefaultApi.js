@@ -16,10 +16,9 @@ import ApiClient from "../ApiClient";
 import CreditJournal from '../model/CreditJournal';
 import Customer from '../model/Customer';
 import CustomerBody from '../model/CustomerBody';
-import DeviceInfo from '../model/DeviceInfo';
+import Device from '../model/Device';
 import InlineResponse201 from '../model/InlineResponse201';
 import Status from '../model/Status';
-import Washer from '../model/Washer';
 
 /**
 * Default service.
@@ -133,52 +132,6 @@ export default class DefaultApi {
 
       return this.apiClient.callApi(
         '/allowstart', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
-    /**
-     * Callback function to receive the result of the deviceInfo operation.
-     * @callback moduleapi/DefaultApi~deviceInfoCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/DeviceInfo{ data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns a module with module type
-     * @param {String} alias the alias that describes the specifice module ShopId+moduleId
-     * @param {module:api/DefaultApi~deviceInfoCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
-     */
-    deviceInfo(alias, callback) {
-      
-      let postBody = null;
-      // verify the required parameter 'alias' is set
-      if (alias === undefined || alias === null) {
-        throw new Error("Missing the required parameter 'alias' when calling deviceInfo");
-      }
-
-      let pathParams = {
-        
-      };
-      let queryParams = {
-        'alias': alias
-      };
-      let headerParams = {
-        
-      };
-      let formParams = {
-        
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = DeviceInfo;
-
-      return this.apiClient.callApi(
-        '/device_info', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
@@ -329,6 +282,95 @@ export default class DefaultApi {
       );
     }
     /**
+     * Callback function to receive the result of the getDevice operation.
+     * @callback moduleapi/DefaultApi~getDeviceCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Device{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a device
+     * @param {String} alias The alias that describes the specific module ShopId+moduleId
+     * @param {module:api/DefaultApi~getDeviceCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getDevice(alias, callback) {
+      
+      let postBody = null;
+      // verify the required parameter 'alias' is set
+      if (alias === undefined || alias === null) {
+        throw new Error("Missing the required parameter 'alias' when calling getDevice");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        'alias': alias
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Device;
+
+      return this.apiClient.callApi(
+        '/device', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the getDevices operation.
+     * @callback moduleapi/DefaultApi~getDevicesCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/Device>{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns list of device
+     * @param {Object} opts Optional parameters
+     * @param {String} opts.location The shop location ID as a filter - if not given or empty devices of all shops are returned
+     * @param {module:api/DefaultApi~getDevicesCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getDevices(opts, callback) {
+      opts = opts || {};
+      let postBody = null;
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        'location': opts['location']
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [Device];
+
+      return this.apiClient.callApi(
+        '/devices', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
      * Callback function to receive the result of the getRootDefaultHtml operation.
      * @callback moduleapi/DefaultApi~getRootDefaultHtmlCallback
      * @param {String} error Error message, if any.
@@ -370,114 +412,25 @@ export default class DefaultApi {
       );
     }
     /**
-     * Callback function to receive the result of the getWasher operation.
-     * @callback moduleapi/DefaultApi~getWasherCallback
+     * Callback function to receive the result of the newDevice operation.
+     * @callback moduleapi/DefaultApi~newDeviceCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/Washer{ data The data returned by the service call.
+     * @param {module:model/Device{ data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Returns a washer
-     * @param {String} alias The alias that describes the specific module ShopId+moduleId
-     * @param {module:api/DefaultApi~getWasherCallback} callback The callback function, accepting three arguments: error, data, response
+     * Creates a new device
+     * @param {module:model/Device} body The device object to be created
+     * @param {module:api/DefaultApi~newDeviceCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
      */
-    getWasher(alias, callback) {
-      
-      let postBody = null;
-      // verify the required parameter 'alias' is set
-      if (alias === undefined || alias === null) {
-        throw new Error("Missing the required parameter 'alias' when calling getWasher");
-      }
-
-      let pathParams = {
-        
-      };
-      let queryParams = {
-        'alias': alias
-      };
-      let headerParams = {
-        
-      };
-      let formParams = {
-        
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = Washer;
-
-      return this.apiClient.callApi(
-        '/washer', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
-    /**
-     * Callback function to receive the result of the getWashers operation.
-     * @callback moduleapi/DefaultApi~getWashersCallback
-     * @param {String} error Error message, if any.
-     * @param {Array.<module:model/Washer>{ data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns list of washer
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.location The shop location ID as a filter - if not given or empty washers of all shops are returned
-     * @param {module:api/DefaultApi~getWashersCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
-     */
-    getWashers(opts, callback) {
-      opts = opts || {};
-      let postBody = null;
-
-      let pathParams = {
-        
-      };
-      let queryParams = {
-        'location': opts['location']
-      };
-      let headerParams = {
-        
-      };
-      let formParams = {
-        
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = [Washer];
-
-      return this.apiClient.callApi(
-        '/washers', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
-    /**
-     * Callback function to receive the result of the newWasher operation.
-     * @callback moduleapi/DefaultApi~newWasherCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/Washer{ data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Creates a new washer
-     * @param {module:model/Washer} body The washer object to be created
-     * @param {module:api/DefaultApi~newWasherCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
-     */
-    newWasher(body, callback) {
+    newDevice(body, callback) {
       
       let postBody = body;
       // verify the required parameter 'body' is set
       if (body === undefined || body === null) {
-        throw new Error("Missing the required parameter 'body' when calling newWasher");
+        throw new Error("Missing the required parameter 'body' when calling newDevice");
       }
 
       let pathParams = {
@@ -496,10 +449,10 @@ export default class DefaultApi {
       let authNames = ['BasicAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Washer;
+      let returnType = Device;
 
       return this.apiClient.callApi(
-        '/washer', 'POST',
+        '/device', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
@@ -634,25 +587,25 @@ export default class DefaultApi {
       );
     }
     /**
-     * Callback function to receive the result of the updateWasher operation.
-     * @callback moduleapi/DefaultApi~updateWasherCallback
+     * Callback function to receive the result of the updateDevice operation.
+     * @callback moduleapi/DefaultApi~updateDeviceCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/Washer{ data The data returned by the service call.
+     * @param {module:model/Device{ data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Updates an existing washer
-     * @param {module:model/Washer} body The updated washer object
-     * @param {module:api/DefaultApi~updateWasherCallback} callback The callback function, accepting three arguments: error, data, response
+     * Updates an existing device
+     * @param {module:model/Device} body The updated device object
+     * @param {module:api/DefaultApi~updateDeviceCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
      */
-    updateWasher(body, callback) {
+    updateDevice(body, callback) {
       
       let postBody = body;
       // verify the required parameter 'body' is set
       if (body === undefined || body === null) {
-        throw new Error("Missing the required parameter 'body' when calling updateWasher");
+        throw new Error("Missing the required parameter 'body' when calling updateDevice");
       }
 
       let pathParams = {
@@ -671,10 +624,10 @@ export default class DefaultApi {
       let authNames = ['BasicAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Washer;
+      let returnType = Device;
 
       return this.apiClient.callApi(
-        '/washer', 'PUT',
+        '/device', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );

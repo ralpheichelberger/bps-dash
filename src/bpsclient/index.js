@@ -17,18 +17,15 @@ import Binary from './model/Binary';
 import CreditJournal from './model/CreditJournal';
 import Customer from './model/Customer';
 import CustomerBody from './model/CustomerBody';
-import DeviceInfo from './model/DeviceInfo';
-import Dryer from './model/Dryer';
-import DryerStatus from './model/DryerStatus';
+import Device from './model/Device';
 import InlineResponse201 from './model/InlineResponse201';
-// import ModulDurations from './model/ModulDurations';
+import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
 import PriceLine from './model/PriceLine';
 import Pump from './model/Pump';
 import PumpRelay from './model/PumpRelay';
 import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
-import Washer from './model/Washer';
 import WasherStatus from './model/WasherStatus';
 import DefaultApi from './api/DefaultApi';
 
@@ -95,22 +92,10 @@ export {
     CustomerBody,
 
     /**
-     * The DeviceInfo model constructor.
-     * @property {module:model/DeviceInfo}
+     * The Device model constructor.
+     * @property {module:model/Device}
      */
-    DeviceInfo,
-
-    /**
-     * The Dryer model constructor.
-     * @property {module:model/Dryer}
-     */
-    Dryer,
-
-    /**
-     * The DryerStatus model constructor.
-     * @property {module:model/DryerStatus}
-     */
-    DryerStatus,
+    Device,
 
     /**
      * The InlineResponse201 model constructor.
@@ -122,7 +107,7 @@ export {
      * The ModulDurations model constructor.
      * @property {module:model/ModulDurations}
      */
-    // ModulDurations,
+    ModulDurations,
 
     /**
      * The Module model constructor.
@@ -159,12 +144,6 @@ export {
      * @property {module:model/Status}
      */
     Status,
-
-    /**
-     * The Washer model constructor.
-     * @property {module:model/Washer}
-     */
-    Washer,
 
     /**
      * The WasherStatus model constructor.

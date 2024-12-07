@@ -18,16 +18,17 @@ import Pump from './Pump';
 import WasherStatus from './WasherStatus';
 
 /**
- * The Washer model module.
- * @module model/Washer
+ * The Device model module.
+ * @module model/Device
  * @version 0.1.0
  */
-export default class Washer {
+export default class Device {
   /**
-   * Constructs a new <code>Washer</code>.
-   * @alias module:model/Washer
+   * Constructs a new <code>Device</code>.
+   * @alias module:model/Device
    * @class
    * @param id {String} 
+   * @param type {String} 
    * @param location {String} 
    * @param priceLine {String} 
    * @param module {module:model/Module} 
@@ -35,8 +36,9 @@ export default class Washer {
    * @param softener {module:model/Pump} 
    * @param status {module:model/WasherStatus} 
    */
-  constructor(id, location, priceLine, module, detergent, softener, status) {
+  constructor(id, type, location, priceLine, module, detergent, softener, status) {
     this.id = id;
+    this.type = type;
     this.location = location;
     this.priceLine = priceLine;
     this.module = module;
@@ -46,17 +48,19 @@ export default class Washer {
   }
 
   /**
-   * Constructs a <code>Washer</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>Device</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/Washer} obj Optional instance to populate.
-   * @return {module:model/Washer} The populated <code>Washer</code> instance.
+   * @param {module:model/Device} obj Optional instance to populate.
+   * @return {module:model/Device} The populated <code>Device</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new Washer();
+      obj = obj || new Device();
       if (data.hasOwnProperty('id'))
         obj.id = ApiClient.convertToType(data['id'], 'String');
+      if (data.hasOwnProperty('type'))
+        obj.type = ApiClient.convertToType(data['type'], 'String');
       if (data.hasOwnProperty('location'))
         obj.location = ApiClient.convertToType(data['location'], 'String');
       if (data.hasOwnProperty('price_line'))
@@ -77,35 +81,40 @@ export default class Washer {
 /**
  * @member {String} id
  */
-Washer.prototype.id = undefined;
+Device.prototype.id = undefined;
+
+/**
+ * @member {String} type
+ */
+Device.prototype.type = undefined;
 
 /**
  * @member {String} location
  */
-Washer.prototype.location = undefined;
+Device.prototype.location = undefined;
 
 /**
  * @member {String} priceLine
  */
-Washer.prototype.priceLine = undefined;
+Device.prototype.priceLine = undefined;
 
 /**
  * @member {module:model/Module} module
  */
-Washer.prototype.module = undefined;
+Device.prototype.module = undefined;
 
 /**
  * @member {module:model/Pump} detergent
  */
-Washer.prototype.detergent = undefined;
+Device.prototype.detergent = undefined;
 
 /**
  * @member {module:model/Pump} softener
  */
-Washer.prototype.softener = undefined;
+Device.prototype.softener = undefined;
 
 /**
  * @member {module:model/WasherStatus} status
  */
-Washer.prototype.status = undefined;
+Device.prototype.status = undefined;
 

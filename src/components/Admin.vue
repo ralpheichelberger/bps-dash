@@ -14,7 +14,7 @@
 </template>
 <script setup>
 import Shops from './Shops.vue'
-import Washer from './Washers.vue'
+import Devices from './Devices.vue'
 import Pumps from './Pumps.vue'
 import Accounts from './Accounts.vue'
 import { ref } from 'vue'
@@ -25,7 +25,7 @@ const currentTab = ref('Devices')
 // Object to map tab names to components
 const tabs = {
     Shops,
-    Washer,
+    Devices,
     Accounts,
     Pumps
 }

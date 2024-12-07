@@ -26,7 +26,7 @@
         </template>
         <v-overlay opacity=".12" contained model-value persistent />
     </v-card>
-    <WasherEdit :washer="device" :editing="editing" :panel="panel" :emit="emit" v-model:dialog="dialog" />
+    <WasherEdit :device="device" :editing="editing" :panel="panel" :emit="emit" v-model:dialog="dialog" />
 
 </template>
 <style>
@@ -40,7 +40,7 @@
 </style>
 <script setup>
 import { ref } from 'vue'
-import WasherEdit from './WasherEdit.vue'
+import WasherEdit from './DeviceEdit.vue'
 const props = defineProps(['device'])
 const emit = defineEmits(['delete-device'])
 
