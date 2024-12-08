@@ -4,7 +4,7 @@
 			<v-card-actions>
 				<v-btn icon="mdi-close" @click="dialog = false"></v-btn>
 				<v-spacer></v-spacer>
-				<v-btn id="delete" text="Delete" variant="plain" @click="emit('delete-device')"></v-btn>
+				<!-- <v-btn id="delete" text="Delete" variant="plain" @click="emit('delete-device')"></v-btn> -->
 				<!-- <v-btn id="close" text="Close" variant="plain" @click="dialog = false"></v-btn> -->
 				<v-btn id="save" color="primary" text="Save" variant="tonal" @click="saveChanges"></v-btn>
 			</v-card-actions>

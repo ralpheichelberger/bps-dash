@@ -22,6 +22,9 @@ describe('Washer Edit Dialog', () => {
     cy.get("#softenernr").type("9");
     cy.get("#softenerrelayduration").type("150");
     cy.get("#save").click();
+    cy.get('.v-snackbar__content').should('be.visible').contains('saved');
+    cy.get("#save").click();
+    cy.get('.v-snackbar__content').should('be.visible').contains('exists');
   });
 
 
