@@ -27,7 +27,7 @@ export default class Device {
    * Constructs a new <code>Device</code>.
    * @alias module:model/Device
    * @class
-   * @param id {String} 
+   * @param id {Number} 
    * @param type {String} 
    * @param location {String} 
    * @param priceLine {String} 
@@ -58,7 +58,7 @@ export default class Device {
     if (data) {
       obj = obj || new Device();
       if (data.hasOwnProperty('id'))
-        obj.id = ApiClient.convertToType(data['id'], 'String');
+        obj.id = ApiClient.convertToType(data['id'], 'Number');
       if (data.hasOwnProperty('type'))
         obj.type = ApiClient.convertToType(data['type'], 'String');
       if (data.hasOwnProperty('location'))
@@ -79,7 +79,7 @@ export default class Device {
 }
 
 /**
- * @member {String} id
+ * @member {Number} id
  */
 Device.prototype.id = undefined;
 

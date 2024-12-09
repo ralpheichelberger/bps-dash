@@ -17,11 +17,9 @@
 			</v-card-title>
 			<v-card-text v-if="device.type">
 				<v-row dense>
-					<v-col cols="12">
-						<v-select id="location" v-model="device.location" label="Location" required :items="locations"
-							:menu="menuLocation">
-
-						</v-select>
+					<v-col cols="12" class="d-flex align-center">
+						<v-combobox id="location" v-model="device.location" label="Location" required :items="locations"
+						</v-combobox>
 					</v-col>
 					<v-col cols="12">
 						<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="disabled"
@@ -35,7 +33,7 @@
 							hide-details></v-text-field>
 					</v-col>
 					<v-col cols="12">
-						<v-text-field id="relayduration" v-model.number="device.module.relayDuration.self"
+						<v-text-field id="relayduration" type="number" v-model.number="device.module.relayDuration.self"
 							:disabled="disabled" label="Relay Duration Self" required hide-details></v-text-field>
 					</v-col>
 				</v-row>
@@ -98,6 +96,7 @@ const props = defineProps<{
 	device: Device;
 	locations: string[];
 	deviceTypes: string[];
+	editing: boolean;
 	emit: (event: "delete-device", ...args: any[]) => void;
 }>()
 
@@ -123,50 +122,4 @@ const saveChanges = () => {
 		}
 	});
 }
-
-const searchLocation = ref('');
-const menuLocation = ref(false); // Controls the dropdown menu visibility
-// Methods
-const handleSearch = (value) => {
-	searchLocation.value = value;
-	menuLocation.value = !!value; // Show menu when there is a search term
-};
-
-const addNewLocation = () => {
-	if (searchLocation.value && !props.locations.includes(searchLocation.value.trim())) {
-		const newLocation = searchLocation.value.trim();
-		props.locations.push(newLocation);
-		props.device.location = newLocation; // Set the newly added location as selected
-		menuLocation.value = false; // Close the menu
-		searchLocation.value = ''; // Clear the search input
-	}
-};
-
-const resetTypeSearch = () => {
-	searchLocation.value = ''; // Reset the search value on blur
-};
-const searchType = ref('');
-const menuType = ref(false); // Controls the dropdown menu visibility
-
-// Methods
-const handleTypeSearch = (value) => {
-	searchType.value = value;
-	menuType.value = !!value; // Show menu when there is a search term
-};
-
-const addNewType = () => {
-	if (searchType.value && !props.deviceTypes.includes(searchType.value.trim())) {
-		const newType = searchType.value.trim();
-		props.locations.push(newType);
-		props.device.type = newType; // Set the newly added location as selected
-		menuType.value = false; // Close the menu
-		searchType.value = ''; // Clear the search input
-	}
-};
-
-const resetSearch = () => {
-	searchType.value = ''; // Reset the search value on blur
-};
 </script>
-
-<style></style>
