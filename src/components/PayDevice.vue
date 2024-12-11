@@ -4,7 +4,7 @@
             <v-row style="padding-bottom:0">
                 <v-col>Konto {{ customer.name }} </v-col>
                 <v-col></v-col>
-                <v-col >Guthaben EUR {{ balance }}</v-col>
+                <v-col>Guthaben EUR {{ balance }}</v-col>
             </v-row>
             <v-row style="padding-top:0">
                 <v-col><small><small>ID: {{ customer.id }}</small></small></v-col>
@@ -21,7 +21,7 @@
         </v-card-text>
     </v-card>
     <v-dialog v-model="dialog">
-    <v-card>payment</v-card>
+        <v-card>payment</v-card>
 
     </v-dialog>
 </template>
@@ -29,29 +29,25 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import * as bps from '../bpsclient'
+import Device from "../bpsclient/model/Device";
 var dialog = ref(false)
 var cardID = ref(null)
 var customer = ref(null)
 var balance = ref(0)
 var deviceID = ref(new URLSearchParams(window.location.search).get('d'))
-var device = ref(null)
+var device = ref(new Device())
 
 // Retrieve cardID from local storage
 cardID.value = localStorage.getItem("cardID")
 if (!cardID.value) cardID.value = "d2gH29R0H"
 
-var api = new bps.DefaultApi()
-var defaultClient = bps.ApiClient.instance
-var BasicAuth = defaultClient.authentications['BasicAuth']
-BasicAuth.username = 'ralph'
-BasicAuth.password = 'APIpassword'
+const client = new bps.ApiClient();
+const api = new bps.DefaultApi(client);
 api.getCustomer(cardID.value, (error, data, response) => {
     customer.value = data;
-    balance.value = (customer.value.credit / 100).toFixed(2)
+    if (customer.value?.credit) balance.value = (customer.value.credit / 100).toFixed(2)
 })
-api.deviceInfo(deviceID.value, (error, data, response) => {
-    device.value = data;
-})
+
 var pay = () => {
     dialog.value = true
 }
