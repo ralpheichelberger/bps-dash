@@ -35,6 +35,11 @@ onMounted(async () => {
     if (paypal) {
         try {
             await paypal.Buttons({
+                style:{
+                    layout: 'vertical',
+                    label: 'pay',
+                    height: 40,
+                },
                 createOrder: (data, actions) => {
                     return actions.order.create({
                         purchase_units: [

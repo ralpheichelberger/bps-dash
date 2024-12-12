@@ -1,10 +1,5 @@
 <template>
-    <v-card v-if="customer" style="
-        font-family: 'DreamingOutloud', Arial, sans-serif;    
-        background: var(--background-gradient);
-        color:black;
-        height: 100vh;
-        ">
+    <v-card v-if="customer" >
         <v-card-title>
             <v-row style="padding-bottom:0">
                 <v-col>Konto {{ customer.name }} </v-col>
@@ -48,13 +43,14 @@ import { ref } from "vue"
 import * as bps from '../bpsclient'
 import Device from "../bpsclient/model/Device"
 import PayPalButton from "./PayPalButton.vue"
-
+console.log("PayDevice")
 const payPalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID
 const cardID = ref(null)
 const customer = ref(null)
 const balance = ref(0)
 const deviceID = ref(new URLSearchParams(window.location.search).get('d'))
-const device = ref({}) // FIXME: testdata
+console.log("deviceID", deviceID.value)
+const device = ref({}) 
 const dialog = ref(false);
 
 const cent2euro = (val) => (val / 100).toFixed(2)
@@ -97,5 +93,12 @@ const topUp = () => {
 
 .bubble-font {
     font-family: "DreamingOutloud", Arial, sans-serif;
+}
+
+.v-card {
+    font-family: "DreamingOutloud", Arial, sans-serif;
+    background: var(--background-gradient);
+    color: black;
+    height: 100vh;
 }
 </style>

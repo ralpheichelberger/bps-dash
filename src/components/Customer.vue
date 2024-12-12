@@ -1,10 +1,5 @@
 <template>
-    <v-card v-if="customer" style="
-        font-family: 'DreamingOutloud', Arial, sans-serif;    
-        background: var(--background-gradient);
-        color:black;
-        height: 100vh;
-        ">
+    <v-card v-if="customer" >
         <v-card-title>
             <v-row style="padding-bottom:0">
                 <v-col>Konto {{ customer.name }} </v-col>
@@ -47,7 +42,7 @@
 <script setup>
 import { ref } from "vue";
 import * as bps from '../bpsclient';
-
+console.log("Customer")
 const cardID = ref(null);
 const customer = ref(null);
 const balance = ref(0);
@@ -73,7 +68,11 @@ const topUp = () => {
     src: url("@/assets/bubblekassa.otf") format("opentype");
 }
 
-v-card {
+
+.v-card {
     font-family: "DreamingOutloud", Arial, sans-serif;
+    background: var(--background-gradient);
+    color: black;
+    height: 100vh;
 }
 </style>
