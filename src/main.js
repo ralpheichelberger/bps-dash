@@ -13,7 +13,7 @@ const routes = [
     { path: '/cc', name: 'Customer', component: Customer },
     { path: '/cp', name: 'PayDevice', component: PayDevice },
     { path: '/admin', name: 'Admin', component: Admin },
-    { path: '/', name: 'Admin', component: Admin },
+    // { path: '/', name: 'Admin', component: Admin },
 ];
 
 const router = createRouter({

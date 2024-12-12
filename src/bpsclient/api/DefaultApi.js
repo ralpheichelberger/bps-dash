@@ -95,17 +95,17 @@ export default class DefaultApi {
 
     /**
      * Returns OK
-     * @param {String} mac mac address of module
+     * @param {String} name mac address of module
      * @param {Number} value value / ms or count
      * @param {module:api/DefaultApi~allowStartCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
      */
-    allowStart(mac, value, callback) {
+    allowStart(name, value, callback) {
       
       let postBody = null;
-      // verify the required parameter 'mac' is set
-      if (mac === undefined || mac === null) {
-        throw new Error("Missing the required parameter 'mac' when calling allowStart");
+      // verify the required parameter 'name' is set
+      if (name === undefined || name === null) {
+        throw new Error("Missing the required parameter 'name' when calling allowStart");
       }
       // verify the required parameter 'value' is set
       if (value === undefined || value === null) {
@@ -116,7 +116,7 @@ export default class DefaultApi {
         
       };
       let queryParams = {
-        'mac': mac,'value': value
+        'name': name,'value': value
       };
       let headerParams = {
         
@@ -282,6 +282,47 @@ export default class DefaultApi {
       );
     }
     /**
+     * Callback function to receive the result of the getCustomerApp operation.
+     * @callback moduleapi/DefaultApi~getCustomerAppCallback
+     * @param {String} error Error message, if any.
+     * @param {'String'{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns default HTML for the root path
+     * @param {module:api/DefaultApi~getCustomerAppCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getCustomerApp(callback) {
+      
+      let postBody = null;
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['text/html'];
+      let returnType = 'String';
+
+      return this.apiClient.callApi(
+        '/cc', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
      * Callback function to receive the result of the getDevice operation.
      * @callback moduleapi/DefaultApi~getDeviceCallback
      * @param {String} error Error message, if any.
@@ -323,6 +364,47 @@ export default class DefaultApi {
 
       return this.apiClient.callApi(
         '/device', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the getDevicePaymentApp operation.
+     * @callback moduleapi/DefaultApi~getDevicePaymentAppCallback
+     * @param {String} error Error message, if any.
+     * @param {'String'{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns default HTML for the root path
+     * @param {module:api/DefaultApi~getDevicePaymentAppCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getDevicePaymentApp(callback) {
+      
+      let postBody = null;
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['text/html'];
+      let returnType = 'String';
+
+      return this.apiClient.callApi(
+        '/cp', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
