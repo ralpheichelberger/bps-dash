@@ -1,2 +1,2 @@
 #/bin/bash
-mongosh "mongodb://localhost:27017/bubblepoint" --eval 'db.customers.insertOne({id: "d2gH29R0H", name: "John Doe", active: true, credit: 5000})'
+mongosh --eval 'db.customers.insertMany([{id: "d2gH29R0H", name: "John Doe", active: true, credit: 5000},{id: "CtZbJVMC6", name: "Jane Mow", active: true, credit: 3500}])'

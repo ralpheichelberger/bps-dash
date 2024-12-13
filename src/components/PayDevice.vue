@@ -82,12 +82,14 @@ const allowStart = () => {
   api
     .allowStart(
       `${device.value.shop}/${device.value.type}/${device.value.nr}`,
-      `${device.value.duration}`
-    )
-    .then((response) => {
+      `${device.value.duration}`, (error, data, response) => {
+      if (error) {
+        console.error("allowStart", error);
+        return;
+      }
       console.log("allowStart", response);
+      console.log("payDevice", device.value);
     });
-  console.log("payDevice", device.value);
 };
 const topUp = () => {
   dialog.value = true;

@@ -1,5 +1,5 @@
 <template>
-    <v-card v-if="customer" >
+    <v-card v-if="customer">
         <v-card-title>
             <v-row style="padding-bottom:0">
                 <v-col>Konto {{ customer.name }} </v-col>
@@ -24,8 +24,17 @@
         </v-card-text>
     </v-card>
     <v-dialog v-model="dialog">
-            <TopUp :visible="dialog" :cardID="cardID" @close="dialog = false" />
-        </v-dialog>
+        <TopUp :visible="dialog" :cardID="cardID" @close="dialog = false" />
+    </v-dialog>
+    <v-dialog v-model="errorDialog">
+        <v-card>
+            <v-card-title>Sorry</v-card-title>
+            <v-card-text>Die Bubble Karte '{{ cardID }}' ist leider nicht registriert. Bitte wenden Sie sich an unseren Kundenservice!</v-card-text>
+            <v-card-actions>
+                <v-btn @click="closeError">Schließen</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 <style>
 :root {
@@ -47,6 +56,7 @@ const cardID = ref(null);
 const customer = ref(null);
 const balance = ref(0);
 const dialog = ref(false);
+const errorDialog = ref(false);
 
 cardID.value = localStorage.getItem("cardID");
 if (!cardID.value) cardID.value = "d2gH29R0H"
@@ -54,11 +64,19 @@ if (!cardID.value) cardID.value = "d2gH29R0H"
 const client = new bps.ApiClient();
 const api = new bps.DefaultApi(client);
 api.getCustomer(cardID.value, (error, data, response) => {
+    if (error) {
+        errorDialog.value = true;
+        return;
+    }
     customer.value = data;
     balance.value = (customer.value.credit / 100).toFixed(2)
 })
 const topUp = () => {
     dialog.value = true;
+}
+const closeError = () => {
+    errorDialog.value = false;
+    window.location.href = "/";
 }
 </script>
 
