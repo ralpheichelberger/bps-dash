@@ -4,13 +4,18 @@
             <h2>Guthaben aufladen</h2><v-spacer></v-spacer>
             <v-btn icon="mdi-close" @click="emit('close')"></v-btn>
         </v-card-actions>
-        <v-radio-group v-model="amount" row>
-            <v-radio label="20 EUR" value="20"></v-radio>
-            <v-radio label="50 EUR" value="50"></v-radio>
-            <v-radio label="100 EUR" value="100"></v-radio>
+        <v-radio-group v-model.number="amount" row>
+            <v-radio label="20 EUR" :value="20"></v-radio>
+            <v-radio label="50 EUR" :value="50"></v-radio>
+            <v-radio label="100 EUR" :value="100"></v-radio>
         </v-radio-group>
-        <v-btn @click="topUpCustomer">Fake Pay</v-btn>
-        <PayPalButton :clientId="payPalClientId" :amount="amount" :customerId="cardID" @transactionApproved="topUpCustomer"/>
+        <v-sheet class="ma-4">
+            <v-btn width="100%" @click="topUpCustomer">Fake Pay</v-btn>
+        </v-sheet>
+        <v-sheet class="ma-4">
+            <PayPalButton :clientId="payPalClientId" :amount="amount.toString()" :customerId="cardID"
+                @transactionApproved="topUpCustomer" />
+        </v-sheet>
     </v-card>
 </template>
 
@@ -27,11 +32,10 @@ const props = defineProps({
         required: true,
     },
 });
-const dialog = ref(props.visible)
-const emit = defineEmits(["close"])
-const amount = ref("20")
+const emit = defineEmits(["close", "top-up"])
+const amount = ref(20)
 const topUpCustomer = () => {
-    console.log("topUpCustomer", amount.value)
+    emit("top-up", amount.value*100) // convert to cents
     emit("close")
 }
 </script>

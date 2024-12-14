@@ -14,7 +14,7 @@
         >
         <v-col></v-col>
         <v-col style="padding-top: 0">
-          <v-btn @click="topUp" size="x-large" elevation="5">Aufladen</v-btn>
+          <v-btn @click="topUpDialog" size="x-large" elevation="5">Aufladen</v-btn>
         </v-col>
       </v-row>
     </v-card-title>
@@ -45,54 +45,56 @@
       </v-row>
     </v-card-text>
     <v-dialog v-model="dialog">
-      <TopUp :visible="dialog" :cardID="cardID" @close="dialog = false" />
+      <TopUp :visible="dialog" :cardID="cardID" @close="dialog = false" @topup="topUp" />
     </v-dialog>
   </v-card>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import { useCustomer } from "../composables/useCustomer";
 import * as bps from "../bpsclient";
-import Device from "../bpsclient/model/Device";
 import PayPalButton from "./PayPalButton.vue";
-console.log("PayDevice");
 const payPalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-const cardID = ref(null);
-const customer = ref(null);
-const balance = ref(0);
+const { cardID, customer, balance, initializeCustomer } = useCustomer();
+
 const deviceID = ref(new URLSearchParams(window.location.search).get("d"));
-console.log("deviceID", deviceID.value);
-const device = ref({});
-const dialog = ref(false);
-
-const cent2euro = (val) => (val / 100).toFixed(2);
-
-// Retrieve cardID from local storage
-cardID.value = localStorage.getItem("cardID");
-if (!cardID.value) cardID.value = "d2gH29R0H";
-device.value = { shop: "BX", type: "washer", nr: "3", price: 400, duration: 100 };
-const client = new bps.ApiClient();
-const api = new bps.DefaultApi(client);
-api.getCustomer(cardID.value, (error, data, response) => {
-  customer.value = data;
-  if (customer.value?.credit) balance.value = (customer.value.credit / 100).toFixed(2);
+const device = ref({
+  shop: "BX",
+  type: "washer",
+  nr: "3",
+  price: 400,
+  duration: 100,
 });
 
+const dialog = ref(false);
+
+initializeCustomer();
+const cent2euro = (val) => (val / 100).toFixed(2);
+
 const allowStart = () => {
-  api
-    .allowStart(
-      `${device.value.shop}/${device.value.type}/${device.value.nr}`,
-      `${device.value.duration}`, (error, data, response) => {
+  const client = new bps.ApiClient();
+  const api = new bps.DefaultApi(client);
+
+  api.allowStart(
+    `${deviceID.value}`,
+    `${device.value.duration}`,
+    (error, data, response) => {
       if (error) {
         console.error("allowStart", error);
         return;
       }
       console.log("allowStart", response);
-      console.log("payDevice", device.value);
-    });
+    }
+  );
 };
-const topUp = () => {
+
+const topUpDialog = () => {
   dialog.value = true;
+};
+const topUp = (amount) => {
+  console.log("topUp", amount);
+  dialog.value = false;
 };
 </script>
 

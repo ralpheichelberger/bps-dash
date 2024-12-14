@@ -10,7 +10,7 @@
                     <small><small>ID: {{ customer.id }}</small></small>
                 </v-col><v-col>
                 </v-col><v-col>
-                    <v-btn @click="topUp" size="x-large" elevation="5">Aufladen</v-btn>
+                    <v-btn @click="topUpDialog" size="x-large" elevation="5">Aufladen</v-btn>
                 </v-col>
             </v-row>
         </v-card-title>
@@ -24,14 +24,15 @@
         </v-card-text>
     </v-card>
     <v-dialog v-model="dialog">
-        <TopUp :visible="dialog" :cardID="cardID" @close="dialog = false" />
+        <TopUp :visible="dialog" :cardID="cardID" @close="dialog = false" @top-up="doTopUp" />
     </v-dialog>
-    <v-dialog v-model="errorDialog">
+    <v-dialog v-model="errorDialog" @afterLeave="closeError" width="600">
         <v-card>
-            <v-card-title>Sorry</v-card-title>
-            <v-card-text>Die Bubble Karte '{{ cardID }}' ist leider nicht registriert. Bitte wenden Sie sich an unseren Kundenservice!</v-card-text>
+            <v-card-title style="font-size:5rem">Sorry :(</v-card-title>
+            <v-card-text>Die Bubble Karte '{{ cardID }}' ist leider nicht registriert. <br /> Bitte wenden Sie sich an
+                unseren Kundenservice!</v-card-text>
             <v-card-actions>
-                <v-btn @click="closeError">Schließen</v-btn>
+                <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem;" @click="closeError">Schließen</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -50,35 +51,28 @@
 </style>
 <script setup>
 import { ref } from "vue";
-import * as bps from '../bpsclient';
-console.log("Customer")
-const cardID = ref(null);
-const customer = ref(null);
-const balance = ref(0);
+import { useCustomer } from "../composables/useCustomer";
+
+const { cardID, customer, balance, initializeCustomer, topUp } = useCustomer();
+
 const dialog = ref(false);
 const errorDialog = ref(false);
 
-cardID.value = localStorage.getItem("cardID");
-if (!cardID.value) cardID.value = "d2gH29R0H"
+initializeCustomer();
 
-const client = new bps.ApiClient();
-const api = new bps.DefaultApi(client);
-api.getCustomer(cardID.value, (error, data, response) => {
-    if (error) {
-        errorDialog.value = true;
-        return;
-    }
-    customer.value = data;
-    balance.value = (customer.value.credit / 100).toFixed(2)
-})
-const topUp = () => {
+const topUpDialog = () => {
     dialog.value = true;
-}
+};
+const doTopUp = (amount) => {
+    initializeCustomer();
+    topUp(cardID.value, amount);
+};
 const closeError = () => {
     errorDialog.value = false;
     window.location.href = "/";
-}
+};
 </script>
+
 
 <style scoped>
 @font-face {
@@ -89,6 +83,7 @@ const closeError = () => {
 
 .v-card {
     font-family: "DreamingOutloud", Arial, sans-serif;
+    font-size: xx-large;
     background: var(--background-gradient);
     color: black;
     height: 100vh;

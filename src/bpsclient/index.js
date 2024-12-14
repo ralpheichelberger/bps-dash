@@ -18,7 +18,6 @@ import CreditJournal from './model/CreditJournal';
 import Customer from './model/Customer';
 import CustomerBody from './model/CustomerBody';
 import Device from './model/Device';
-import InlineResponse201 from './model/InlineResponse201';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
 import PriceLine from './model/PriceLine';
@@ -26,6 +25,7 @@ import Pump from './model/Pump';
 import PumpRelay from './model/PumpRelay';
 import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
+import TopupCreditBody from './model/TopupCreditBody';
 import WasherStatus from './model/WasherStatus';
 import DefaultApi from './api/DefaultApi';
 
@@ -98,12 +98,6 @@ export {
     Device,
 
     /**
-     * The InlineResponse201 model constructor.
-     * @property {module:model/InlineResponse201}
-     */
-    InlineResponse201,
-
-    /**
      * The ModulDurations model constructor.
      * @property {module:model/ModulDurations}
      */
@@ -144,6 +138,12 @@ export {
      * @property {module:model/Status}
      */
     Status,
+
+    /**
+     * The TopupCreditBody model constructor.
+     * @property {module:model/TopupCreditBody}
+     */
+    TopupCreditBody,
 
     /**
      * The WasherStatus model constructor.

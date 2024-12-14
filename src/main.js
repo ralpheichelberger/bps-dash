@@ -7,13 +7,16 @@ import App from './App.vue';
 import Customer from './components/Customer.vue';
 import PayDevice from './components/PayDevice.vue';
 import Admin from './components/Admin.vue';
+import Home from './Home.vue';
+import Home2 from './Home2.vue';
 
 
 const routes = [
     { path: '/cc', name: 'Customer', component: Customer },
     { path: '/cp', name: 'PayDevice', component: PayDevice },
     { path: '/admin', name: 'Admin', component: Admin },
-    // { path: '/', name: 'Admin', component: Admin },
+    { path: '/', name: 'Home', component: Home },
+    { path: '/manual/all.png', name: 'Home2', component: Home2 },
 ];
 
 const router = createRouter({

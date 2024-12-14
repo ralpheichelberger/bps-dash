@@ -23,6 +23,7 @@ import ModulDurations from './ModulDurations';
 export default class Module {
   /**
    * Constructs a new <code>Module</code>.
+   * is am MQTT enabled module
    * @alias module:model/Module
    * @class
    * @param mac {String} 

@@ -17,8 +17,8 @@ import CreditJournal from '../model/CreditJournal';
 import Customer from '../model/Customer';
 import CustomerBody from '../model/CustomerBody';
 import Device from '../model/Device';
-import InlineResponse201 from '../model/InlineResponse201';
 import Status from '../model/Status';
+import TopupCreditBody from '../model/TopupCreditBody';
 
 /**
 * Default service.
@@ -43,7 +43,7 @@ export default class DefaultApi {
      * Callback function to receive the result of the addCreditJournal operation.
      * @callback moduleapi/DefaultApi~addCreditJournalCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/InlineResponse201{ data The data returned by the service call.
+     * @param {module:model/Status{ data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -77,7 +77,7 @@ export default class DefaultApi {
       let authNames = ['BasicAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = InlineResponse201;
+      let returnType = Status;
 
       return this.apiClient.callApi(
         '/credit_journal', 'POST',
@@ -94,8 +94,8 @@ export default class DefaultApi {
      */
 
     /**
-     * Returns OK
-     * @param {String} name mac address of module
+     * Allows the start of a washer or dryer
+     * @param {String} name The name of the device
      * @param {Number} value value / ms or count
      * @param {module:api/DefaultApi~allowStartCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
@@ -282,51 +282,10 @@ export default class DefaultApi {
       );
     }
     /**
-     * Callback function to receive the result of the getCustomerApp operation.
-     * @callback moduleapi/DefaultApi~getCustomerAppCallback
-     * @param {String} error Error message, if any.
-     * @param {'String'{ data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns default HTML for the root path
-     * @param {module:api/DefaultApi~getCustomerAppCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
-     */
-    getCustomerApp(callback) {
-      
-      let postBody = null;
-
-      let pathParams = {
-        
-      };
-      let queryParams = {
-        
-      };
-      let headerParams = {
-        
-      };
-      let formParams = {
-        
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['text/html'];
-      let returnType = 'String';
-
-      return this.apiClient.callApi(
-        '/cc', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
-    /**
      * Callback function to receive the result of the getDevice operation.
      * @callback moduleapi/DefaultApi~getDeviceCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/Device{ data The data returned by the service call.
+     * @param {module:model/Status{ data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -360,51 +319,10 @@ export default class DefaultApi {
       let authNames = ['BasicAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = Device;
+      let returnType = Status;
 
       return this.apiClient.callApi(
         '/device', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
-    /**
-     * Callback function to receive the result of the getDevicePaymentApp operation.
-     * @callback moduleapi/DefaultApi~getDevicePaymentAppCallback
-     * @param {String} error Error message, if any.
-     * @param {'String'{ data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns default HTML for the root path
-     * @param {module:api/DefaultApi~getDevicePaymentAppCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
-     */
-    getDevicePaymentApp(callback) {
-      
-      let postBody = null;
-
-      let pathParams = {
-        
-      };
-      let queryParams = {
-        
-      };
-      let headerParams = {
-        
-      };
-      let formParams = {
-        
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['text/html'];
-      let returnType = 'String';
-
-      return this.apiClient.callApi(
-        '/cp', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
@@ -453,51 +371,10 @@ export default class DefaultApi {
       );
     }
     /**
-     * Callback function to receive the result of the getRootDefaultHtml operation.
-     * @callback moduleapi/DefaultApi~getRootDefaultHtmlCallback
-     * @param {String} error Error message, if any.
-     * @param {'String'{ data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns default HTML for the root path
-     * @param {module:api/DefaultApi~getRootDefaultHtmlCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
-     */
-    getRootDefaultHtml(callback) {
-      
-      let postBody = null;
-
-      let pathParams = {
-        
-      };
-      let queryParams = {
-        
-      };
-      let headerParams = {
-        
-      };
-      let formParams = {
-        
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['text/html'];
-      let returnType = 'String';
-
-      return this.apiClient.callApi(
-        '/', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
-    /**
      * Callback function to receive the result of the newDevice operation.
      * @callback moduleapi/DefaultApi~newDeviceCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/Device{ data The data returned by the service call.
+     * @param {module:model/Status{ data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -531,7 +408,7 @@ export default class DefaultApi {
       let authNames = ['BasicAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Device;
+      let returnType = Status;
 
       return this.apiClient.callApi(
         '/device', 'POST',
@@ -617,6 +494,52 @@ export default class DefaultApi {
 
       return this.apiClient.callApi(
         '/test', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the topupCredit operation.
+     * @callback moduleapi/DefaultApi~topupCreditCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Adds a credit journal entry and updates the customer&#x27;s credit
+     * @param {module:model/TopupCreditBody} body 
+     * @param {module:api/DefaultApi~topupCreditCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    topupCredit(body, callback) {
+      
+      let postBody = body;
+      // verify the required parameter 'body' is set
+      if (body === undefined || body === null) {
+        throw new Error("Missing the required parameter 'body' when calling topupCredit");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+
+      return this.apiClient.callApi(
+        '/topup_credit', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
