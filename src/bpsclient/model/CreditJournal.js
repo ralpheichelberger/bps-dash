@@ -54,6 +54,8 @@ export default class CreditJournal {
         obj.amount = ApiClient.convertToType(data['amount'], 'Number');
       if (data.hasOwnProperty('bill_nr'))
         obj.billNr = ApiClient.convertToType(data['bill_nr'], 'String');
+      if (data.hasOwnProperty('paypal_details'))
+        obj.paypalDetails = ApiClient.convertToType(data['paypal_details'], Object);
     }
     return obj;
   }
@@ -80,4 +82,10 @@ CreditJournal.prototype.amount = undefined;
  * @member {String} billNr
  */
 CreditJournal.prototype.billNr = undefined;
+
+/**
+ * details from the paypal transaction
+ * @member {Object} paypalDetails
+ */
+CreditJournal.prototype.paypalDetails = undefined;
 

@@ -1,52 +1,49 @@
 <template>
-  <v-card v-if="customer">
+  <v-card v-if="customer" class="bubble_style">
     <v-card-title>
       <v-row style="padding-bottom: 0">
         <v-col>Konto {{ customer.name }} </v-col>
         <v-col></v-col>
-        <v-col>Guthaben EUR {{ balance }}</v-col>
+        <v-col>Guthaben EUR {{ customer.credit }}</v-col>
       </v-row>
       <v-row style="padding-top: 0">
-        <v-col
-          ><small
-            ><small>ID: {{ customer.id }}</small></small
-          ></v-col
-        >
+        <v-col><small><small>ID: {{ customer.id }}</small></small></v-col>
         <v-col></v-col>
         <v-col style="padding-top: 0">
-          <v-btn @click="topUpDialog" size="x-large" elevation="5">Aufladen</v-btn>
+          <v-btn @click="openTopUpDialog" size="x-large" elevation="5">Aufladen</v-btn>
         </v-col>
       </v-row>
     </v-card-title>
     <v-card-text v-if="device">
       <v-row><v-col></v-col></v-row>
-      <v-row
-        ><v-col>{{ device.shop }}</v-col></v-row
-      >
-      <v-row
-        ><v-col>{{ device.type }} {{ device._number }}</v-col></v-row
-      >
-      <v-row
-        ><v-col>EUR {{ cent2euro(device.price) }}</v-col></v-row
-      >
+      <v-row><v-col>{{ device.shop }}</v-col></v-row>
+      <v-row><v-col>{{ device.type }} {{ device._number }}</v-col></v-row>
+      <v-row><v-col>EUR {{ cent2euro(device.price) }}</v-col></v-row>
+      
+
       <v-row justify="center">
         <v-col>
-          <v-btn @click="allowStart">Mit Guthaben zahlen</v-btn>
+          <v-btn  elevation="10" color="blue" height="8rem" width="100%" @click="openPayPalDialog">Mit PayPal zahlen</v-btn>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <PayPalButton
-            :clientId="payPalClientId"
-            :amount="cent2euro(device.price)"
-            :customerId="cardID"
-          />
+          <v-btn elevation="10"  height="8rem" width="100%"
+           @click="allowStart">Mit Guthaben zahlen</v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
         </v-col>
       </v-row>
     </v-card-text>
-    <v-dialog v-model="dialog">
-      <TopUp :visible="dialog" :cardID="cardID" @close="dialog = false" @topup="topUp" />
+    <v-dialog v-model="topUpDialog">
+      <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false"  @top-up="doTopUp" />
     </v-dialog>
+    <v-dialog v-model="payPalDialog">
+      <PayPalPayment :visible="payPalDialog" :customer-id="customer.id" @close="payPalDialog = false" @pay-device="allowStart" />
+    </v-dialog>
+    
   </v-card>
 </template>
 
@@ -54,9 +51,8 @@
 import { ref } from "vue";
 import { useCustomer } from "../composables/useCustomer";
 import * as bps from "../bpsclient";
-import PayPalButton from "./PayPalButton.vue";
-const payPalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-const { cardID, customer, balance, initializeCustomer } = useCustomer();
+import PayPalPayment from "./PayPalPayment.vue";
+const { customer, getCustomer, topUp } = useCustomer();
 
 const deviceID = ref(new URLSearchParams(window.location.search).get("d"));
 const device = ref({
@@ -67,9 +63,10 @@ const device = ref({
   duration: 100,
 });
 
-const dialog = ref(false);
+const topUpDialog = ref(false);
+const payPalDialog = ref(false);
 
-initializeCustomer();
+getCustomer();
 const cent2euro = (val) => (val / 100).toFixed(2);
 
 const allowStart = () => {
@@ -89,49 +86,18 @@ const allowStart = () => {
   );
 };
 
-const topUpDialog = () => {
-  dialog.value = true;
+const openTopUpDialog = () => {
+  topUpDialog.value = true;
 };
-const topUp = (amount) => {
-  console.log("topUp", amount);
-  dialog.value = false;
+const openPayPalDialog = () => {
+  payPalDialog.value = true;
+};
+const doTopUp = (amount, details) => {
+  topUp(customer.value.id, amount, details);
 };
 </script>
 
 <style scoped>
-:root {
-  --background-gradient: linear-gradient(
-    135deg,
-    #ff9a8b,
-    #ff6a88,
-    #ff99ac,
-    #ffd6a5,
-    #c1f7d5,
-    #a2e3f7,
-    #a1c4fd
-  );
-}
-
-.bubble_background {
-  background: var(--background-gradient);
-  color: black;
-  height: 7rem;
-  font-family: "DreamingOutloud", Arial, sans-serif;
-}
-
-@font-face {
-  font-family: "DreamingOutloud";
-  src: url("@/assets/bubblekassa.otf") format("opentype");
-}
-
-.bubble-font {
-  font-family: "DreamingOutloud", Arial, sans-serif;
-}
-
-.v-card {
-  font-family: "DreamingOutloud", Arial, sans-serif;
-  background: var(--background-gradient);
-  color: black;
-  height: 100vh;
+.payWithCredit {
 }
 </style>

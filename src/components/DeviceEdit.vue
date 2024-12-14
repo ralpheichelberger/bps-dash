@@ -1,5 +1,5 @@
 <template>
-	<v-dialog id="washer-edit-dialog" v-model="dialog" max-width="400">
+	<v-dialog id="washer-edit-dialog" v-model="dialog">
 		<v-card v-if="device">
 			<v-card-actions>
 				<v-btn icon="mdi-close" @click="dialog = false"></v-btn>
