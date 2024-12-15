@@ -50,6 +50,8 @@ export default class TopupCreditBody {
         obj.amount = ApiClient.convertToType(data['amount'], 'Number');
       if (data.hasOwnProperty('bill_nr'))
         obj.billNr = ApiClient.convertToType(data['bill_nr'], 'String');
+      if (data.hasOwnProperty('paypal_details'))
+        obj.paypalDetails = ApiClient.convertToType(data['paypal_details'], Object);
     }
     return obj;
   }
@@ -72,4 +74,10 @@ TopupCreditBody.prototype.amount = undefined;
  * @member {String} billNr
  */
 TopupCreditBody.prototype.billNr = undefined;
+
+/**
+ * details from the paypal transaction
+ * @member {Object} paypalDetails
+ */
+TopupCreditBody.prototype.paypalDetails = undefined;
 

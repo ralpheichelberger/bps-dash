@@ -8,7 +8,7 @@
       <v-row style="padding-top: 0">
         <v-col>
           <small><small>ID: {{ customer.id }}</small></small> </v-col><v-col> </v-col><v-col>
-          <v-btn @click="topUpDialog" size="x-large" elevation="5">Aufladen</v-btn>
+          <v-btn @click="dialog = true" size="x-large" elevation="5">Aufladen</v-btn>
         </v-col>
       </v-row>
     </v-card-title>
@@ -29,7 +29,8 @@
     </v-card-actions>
   </v-card>
   <v-dialog v-model="dialog">
-    <TopUp :visible="dialog" :customer-id="customer.id" @close="dialog = false" @top-up="doTopUp" />
+    <TopUp :visible="dialog" :customer-id="customer.id" @close="dialog = false"
+      @top-up="(amount, details) => { topUp(customer.value.id, amount, details) }" />
   </v-dialog>
   <v-dialog v-model="errorDialog" @afterLeave="closeError" class="bubble_style">
     <v-card>
@@ -45,21 +46,15 @@
 
 <script setup>
 import { ref, watch, watchEffect } from "vue";
-import { useCustomer } from "../composables/useCustomer"
+import { useAPI } from "../composables/useAPI.js"
 
-const { customer, getCustomer, topUp } = useCustomer()
+const { customer, getCustomer, topUp } = useAPI()
 
 const dialog = ref(false)
 const errorDialog = ref(false)
-const noCustomer = ref(true)
+
 getCustomer()
 
-const topUpDialog = () => {
-  dialog.value = true
-}
-const doTopUp = (amount, details) => {
-  topUp(customer.value.id, amount, details)
-}
 const closeError = () => {
   errorDialog.value = false
   window.location.href = "/"

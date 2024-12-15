@@ -17,6 +17,9 @@ import CreditJournal from '../model/CreditJournal';
 import Customer from '../model/Customer';
 import CustomerBody from '../model/CustomerBody';
 import Device from '../model/Device';
+import DeviceInfo from '../model/DeviceInfo';
+import Location from '../model/Location';
+import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
 import TopupCreditBody from '../model/TopupCreditBody';
 
@@ -291,23 +294,23 @@ export default class DefaultApi {
 
     /**
      * Returns a device
-     * @param {String} alias The alias that describes the specific module ShopId+moduleId
+     * @param {String} name The name that describes the specific module &#x3D; Country+ShopId+moduleId
      * @param {module:api/DefaultApi~getDeviceCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
      */
-    getDevice(alias, callback) {
+    getDevice(name, callback) {
       
       let postBody = null;
-      // verify the required parameter 'alias' is set
-      if (alias === undefined || alias === null) {
-        throw new Error("Missing the required parameter 'alias' when calling getDevice");
+      // verify the required parameter 'name' is set
+      if (name === undefined || name === null) {
+        throw new Error("Missing the required parameter 'name' when calling getDevice");
       }
 
       let pathParams = {
         
       };
       let queryParams = {
-        'alias': alias
+        'name': name
       };
       let headerParams = {
         
@@ -323,6 +326,52 @@ export default class DefaultApi {
 
       return this.apiClient.callApi(
         '/device', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the getDeviceInfo operation.
+     * @callback moduleapi/DefaultApi~getDeviceInfoCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/DeviceInfo{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a device information
+     * @param {String} name The name that identifies the device
+     * @param {module:api/DefaultApi~getDeviceInfoCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getDeviceInfo(name, callback) {
+      
+      let postBody = null;
+      // verify the required parameter 'name' is set
+      if (name === undefined || name === null) {
+        throw new Error("Missing the required parameter 'name' when calling getDeviceInfo");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        'name': name
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = DeviceInfo;
+
+      return this.apiClient.callApi(
+        '/device_info', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
@@ -371,6 +420,180 @@ export default class DefaultApi {
       );
     }
     /**
+     * Callback function to receive the result of the getLocation operation.
+     * @callback moduleapi/DefaultApi~getLocationCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Location{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a location
+     * @param {String} id the unique location ID
+     * @param {module:api/DefaultApi~getLocationCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getLocation(id, callback) {
+      
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getLocation");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Location;
+
+      return this.apiClient.callApi(
+        '/location', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the getLocations operation.
+     * @callback moduleapi/DefaultApi~getLocationsCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/Location>{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns list of locations
+     * @param {module:api/DefaultApi~getLocationsCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getLocations(callback) {
+      
+      let postBody = null;
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [Location];
+
+      return this.apiClient.callApi(
+        '/locations', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the getPriceLine operation.
+     * @callback moduleapi/DefaultApi~getPriceLineCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/PriceLine{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a price line
+     * @param {String} id the unique price line ID
+     * @param {module:api/DefaultApi~getPriceLineCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getPriceLine(id, callback) {
+      
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getPriceLine");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = PriceLine;
+
+      return this.apiClient.callApi(
+        '/price_line', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the getPriceLines operation.
+     * @callback moduleapi/DefaultApi~getPriceLinesCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/PriceLine>{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns list of price lines
+     * @param {module:api/DefaultApi~getPriceLinesCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getPriceLines(callback) {
+      
+      let postBody = null;
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [PriceLine];
+
+      return this.apiClient.callApi(
+        '/price_lines', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
      * Callback function to receive the result of the newDevice operation.
      * @callback moduleapi/DefaultApi~newDeviceCallback
      * @param {String} error Error message, if any.
@@ -412,6 +635,98 @@ export default class DefaultApi {
 
       return this.apiClient.callApi(
         '/device', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the newLocation operation.
+     * @callback moduleapi/DefaultApi~newLocationCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Creates a new location
+     * @param {module:model/Location} body The location object to be created
+     * @param {module:api/DefaultApi~newLocationCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    newLocation(body, callback) {
+      
+      let postBody = body;
+      // verify the required parameter 'body' is set
+      if (body === undefined || body === null) {
+        throw new Error("Missing the required parameter 'body' when calling newLocation");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+
+      return this.apiClient.callApi(
+        '/location', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the newPriceLine operation.
+     * @callback moduleapi/DefaultApi~newPriceLineCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Creates a new price line
+     * @param {module:model/PriceLine} body The price line object to be created
+     * @param {module:api/DefaultApi~newPriceLineCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    newPriceLine(body, callback) {
+      
+      let postBody = body;
+      // verify the required parameter 'body' is set
+      if (body === undefined || body === null) {
+        throw new Error("Missing the required parameter 'body' when calling newPriceLine");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+
+      return this.apiClient.callApi(
+        '/price_line', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );

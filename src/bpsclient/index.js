@@ -18,6 +18,8 @@ import CreditJournal from './model/CreditJournal';
 import Customer from './model/Customer';
 import CustomerBody from './model/CustomerBody';
 import Device from './model/Device';
+import DeviceInfo from './model/DeviceInfo';
+import Location from './model/Location';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
 import PriceLine from './model/PriceLine';
@@ -96,6 +98,18 @@ export {
      * @property {module:model/Device}
      */
     Device,
+
+    /**
+     * The DeviceInfo model constructor.
+     * @property {module:model/DeviceInfo}
+     */
+    DeviceInfo,
+
+    /**
+     * The Location model constructor.
+     * @property {module:model/Location}
+     */
+    Location,
 
     /**
      * The ModulDurations model constructor.

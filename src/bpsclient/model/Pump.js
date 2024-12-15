@@ -24,7 +24,7 @@ export default class Pump {
    * Constructs a new <code>Pump</code>.
    * @alias module:model/Pump
    * @class
-   * @param id {String} id of the pump relay
+   * @param id {Number} id of the pump relay
    * @param nr {Number} number of the pump on the pump relay
    * @param timestamp {Number} last started (will be timely restricted)
    * @param count {Number} count will be restricted in times started)
@@ -47,7 +47,7 @@ export default class Pump {
     if (data) {
       obj = obj || new Pump();
       if (data.hasOwnProperty('id'))
-        obj.id = ApiClient.convertToType(data['id'], 'String');
+        obj.id = ApiClient.convertToType(data['id'], 'Number');
       if (data.hasOwnProperty('nr'))
         obj.nr = ApiClient.convertToType(data['nr'], 'Number');
       if (data.hasOwnProperty('timestamp'))
@@ -61,7 +61,7 @@ export default class Pump {
 
 /**
  * id of the pump relay
- * @member {String} id
+ * @member {Number} id
  */
 Pump.prototype.id = undefined;
 

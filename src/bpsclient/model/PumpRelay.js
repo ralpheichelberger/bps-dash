@@ -27,12 +27,14 @@ export default class PumpRelay {
    * is a module with an array of pump relays
    * @alias module:model/PumpRelay
    * @class
-   * @param id {String} 
+   * @param id {Number} 
+   * @param location {String} 
    * @param module {module:model/Module} 
    * @param status {module:model/PumpRelayStatus} 
    */
-  constructor(id, module, status) {
+  constructor(id, location, module, status) {
     this.id = id;
+    this.location = location;
     this.module = module;
     this.status = status;
   }
@@ -48,7 +50,9 @@ export default class PumpRelay {
     if (data) {
       obj = obj || new PumpRelay();
       if (data.hasOwnProperty('id'))
-        obj.id = ApiClient.convertToType(data['id'], 'String');
+        obj.id = ApiClient.convertToType(data['id'], 'Number');
+      if (data.hasOwnProperty('location'))
+        obj.location = ApiClient.convertToType(data['location'], 'String');
       if (data.hasOwnProperty('module'))
         obj.module = Module.constructFromObject(data['module']);
       if (data.hasOwnProperty('status'))
@@ -59,9 +63,14 @@ export default class PumpRelay {
 }
 
 /**
- * @member {String} id
+ * @member {Number} id
  */
 PumpRelay.prototype.id = undefined;
+
+/**
+ * @member {String} location
+ */
+PumpRelay.prototype.location = undefined;
 
 /**
  * @member {module:model/Module} module
