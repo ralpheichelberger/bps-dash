@@ -22,6 +22,8 @@ import DeviceInfo from './model/DeviceInfo';
 import Location from './model/Location';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
+import Payment from './model/Payment';
+import PaymentBody from './model/PaymentBody';
 import PriceLine from './model/PriceLine';
 import Pump from './model/Pump';
 import PumpRelay from './model/PumpRelay';
@@ -122,6 +124,18 @@ export {
      * @property {module:model/Module}
      */
     Module,
+
+    /**
+     * The Payment model constructor.
+     * @property {module:model/Payment}
+     */
+    Payment,
+
+    /**
+     * The PaymentBody model constructor.
+     * @property {module:model/PaymentBody}
+     */
+    PaymentBody,
 
     /**
      * The PriceLine model constructor.

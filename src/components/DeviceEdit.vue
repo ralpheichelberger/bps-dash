@@ -18,12 +18,12 @@
 			<v-card-text v-if="device.type">
 				<v-row dense>
 					<v-col cols="12" class="d-flex align-center">
-						<v-combobox id="location" v-model="device.location" label="Location" required :items="locations"
-						</v-combobox>
+						<v-select v-if="locationItems" id="location" v-model="device.location" label="Location" required
+							:items="locationItems" @update:modelValue="fetchLocationDevices" </v-select>
 					</v-col>
 					<v-col cols="12">
 						<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="disabled"
-							label="Device Nummer" required :rules="[deviceNumberRule]">
+							label="Device Nummer" required>
 						</v-text-field>
 					</v-col>
 				</v-row>
@@ -32,7 +32,11 @@
 						<v-text-field id="mac" v-model="device.module.mac" :disabled="disabled" label="MAC" required
 							hide-details></v-text-field>
 					</v-col>
-					<v-col cols="12">
+					<v-col v-if="device.type != 'pump' && priceLines" cols="12">
+						<v-select id="price" v-model="device.priceLine" :disabled="disabled" label="Price line" required
+							hide-details :items="priceLinesItems"></v-select>
+					</v-col>
+					<v-col v-if="device.type != 'pump'" cols="12">
 						<v-text-field id="relayduration" type="number" v-model.number="device.module.relayDuration.self"
 							:disabled="disabled" label="Relay Duration Self" required hide-details></v-text-field>
 					</v-col>
@@ -42,10 +46,9 @@
 
 					<v-row dense>
 						<v-col cols="12">
-							<v-text-field id="detergentname" v-model="device.detergent.id" :disabled="disabled"
-								label="Modul name" required hide-details
-								@input="device.detergent.id = $event.target.value.toUpperCase()">
-							</v-text-field>
+							<v-select id="detergentname" v-model.number="device.detergent.id" :disabled="disabled"
+								label="Modul name" required hide-details :items="getAvaiablePumpRelays">
+							</v-select>
 						</v-col>
 						<v-col cols="12">
 							<v-text-field id="detergentnr" type="number" v-model.number="device.detergent.nr"
@@ -61,12 +64,11 @@
 					<v-card-title>Softener</v-card-title>
 					<v-row dense>
 						<v-col cols="12">
-							<v-text-field id="softenername" v-model="device.softener.id" :disabled="disabled"
-								label="Modul name" required hide-details
-								@input="device.softener.id = $event.target.value.toUpperCase()">
-							</v-text-field>
+							<v-select id="softenername" v-model.number="device.softener.id" :disabled="disabled"
+								label="Modul name" required hide-details :items="getAvaiablePumpRelays">
+							</v-select>
 						</v-col>
-						<v-col cols="12">
+						<v-col cols=" 12">
 							<v-text-field id="softenernr" type="number" v-model.number="device.softener.nr"
 								:disabled="disabled" label="Softener Relay Number" required hide-details></v-text-field>
 						</v-col>
@@ -87,39 +89,87 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import * as bps from '../bpsclient';
 import type { Device } from '../bpsclient'
+import { useDevices } from '@/composables/useDevices';
+import { useAPI } from '@/composables/useAPI';
+const { priceLines, getPriceLines } = useAPI()
+const { devices, getDevices } = useDevices()
+getPriceLines()
 const dialog = defineModel<boolean>('dialog', { required: true })
 const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
 const props = defineProps<{
 	device: Device;
-	locations: string[];
+	locations: bps.Location[];
 	deviceTypes: string[];
 	editing: boolean;
+	update: boolean;
 	emit: (event: "delete-device", ...args: any[]) => void;
 }>()
-
+const locationItems = ref([])
+props.locations.forEach(element => {
+	locationItems.value.push({
+		title: element.id,
+		props: { subtitle: element.address },
+	})
+});
 const disabled = ref(true)
 const update_disabled = () => {
 	disabled.value = props.device.location ? false : true
 }
 watch(() => props.device?.location, update_disabled)
 const deviceNumberRule = (value) => {
-	return value == 10 ? true : "not available"
+	// FIXME: check if device number available
+	return true
 }
 const saveChanges = () => {
 	var api = new bps.DefaultApi(new bps.ApiClient());
-	api.newDevice(props.device, (error, data, response) => {
-		if (error) {
-			snackbar.value.text = response?.body?.message || 'An error occurred while saving the device'
-			snackbar.value.color = 'error'
-			snackbar.value.show = true
-		} else {
-			snackbar.value.text = `Device ${props.device.id} for location ${props.device.location} saved`
-			snackbar.value.color = 'success'
-			snackbar.value.show = true
-		}
-	});
+	if (props.update) {
+		api.updateDevice(props.device, (error, data, response) => {
+			if (error) {
+				snackbar.value.text = response?.body?.message || 'An error occurred while saving the device'
+				snackbar.value.color = 'error'
+				snackbar.value.show = true
+			} else {
+				snackbar.value.text = `Device ${props.device.id} for location ${props.device.location} saved`
+				snackbar.value.color = 'success'
+				snackbar.value.show = true
+			}
+		});
+	} else {
+		api.newDevice(props.device, (error, data, response) => {
+			if (error) {
+				snackbar.value.text = response?.body?.message || 'An error occurred while saving the device'
+				snackbar.value.color = 'error'
+				snackbar.value.show = true
+			} else {
+				snackbar.value.text = `Device ${props.device.id} for location ${props.device.location} saved`
+				snackbar.value.color = 'success'
+				snackbar.value.show = true
+			}
+		});
+	}
 }
+
+const fetchLocationDevices = () => {
+	getDevices(props.device.location)
+}
+const getAvaiablePumpRelays = computed(() => {
+	if (!devices.value) return []
+	return devices.value.filter(device => device.type === 'pump').map(device => device.id)
+})
+const priceLinesItems = ref([])
+
+watch(priceLines, (priceLines) => {
+	priceLinesItems.value = priceLines.map((item) => {
+		return {
+			title: item.id,
+			props: {
+				subtitle: item.price
+			},
+		}
+	})
+})
+
 </script>

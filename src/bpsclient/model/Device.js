@@ -63,8 +63,8 @@ export default class Device {
         obj.type = ApiClient.convertToType(data['type'], 'String');
       if (data.hasOwnProperty('location'))
         obj.location = ApiClient.convertToType(data['location'], 'String');
-      if (data.hasOwnProperty('price_line'))
-        obj.priceLine = ApiClient.convertToType(data['price_line'], 'String');
+      if (data.hasOwnProperty('priceLine'))
+        obj.priceLine = ApiClient.convertToType(data['priceLine'], 'String');
       if (data.hasOwnProperty('module'))
         obj.module = Module.constructFromObject(data['module']);
       if (data.hasOwnProperty('detergent'))

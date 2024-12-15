@@ -1,93 +1,96 @@
 <template>
-  <v-app-bar :elevation="2">
-    <template v-slot:prepend>
-    </template>
+  <v-card>
+    <v-card-title :elevation="2">
+      <v-sheet class="d-flex justify-space-between">
+        <v-app-bar-title>Geräte</v-app-bar-title>
+        <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
+        @update:modelValue="getDevices(loc)" </v-select>
+          <v-btn @click="newDevice" elevation="5">Neu</v-btn>
+      </v-sheet>
+    </v-card-title>
+    <v-card-text>
+      <v-table>
+        <thead>
+          <tr>
+            <th class="text-left">
+              Name
+            </th>
+            <th class="text-left">
+              Typ
+            </th>
+            <th class="text-left">
+              Nr
+            </th>
+            <th class="text-left">
+              Preiskat.
+            </th>
+            <th class="text-left">
+              Modul MAC
+            </th>
+            <th class="text-left">
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in devices" :key="item.id" @click="device = item; deviceEdit = true; updateDevice = true">
+            <td>{{ deviceName(item) }}</td>
+            <td>{{ item.type }}</td>
+            <td>{{ item.id }}</td>
+            <td>{{ item.priceLine }}</td>
+            <td>{{ item.module.mac }}</td>
+            <td>todo</td>
+          </tr>
+        </tbody>
+      </v-table>
+    </v-card-text>
 
-    <v-app-bar-title>Geräte</v-app-bar-title>
-    <v-btn @click="newDevice" elevation="5">Neu</v-btn>
-  </v-app-bar>
-  <v-container class="sticky-filters">
-    <!-- <v-row no-gutters>
-      <v-col order="first">
-        <v-select v-model="shop" label="Shop" :items="locations" variant="underlined"
-          @update:modelValue="fetchDevices"></v-select>
-      </v-col>
-    </v-row>
-    <v-radio-group v-model="typeOption" inline>
-      <v-radio :value="type" v-for="type in deviceTypes" :label="type"></v-radio>
-    </v-radio-group> -->
-  </v-container>
-  <v-container class="devices-list">
-    <Device v-for="device in filterDevicesByType()" :device="device" @delete-device="deleteDevice(device.alias)" />
-  </v-container>
-  <v-container>
-    <WasherEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" :editing="true" :emit="$emit"
-      v-model:dialog="deviceEdit" />
-  </v-container>
+    <v-container v-if="locations">
+      <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" :editing="true" :emit="$emit" :update="updateDevice"
+        v-model:dialog="deviceEdit" />
+    </v-container>
+  </v-card>
 </template>
-<style scoped>
-.sticky-filters {
-  position: sticky;
-  top: 64px;
-  /* Height of the v-app-bar */
-  z-index: 1;
-  background-color: black;
-  /* Match with your app's background */
-  padding: 16px 0;
-}
 
-.devices-list {
-  padding-bottom: 56px;
-  padding-bottom: 60px;
-}
-</style>
 <script setup>
-import * as bps from '../bpsclient';
-
-import { ref, watch } from 'vue'
-import Device from './Device.vue'
-import WasherEdit from './DeviceEdit.vue'
-
-var client = new bps.ApiClient();
-var api = new bps.DefaultApi(client);
-var shop = ref('')
-var devices = ref([])
+import { ref, watch, computed } from 'vue'
+import DeviceEdit from './DeviceEdit.vue'
+import { useAPI } from '@/composables/useAPI';
+import { useDevices } from '@/composables/useDevices';
+const { devices, getDevices } = useDevices()
+const { locations, getLocations } = useAPI()
+const loc = ref(null)
+var deviceTypes = ref(['washer', 'dryer', 'pump']) // deliberately hard-coded
 var device = ref()
-var locations = ref(['AH','BX','FW','MW'])
-var deviceTypes = ref(['washer', 'dryer', 'pump'])
-var typeOption = ref('washer')
 const deviceEdit = ref(false)
-const fetchDevices = (all) => {
-  var callback = function (error, data, response) {
-    if (error) {
-      console.error(error);
-    } else {
-      devices.value = data;
-      // deviceTypes.value = [...new Set(devices.value.map(device => device.type))];
-      // deviceTypes.value.sort()
-      // if (all == "all") {
-      //   locations.value = [...new Set(devices.value.map(device => device.location))];
-      //   locations.value.sort()
-      //   devices.value = []
-      // }
+const updateDevice = ref(false)
+const locationItems = ref([])
+const deviceName = (item) => {return item?.location + item?.type.charAt(0).toUpperCase() + item?.id}
+watch(locations, (locations) => {
+  locationItems.value = locations.map((item) => {
+    return {
+      title: item.id,
+      props: {
+        subtitle: item.address
+      },
     }
-  };
-  var opts = Object();
-  opts.location = ""
-  api.getDevices(opts, callback);
-}
-const filterDevicesByType = () => {
-  return devices.value //.filter(device => true) //device.type === typeOption.value);
-}
+  })
+})
+
+
+
+getLocations()
+
+
 const deleteDevice = (devicealias) => {
   alert("device " + devicealias + " deleted! (not really)")
 }
-fetchDevices('all')
+
 const newDevice = () => {
   device.value = {
     type: "",
     id: "",
-    priceLine: "",
+    price_line: "",
     module: {
       mac: "",
       binaryType: "",
@@ -100,13 +103,13 @@ const newDevice = () => {
       },
     },
     detergent: {
-      id: "",
+      id: 0,
       nr: 0,
       timestamp: 0,
       count: 0,
     },
     softener: {
-      id: "",
+      id: 0,
       nr: 0,
       timestamp: 0,
       count: 0,

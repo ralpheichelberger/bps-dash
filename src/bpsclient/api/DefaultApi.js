@@ -19,6 +19,8 @@ import CustomerBody from '../model/CustomerBody';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
 import Location from '../model/Location';
+import Payment from '../model/Payment';
+import PaymentBody from '../model/PaymentBody';
 import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
 import TopupCreditBody from '../model/TopupCreditBody';
@@ -507,6 +509,57 @@ export default class DefaultApi {
       );
     }
     /**
+     * Callback function to receive the result of the getPayments operation.
+     * @callback moduleapi/DefaultApi~getPaymentsCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/Payment>{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a list of payments
+     * @param {Number} from UTC timestamp start from
+     * @param {Number} to UTC timestamp end at
+     * @param {module:api/DefaultApi~getPaymentsCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    getPayments(from, to, callback) {
+      
+      let postBody = null;
+      // verify the required parameter 'from' is set
+      if (from === undefined || from === null) {
+        throw new Error("Missing the required parameter 'from' when calling getPayments");
+      }
+      // verify the required parameter 'to' is set
+      if (to === undefined || to === null) {
+        throw new Error("Missing the required parameter 'to' when calling getPayments");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        'from': from,'to': to
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [Payment];
+
+      return this.apiClient.callApi(
+        '/payments', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
      * Callback function to receive the result of the getPriceLine operation.
      * @callback moduleapi/DefaultApi~getPriceLineCallback
      * @param {String} error Error message, if any.
@@ -727,6 +780,52 @@ export default class DefaultApi {
 
       return this.apiClient.callApi(
         '/price_line', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    /**
+     * Callback function to receive the result of the payment operation.
+     * @callback moduleapi/DefaultApi~paymentCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status{ data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Adds a credit journal entry and updates the customer&#x27;s credit
+     * @param {module:model/PaymentBody} body 
+     * @param {module:api/DefaultApi~paymentCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link <&vendorExtensions.x-jsdoc-type>}
+     */
+    payment(body, callback) {
+      
+      let postBody = body;
+      // verify the required parameter 'body' is set
+      if (body === undefined || body === null) {
+        throw new Error("Missing the required parameter 'body' when calling payment");
+      }
+
+      let pathParams = {
+        
+      };
+      let queryParams = {
+        
+      };
+      let headerParams = {
+        
+      };
+      let formParams = {
+        
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+
+      return this.apiClient.callApi(
+        '/payment', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );

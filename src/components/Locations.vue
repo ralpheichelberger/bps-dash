@@ -1,9 +1,11 @@
 <template>
-    <v-app-bar :elevation="2">
-    <v-app-bar-title>Shops</v-app-bar-title>
-    <v-btn @click="newLocation" elevation="5">Neu</v-btn>
-  </v-app-bar>
   <v-card>
+    <v-card-title :elevation="2">
+      <v-sheet class="d-flex justify-space-between">
+        <v-app-bar-title>Shop Locations</v-app-bar-title>
+        <v-btn @click="newLocation" elevation="5">Neu</v-btn>
+      </v-sheet>
+    </v-card-title>
     <v-card-text>
       <v-table>
         <thead>

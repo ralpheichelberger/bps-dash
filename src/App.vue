@@ -27,13 +27,16 @@ export default {
 :root {
     --background-gradient: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
     /* Pastel gradient */
+    --v-theme-on-surface-variant: #FF6A88;
 }
-
+    
 @font-face {
     font-family: "DreamingOutloud";
     src: url("@/assets/bubblekassa.otf") format("opentype");
 }
-
+.v-carousel__controls {
+    color: rgb(0, 255, 42) !important;
+}
 .v-dialog.bubble_style {
     /* max-width: 600px;     */
     background: var(--background-gradient);
@@ -54,12 +57,7 @@ span.action{
     background: var(--background-gradient);
     justify-content: center;
     align-self: center;
+    font-size: large;
 }
-/* .v-sheet.bubble_style {
-    max-width: 600px;
-    height: 100vh;
-    background: var(--background-gradient);
-    justify-content: center;
-    align-self: center;
-} */
+
 </style>
