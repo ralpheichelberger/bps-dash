@@ -25,11 +25,11 @@
       <v-divider :thickness="3"></v-divider>
     </v-card-text>
 
-    <v-card-text>
+    <v-card-text v-if="deviceInfo">
       <v-row>
         <v-col>
-          <PayPalButton :amount="cent2euro(deviceInfo.price).toString()" :customer-id="customer.id"
-        @transactionApproved="payDeviceAndAllowStart" />
+          <PayPalButton :amount="paymentAmount" :customer-id="customer.id"
+            @transactionApproved="payDeviceAndAllowStart" />
         </v-col>
       </v-row>
       <v-row>
@@ -45,37 +45,61 @@
     </v-card-text>
     <v-dialog v-model="topUpDialog">
       <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false"
-        @top-up="(amount, details) => { topUp(customer.value.id, amount, details) }" />
+        @top-up="(topAmount, details) => { topUp(customer.value.id, topAmount, details) }" />
     </v-dialog>
     <v-dialog v-model="payPalDialog">
 
     </v-dialog>
 
+    <v-sheet v-if="!deviceInfo">
+      <v-card-title style="font-size: 5rem">Sorry :(</v-card-title>
+      <v-card-text style="font-size: x-large;">Dieses Gerät ist leider nicht registriert. <br />
+        Bitte wenden Sie sich an unseren Kundenservice! </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem" @click="closeError">Schließen</v-btn>
+      </v-card-actions>
+    </v-sheet>
+
+
   </v-card>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { useAPI } from "../composables/useAPI";
-import PayPalPayment from "./PayPalPayment.vue";
 
 const { customer, getCustomer, topUp, deviceInfo, getDeviceInfo, allowStart, payment, cent2euro } = useAPI();
 
 const topUpDialog = ref(false);
 const payPalDialog = ref(false);
+const errorDialog = ref(false);
 
 getCustomer();
-getDeviceInfo(new URLSearchParams(window.location.search).get("d"));
+
+console.log(getDeviceInfo(new URLSearchParams(window.location.search).get("d")));
+
+const closeError = () => {
+  errorDialog.value = false
+  window.location.href = "/"
+}
 const deviceName = () => {
-  switch (deviceInfo.value.name.substring(4, 5)) {
-    case "W":
-      return "Waschmaschine Nr. " + deviceInfo.value.name.substring(5);
-    case "D":
-      return "Trockner Nr. " + deviceInfo.value.name.substring(5);
-    default:
-      return deviceInfo.value.name;
+  if (deviceInfo.value) {
+    switch (deviceInfo.value.name.substring(4, 5)) {
+      case "W":
+        return "Waschmaschine Nr. " + deviceInfo.value.name.substring(5);
+      case "D":
+        return "Trockner Nr. " + deviceInfo.value.name.substring(5);
+      default:
+        return deviceInfo.value.name;
+    }
   }
 };
+const paymentAmount = computed(() => {
+  if (deviceInfo.value) {
+    return cent2euro(deviceInfo.value.price).toString()
+  }
+}); // in cents
 const payDeviceAndAllowStart = (details) => {
   payment(customer.id, deviceInfo.value.name, deviceInfo.value.preis, details);
   allowStart(deviceInfo.value.name, deviceInfo.value.duration);

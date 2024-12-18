@@ -68,17 +68,16 @@ export function useAPI() {
     // Authenticate once
     await authenticateClient();
 
-    // Fetch customer data
+    // Fetch device info data
     if (!cardID.value) {
-      console.error("No card ID set");
-      return null;
+      return "No card ID set"
     }
     api.getDeviceInfo(deviceId, (error, data) => {
       if (error) {
-        console.error("Error fetching customer", error);
-        return null;
+        return "Error fetching device info: "+error
       }
       deviceInfo.value = data;
+      return "";
     });
   };
 

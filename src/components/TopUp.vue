@@ -16,12 +16,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn width="100%" @click="topUpCustomer">Fake Pay</v-btn>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <PayPalButton :amount="amount.toString()" :customer-id="customerId"
+                    <PayPalButton2 :amount="amount.toString()" :customer-id="customerId"
                         @transactionApproved="topUpCustomer" @transactionCanncelled="showCustomerCancelled" 
                         @transactionError="showError"
                         />
@@ -32,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue"
+import { ref } from "vue"
 const payPalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID
 const props = defineProps({
     customerId: {

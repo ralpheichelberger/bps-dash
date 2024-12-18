@@ -32,16 +32,7 @@
     <TopUp :visible="dialog" :customer-id="customer.id" @close="dialog = false"
       @top-up="(amount, details) => { topUp(customer.value.id, amount, details) }" />
   </v-dialog>
-  <v-dialog v-model="errorDialog" @afterLeave="closeError" class="bubble_style">
-    <v-card>
-      <v-card-title style="font-size: 5rem">Sorry :(</v-card-title>
-      <v-card-text>Diese Bubble Card ist leider nicht registriert. <br />
-        Bitte wenden Sie sich an unseren Kundenservice!</v-card-text>
-      <v-card-actions>
-        <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem" @click="closeError">Schließen</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+
 </template>
 
 <script setup>
@@ -51,12 +42,5 @@ import { useAPI } from "../composables/useAPI.js"
 const { customer, getCustomer, topUp } = useAPI()
 
 const dialog = ref(false)
-const errorDialog = ref(false)
-
 getCustomer()
-
-const closeError = () => {
-  errorDialog.value = false
-  window.location.href = "/"
-}
 </script>
