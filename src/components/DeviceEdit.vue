@@ -19,7 +19,7 @@
 				<v-row dense>
 					<v-col cols="12" class="d-flex align-center">
 						<v-select v-if="locationItems" id="location" v-model="device.location" label="Location" required
-							:items="locationItems" @update:modelValue="fetchLocationDevices" </v-select>
+							:items="locationItems" @update:modelValue="fetchLocationDevices"></v-select>
 					</v-col>
 					<v-col cols="12">
 						<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="disabled"
