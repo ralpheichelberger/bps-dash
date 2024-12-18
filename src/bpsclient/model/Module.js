@@ -58,8 +58,8 @@ export default class Module {
         obj.lastSeen = ApiClient.convertToType(data['last_seen'], 'Number');
       if (data.hasOwnProperty('last_ping'))
         obj.lastPing = ApiClient.convertToType(data['last_ping'], 'Number');
-      if (data.hasOwnProperty('relay_duration'))
-        obj.relayDuration = ModulDurations.constructFromObject(data['relay_duration']);
+      if (data.hasOwnProperty('relayDuration'))
+        obj.relayDuration = ModulDurations.constructFromObject(data['relayDuration']);
     }
     return obj;
   }
