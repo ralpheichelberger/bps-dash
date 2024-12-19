@@ -14,22 +14,22 @@
 import ApiClient from '../BpsApiClient';
 
 /**
- * The Payment model module.
- * @module model/Payment
+ * The PaymentRequest model module.
+ * @module model/PaymentRequest
  * @version 0.1.0
  */
-class Payment {
+class PaymentRequest {
     /**
-     * Constructs a new <code>Payment</code>.
-     * @alias module:model/Payment
-     * @param billNr {String} 
-     * @param machineName {String} 
-     * @param cardId {String} 
-     * @param amount {Number} amount in cent; negative deducts from credit; positive adds to credit
+     * Constructs a new <code>PaymentRequest</code>.
+     * @alias module:model/PaymentRequest
+     * @param billNr {String} The bill number associated with the payment
+     * @param machineName {String} The name of the machine
+     * @param cardId {String} The unique 9 characters card ID
+     * @param amount {Number} The amount to be deducted from the credit in euro cents
      */
     constructor(billNr, machineName, cardId, amount) { 
         
-        Payment.initialize(this, billNr, machineName, cardId, amount);
+        PaymentRequest.initialize(this, billNr, machineName, cardId, amount);
     }
 
     /**
@@ -45,15 +45,15 @@ class Payment {
     }
 
     /**
-     * Constructs a <code>Payment</code> from a plain JavaScript object, optionally creating a new instance.
+     * Constructs a <code>PaymentRequest</code> from a plain JavaScript object, optionally creating a new instance.
      * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @param {module:model/Payment} obj Optional instance to populate.
-     * @return {module:model/Payment} The populated <code>Payment</code> instance.
+     * @param {module:model/PaymentRequest} obj Optional instance to populate.
+     * @return {module:model/PaymentRequest} The populated <code>PaymentRequest</code> instance.
      */
     static constructFromObject(data, obj) {
         if (data) {
-            obj = obj || new Payment();
+            obj = obj || new PaymentRequest();
 
             if (data.hasOwnProperty('bill_nr')) {
                 obj['bill_nr'] = ApiClient.convertToType(data['bill_nr'], 'String');
@@ -67,18 +67,21 @@ class Payment {
             if (data.hasOwnProperty('amount')) {
                 obj['amount'] = ApiClient.convertToType(data['amount'], 'Number');
             }
+            if (data.hasOwnProperty('paypal_details')) {
+                obj['paypal_details'] = ApiClient.convertToType(data['paypal_details'], Object);
+            }
         }
         return obj;
     }
 
     /**
-     * Validates the JSON data with respect to <code>Payment</code>.
+     * Validates the JSON data with respect to <code>PaymentRequest</code>.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>Payment</code>.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>PaymentRequest</code>.
      */
     static validateJSON(data) {
         // check to make sure all required properties are present in the JSON string
-        for (const property of Payment.RequiredProperties) {
+        for (const property of PaymentRequest.RequiredProperties) {
             if (!data.hasOwnProperty(property)) {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
@@ -102,33 +105,42 @@ class Payment {
 
 }
 
-Payment.RequiredProperties = ["bill_nr", "machine_name", "card_id", "amount"];
+PaymentRequest.RequiredProperties = ["bill_nr", "machine_name", "card_id", "amount"];
 
 /**
+ * The bill number associated with the payment
  * @member {String} bill_nr
  */
-Payment.prototype['bill_nr'] = undefined;
+PaymentRequest.prototype['bill_nr'] = undefined;
 
 /**
+ * The name of the machine
  * @member {String} machine_name
  */
-Payment.prototype['machine_name'] = undefined;
+PaymentRequest.prototype['machine_name'] = undefined;
 
 /**
+ * The unique 9 characters card ID
  * @member {String} card_id
  */
-Payment.prototype['card_id'] = undefined;
+PaymentRequest.prototype['card_id'] = undefined;
 
 /**
- * amount in cent; negative deducts from credit; positive adds to credit
+ * The amount to be deducted from the credit in euro cents
  * @member {Number} amount
  */
-Payment.prototype['amount'] = undefined;
+PaymentRequest.prototype['amount'] = undefined;
+
+/**
+ * details from the paypal transaction
+ * @member {Object} paypal_details
+ */
+PaymentRequest.prototype['paypal_details'] = undefined;
 
 
 
 
 
 
-export default Payment;
+export default PaymentRequest;
 

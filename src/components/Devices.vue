@@ -33,7 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in devices" :key="item.id" @click="device = item; deviceEdit = true; updateDevice = true">
+          <tr v-for="item in devices" :key="item.id" @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
             <td>{{ deviceName(item) }}</td>
             <td>{{ item.type }}</td>
             <td>{{ item.id }}</td>
@@ -46,7 +46,7 @@
     </v-card-text>
 
     <v-container v-if="locations">
-      <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" :editing="true" :emit="$emit" :update="updateDevice"
+      <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" :editing="true" :update="updateDevice" @reload="getDevices(loc)"
         v-model:dialog="deviceEdit" />
     </v-container>
   </v-card>
@@ -91,12 +91,13 @@ const newDevice = () => {
     type: "",
     id: "",
     price_line: "",
+    location: loc,
     module: {
       mac: "",
       binaryType: "",
       lastSeen: 0,
       lastPing: 0,
-      relayDuration: {
+      moduleDuration: {
         self: 0,
         detergent: 0,
         softener: 0,
@@ -123,5 +124,6 @@ const newDevice = () => {
     },
   }
   deviceEdit.value = true;
+  updateDevice.value = false;
 };
 </script>

@@ -1,26 +1,36 @@
 <template>
-    <v-sheet style="height: 100vh;" >
-        <v-carousel :show-arrows="false" delimiter-icon="mdi-square" height="100%" >
-            <v-carousel-item>
-                <Locations></Locations>
-            </v-carousel-item>
-            <v-carousel-item>
-                <PriceLines></PriceLines>
-            </v-carousel-item>
-            <v-carousel-item>
-                <Devices></Devices>
-            </v-carousel-item>
-        </v-carousel>
+    <v-sheet style="height: 100vh;">
+        <v-card>
+            <v-tabs v-model="tab" bg-color="primary">
+                <v-tab value="devices">Geräte</v-tab>
+                <v-tab value="prices">Preise</v-tab>
+                <v-tab value="locations">Shops</v-tab>
+            </v-tabs>
+            <v-card-text>
+                <v-tabs-window v-model="tab">
+                    <v-tabs-window-item value="devices">
+                        <Devices></Devices>
+                    </v-tabs-window-item>
+
+                    <v-tabs-window-item value="prices">
+                        <PriceLines></PriceLines>
+                    </v-tabs-window-item>
+
+                    <v-tabs-window-item value="locations">
+                        <Locations></Locations>
+                    </v-tabs-window-item>
+                </v-tabs-window>
+            </v-card-text>
+        </v-card>
+        <v-footer></v-footer>
     </v-sheet>
 </template>
 <script setup>
+import { ref } from 'vue'
 import Locations from './Locations.vue'
 import PriceLines from './PriceLines.vue';
 import Devices from './Devices.vue'
-// import Pumps from './Pumps.vue'
-// import Accounts from './Accounts.vue'
+const tab = ref('devices')
 
 </script>
-<style>
-
-</style>
+<style></style>

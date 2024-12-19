@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  *
  */
-import ApiClient from '../ApiClient';
+import ApiClient from '../BpsApiClient';
 
 /**
  * The PaymentBody model module.

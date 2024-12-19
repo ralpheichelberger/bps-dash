@@ -22,7 +22,7 @@
 							:items="locationItems" @update:modelValue="fetchLocationDevices"></v-select>
 					</v-col>
 					<v-col cols="12">
-						<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="disabled"
+						<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="disabled || update"
 							label="Device Nummer" required>
 						</v-text-field>
 					</v-col>
@@ -37,7 +37,7 @@
 							hide-details :items="priceLinesItems"></v-select>
 					</v-col>
 					<v-col v-if="device.type != 'pump'" cols="12">
-						<v-text-field id="relayduration" type="number" v-model.number="device.module.relayDuration.self"
+						<v-text-field id="moduleDuration" type="number" v-model.number="device.module.moduleDuration.self"
 							:disabled="disabled" label="Relay Duration Self" required hide-details></v-text-field>
 					</v-col>
 				</v-row>
@@ -56,8 +56,8 @@
 								hide-details></v-text-field>
 						</v-col>
 						<v-col cols="12">
-							<v-text-field id="detergentrelayduration" type="number"
-								v-model.number="device.module.relayDuration.detergent" :disabled="disabled"
+							<v-text-field id="detergentmoduleDuration" type="number"
+								v-model.number="device.module.moduleDuration.detergent" :disabled="disabled"
 								label="Detergent Relay Duration" required hide-details></v-text-field>
 						</v-col>
 					</v-row>
@@ -73,8 +73,8 @@
 								:disabled="disabled" label="Softener Relay Number" required hide-details></v-text-field>
 						</v-col>
 						<v-col cols="12">
-							<v-text-field id="softenerrelayduration" type="number"
-								v-model.number="device.module.relayDuration.softener" :disabled="disabled"
+							<v-text-field id="softenermoduleDuration" type="number"
+								v-model.number="device.module.moduleDuration.softener" :disabled="disabled"
 								label="Softener Relay Duration" required hide-details></v-text-field>
 						</v-col>
 					</v-row>
@@ -105,8 +105,10 @@ const props = defineProps<{
 	deviceTypes: string[];
 	editing: boolean;
 	update: boolean;
-	emit: (event: "delete-device", ...args: any[]) => void;
 }>()
+
+const emit = defineEmits(['reload'])
+
 const locationItems = ref([])
 props.locations.forEach(element => {
 	locationItems.value.push({
@@ -150,6 +152,7 @@ const saveChanges = () => {
 			}
 		});
 	}
+	emit('reload')
 }
 
 const fetchLocationDevices = () => {
