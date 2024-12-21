@@ -1,13 +1,11 @@
 #!/bin/bash
-
+set -x
 # Define paths relative to the workspace directory
 WORKSPACE_DIR=~/workspace
 API_YAML="bp_immanuel/api/bps.yaml"
-TEMP_DIR="tmp/bpsclient_temp"
+TEMP_DIR="tmp/bpsclient"
 OUTPUT_DIR="bps-dash/src/bpsclient"
 
-# Create temporary directory
-mkdir -p "${TEMP_DIR}"
 
 # Docker command to generate the client in the temporary directory
 docker run --rm -v "${WORKSPACE_DIR}:/local" openapitools/openapi-generator-cli generate \
@@ -23,8 +21,7 @@ cp "${TEMP_DIR}/src/index.js" "${OUTPUT_DIR}"
 cp -r "${TEMP_DIR}/src/model" "${OUTPUT_DIR}"
 cp -r "${TEMP_DIR}/src/api" "${OUTPUT_DIR}"
 
-# Clean up the temporary directory
-rm -r "${TEMP_DIR}"
+
 
 # Print success message
 echo "Client generated successfully in: ${WORKSPACE_DIR}/${OUTPUT_DIR}"
