@@ -12,7 +12,7 @@
  */
 
 
-import ApiClient from "../BpsApiClient";
+import ApiClient from "../ApiClient";
 import CreditJournal from '../model/CreditJournal';
 import Customer from '../model/Customer';
 import Device from '../model/Device';
@@ -43,47 +43,6 @@ export default class DefaultApi {
         this.apiClient = apiClient || ApiClient.instance;
     }
 
-
-    /**
-     * Callback function to receive the result of the addCreditJournal operation.
-     * @callback module:api/DefaultApi~addCreditJournalCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/Status} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Adds new lines to the journal for credits or deductions.
-     * @param {Array.<module:model/CreditJournal>} creditJournal 
-     * @param {module:api/DefaultApi~addCreditJournalCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/Status}
-     */
-    addCreditJournal(creditJournal, callback) {
-      let postBody = creditJournal;
-      // verify the required parameter 'creditJournal' is set
-      if (creditJournal === undefined || creditJournal === null) {
-        throw new Error("Missing the required parameter 'creditJournal' when calling addCreditJournal");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Status;
-      return this.apiClient.callApi(
-        '/credit_journal', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
 
     /**
      * Callback function to receive the result of the allowStart operation.
@@ -128,6 +87,60 @@ export default class DefaultApi {
       let returnType = Status;
       return this.apiClient.callApi(
         '/allowstart', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the deleteDevice operation.
+     * @callback module:api/DefaultApi~deleteDeviceCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Deletes a device
+     * @param {String} location The shop location ID
+     * @param {String} typ The type of the device
+     * @param {Number} nr The number of the device
+     * @param {module:api/DefaultApi~deleteDeviceCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deleteDevice(location, typ, nr, callback) {
+      let postBody = null;
+      // verify the required parameter 'location' is set
+      if (location === undefined || location === null) {
+        throw new Error("Missing the required parameter 'location' when calling deleteDevice");
+      }
+      // verify the required parameter 'typ' is set
+      if (typ === undefined || typ === null) {
+        throw new Error("Missing the required parameter 'typ' when calling deleteDevice");
+      }
+      // verify the required parameter 'nr' is set
+      if (nr === undefined || nr === null) {
+        throw new Error("Missing the required parameter 'nr' when calling deleteDevice");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'location': location,
+        'typ': typ,
+        'nr': nr
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/device', 'DELETE',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -279,21 +292,33 @@ export default class DefaultApi {
 
     /**
      * Returns a device
-     * @param {String} name The name that describes the specific module = Country+ShopId+moduleId
+     * @param {String} location The shop location ID
+     * @param {String} typ The type of the device
+     * @param {Number} nr The number of the device
      * @param {module:api/DefaultApi~getDeviceCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Array.<module:model/Device>}
      */
-    getDevice(name, callback) {
+    getDevice(location, typ, nr, callback) {
       let postBody = null;
-      // verify the required parameter 'name' is set
-      if (name === undefined || name === null) {
-        throw new Error("Missing the required parameter 'name' when calling getDevice");
+      // verify the required parameter 'location' is set
+      if (location === undefined || location === null) {
+        throw new Error("Missing the required parameter 'location' when calling getDevice");
+      }
+      // verify the required parameter 'typ' is set
+      if (typ === undefined || typ === null) {
+        throw new Error("Missing the required parameter 'typ' when calling getDevice");
+      }
+      // verify the required parameter 'nr' is set
+      if (nr === undefined || nr === null) {
+        throw new Error("Missing the required parameter 'nr' when calling getDevice");
       }
 
       let pathParams = {
       };
       let queryParams = {
-        'name': name
+        'location': location,
+        'typ': typ,
+        'nr': nr
       };
       let headerParams = {
       };
@@ -321,21 +346,33 @@ export default class DefaultApi {
 
     /**
      * Returns a device information
-     * @param {String} name The name that identifies the device
+     * @param {String} location The shop location ID
+     * @param {String} typ The type of the device
+     * @param {Number} nr The number of the device
      * @param {module:api/DefaultApi~getDeviceInfoCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/DeviceInfo}
      */
-    getDeviceInfo(name, callback) {
+    getDeviceInfo(location, typ, nr, callback) {
       let postBody = null;
-      // verify the required parameter 'name' is set
-      if (name === undefined || name === null) {
-        throw new Error("Missing the required parameter 'name' when calling getDeviceInfo");
+      // verify the required parameter 'location' is set
+      if (location === undefined || location === null) {
+        throw new Error("Missing the required parameter 'location' when calling getDeviceInfo");
+      }
+      // verify the required parameter 'typ' is set
+      if (typ === undefined || typ === null) {
+        throw new Error("Missing the required parameter 'typ' when calling getDeviceInfo");
+      }
+      // verify the required parameter 'nr' is set
+      if (nr === undefined || nr === null) {
+        throw new Error("Missing the required parameter 'nr' when calling getDeviceInfo");
       }
 
       let pathParams = {
       };
       let queryParams = {
-        'name': name
+        'location': location,
+        'typ': typ,
+        'nr': nr
       };
       let headerParams = {
       };

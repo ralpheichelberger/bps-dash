@@ -5,15 +5,19 @@ import * as bps from "../bpsclient";
  * returns {init function, api bps.DefaultApi, cardID ref}
  */
 export function useAuth() {
-  const cardID = ref(localStorage.getItem("cardID"));
-
+  const cardID = ref("");
   // Create and configure the API client
   const client = new bps.ApiClient();
   const api = new bps.DefaultApi(client);
 
 
   // Authenticate once and store authentication state
-  const authenticateClient = async () => {
+  const authenticateClient = async (card_id) => {
+    cardID.value=localStorage.getItem("cardID");
+    if (card_id) {
+      cardID.value = card_id;
+      localStorage.setItem("cardID", card_id)
+    }
     const hash = await computeHash(cardID.value);
     client.authentications["BasicAuth"].username = cardID.value;
     client.authentications["BasicAuth"].password = hash;

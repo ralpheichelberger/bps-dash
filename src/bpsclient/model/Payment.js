@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../BpsApiClient';
+import ApiClient from '../ApiClient';
 
 /**
  * The Payment model module.
@@ -22,14 +22,15 @@ class Payment {
     /**
      * Constructs a new <code>Payment</code>.
      * @alias module:model/Payment
+     * @param typ {String} 
      * @param billNr {String} 
      * @param machineName {String} 
      * @param cardId {String} 
      * @param amount {Number} amount in cent; negative deducts from credit; positive adds to credit
      */
-    constructor(billNr, machineName, cardId, amount) { 
+    constructor(typ, billNr, machineName, cardId, amount) { 
         
-        Payment.initialize(this, billNr, machineName, cardId, amount);
+        Payment.initialize(this, typ, billNr, machineName, cardId, amount);
     }
 
     /**
@@ -37,7 +38,8 @@ class Payment {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, billNr, machineName, cardId, amount) { 
+    static initialize(obj, typ, billNr, machineName, cardId, amount) { 
+        obj['typ'] = typ;
         obj['bill_nr'] = billNr;
         obj['machine_name'] = machineName;
         obj['card_id'] = cardId;
@@ -55,6 +57,9 @@ class Payment {
         if (data) {
             obj = obj || new Payment();
 
+            if (data.hasOwnProperty('typ')) {
+                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
+            }
             if (data.hasOwnProperty('bill_nr')) {
                 obj['bill_nr'] = ApiClient.convertToType(data['bill_nr'], 'String');
             }
@@ -66,6 +71,9 @@ class Payment {
             }
             if (data.hasOwnProperty('amount')) {
                 obj['amount'] = ApiClient.convertToType(data['amount'], 'Number');
+            }
+            if (data.hasOwnProperty('details')) {
+                obj['details'] = ApiClient.convertToType(data['details'], Object);
             }
         }
         return obj;
@@ -82,6 +90,10 @@ class Payment {
             if (!data.hasOwnProperty(property)) {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
+        }
+        // ensure the json data is a string
+        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
+            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
         }
         // ensure the json data is a string
         if (data['bill_nr'] && !(typeof data['bill_nr'] === 'string' || data['bill_nr'] instanceof String)) {
@@ -102,7 +114,12 @@ class Payment {
 
 }
 
-Payment.RequiredProperties = ["bill_nr", "machine_name", "card_id", "amount"];
+Payment.RequiredProperties = ["typ", "bill_nr", "machine_name", "card_id", "amount"];
+
+/**
+ * @member {String} typ
+ */
+Payment.prototype['typ'] = undefined;
 
 /**
  * @member {String} bill_nr
@@ -124,6 +141,12 @@ Payment.prototype['card_id'] = undefined;
  * @member {Number} amount
  */
 Payment.prototype['amount'] = undefined;
+
+/**
+ * details from the paypal transaction
+ * @member {Object} details
+ */
+Payment.prototype['details'] = undefined;
 
 
 

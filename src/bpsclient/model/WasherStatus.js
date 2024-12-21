@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../BpsApiClient';
+import ApiClient from '../ApiClient';
 
 /**
  * The WasherStatus model module.

@@ -32,7 +32,7 @@ class ApiClient {
      * Overrides the default value set in spec file if present
      * @param {String} basePath
      */
-    constructor(basePath = 'http://localhost:8070') {
+    constructor(basePath = import.meta.env.VITE_API_URL) {
         /**
          * The base URL against which to resolve every API call's (relative) path.
          * @type {String}

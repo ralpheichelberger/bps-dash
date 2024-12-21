@@ -12,7 +12,7 @@ import Home2 from './Home2.vue';
 
 
 const routes = [
-    { path: '/cc', name: 'Customer', component: Customer },
+    { path: '/B/:id', name: 'Customer', component: Customer, props: true },
     { path: '/cp', name: 'PayDevice', component: PayDevice },
     { path: '/admin', name: 'Admin', component: Admin },
     { path: '/', name: 'Home', component: Home },

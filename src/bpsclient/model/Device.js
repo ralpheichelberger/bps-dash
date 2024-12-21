@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../BpsApiClient';
+import ApiClient from '../ApiClient';
 import Module from './Module';
 import Pump from './Pump';
 import WasherStatus from './WasherStatus';
@@ -25,8 +25,8 @@ class Device {
     /**
      * Constructs a new <code>Device</code>.
      * @alias module:model/Device
-     * @param id {Number} 
-     * @param type {String} 
+     * @param nr {Number} 
+     * @param typ {String} 
      * @param location {String} 
      * @param priceLine {String} 
      * @param module {module:model/Module} 
@@ -34,9 +34,9 @@ class Device {
      * @param softener {module:model/Pump} 
      * @param status {module:model/WasherStatus} 
      */
-    constructor(id, type, location, priceLine, module, detergent, softener, status) { 
+    constructor(nr, typ, location, priceLine, module, detergent, softener, status) { 
         
-        Device.initialize(this, id, type, location, priceLine, module, detergent, softener, status);
+        Device.initialize(this, nr, typ, location, priceLine, module, detergent, softener, status);
     }
 
     /**
@@ -44,9 +44,9 @@ class Device {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, id, type, location, priceLine, module, detergent, softener, status) { 
-        obj['id'] = id;
-        obj['type'] = type;
+    static initialize(obj, nr, typ, location, priceLine, module, detergent, softener, status) { 
+        obj['nr'] = nr;
+        obj['typ'] = typ;
         obj['location'] = location;
         obj['priceLine'] = priceLine;
         obj['module'] = module;
@@ -66,11 +66,11 @@ class Device {
         if (data) {
             obj = obj || new Device();
 
-            if (data.hasOwnProperty('id')) {
-                obj['id'] = ApiClient.convertToType(data['id'], 'Number');
+            if (data.hasOwnProperty('nr')) {
+                obj['nr'] = ApiClient.convertToType(data['nr'], 'Number');
             }
-            if (data.hasOwnProperty('type')) {
-                obj['type'] = ApiClient.convertToType(data['type'], 'String');
+            if (data.hasOwnProperty('typ')) {
+                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
             }
             if (data.hasOwnProperty('location')) {
                 obj['location'] = ApiClient.convertToType(data['location'], 'String');
@@ -107,8 +107,8 @@ class Device {
             }
         }
         // ensure the json data is a string
-        if (data['type'] && !(typeof data['type'] === 'string' || data['type'] instanceof String)) {
-            throw new Error("Expected the field `type` to be a primitive type in the JSON string but got " + data['type']);
+        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
+            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
         }
         // ensure the json data is a string
         if (data['location'] && !(typeof data['location'] === 'string' || data['location'] instanceof String)) {
@@ -141,17 +141,17 @@ class Device {
 
 }
 
-Device.RequiredProperties = ["id", "type", "location", "priceLine", "module", "detergent", "softener", "status"];
+Device.RequiredProperties = ["nr", "typ", "location", "priceLine", "module", "detergent", "softener", "status"];
 
 /**
- * @member {Number} id
+ * @member {Number} nr
  */
-Device.prototype['id'] = undefined;
+Device.prototype['nr'] = undefined;
 
 /**
- * @member {String} type
+ * @member {String} typ
  */
-Device.prototype['type'] = undefined;
+Device.prototype['typ'] = undefined;
 
 /**
  * @member {String} location

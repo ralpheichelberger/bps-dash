@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../BpsApiClient';
+import ApiClient from '../ApiClient';
 
 /**
  * The ModulDurations model module.
@@ -22,11 +22,11 @@ class ModulDurations {
     /**
      * Constructs a new <code>ModulDurations</code>.
      * @alias module:model/ModulDurations
-     * @param self {Number} duration in 1/10 seconds of impuls
+     * @param impuls {Number} duration in 1/10 seconds of impuls
      */
-    constructor(self) { 
+    constructor(impuls) { 
         
-        ModulDurations.initialize(this, self);
+        ModulDurations.initialize(this, impuls);
     }
 
     /**
@@ -34,8 +34,8 @@ class ModulDurations {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, self) { 
-        obj['self'] = self;
+    static initialize(obj, impuls) { 
+        obj['impuls'] = impuls;
     }
 
     /**
@@ -49,8 +49,8 @@ class ModulDurations {
         if (data) {
             obj = obj || new ModulDurations();
 
-            if (data.hasOwnProperty('self')) {
-                obj['self'] = ApiClient.convertToType(data['self'], 'Number');
+            if (data.hasOwnProperty('impuls')) {
+                obj['impuls'] = ApiClient.convertToType(data['impuls'], 'Number');
             }
             if (data.hasOwnProperty('detergent')) {
                 obj['detergent'] = ApiClient.convertToType(data['detergent'], 'Number');
@@ -81,13 +81,13 @@ class ModulDurations {
 
 }
 
-ModulDurations.RequiredProperties = ["self"];
+ModulDurations.RequiredProperties = ["impuls"];
 
 /**
  * duration in 1/10 seconds of impuls
- * @member {Number} self
+ * @member {Number} impuls
  */
-ModulDurations.prototype['self'] = undefined;
+ModulDurations.prototype['impuls'] = undefined;
 
 /**
  * duration in 1/10 seconds of pump running

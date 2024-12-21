@@ -12,7 +12,7 @@
  */
 
 
-import ApiClient from './BpsApiClient';
+import ApiClient from './ApiClient';
 import Binary from './model/Binary';
 import CreditJournal from './model/CreditJournal';
 import Customer from './model/Customer';

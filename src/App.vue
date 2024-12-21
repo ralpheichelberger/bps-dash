@@ -37,13 +37,7 @@ export default {
 .v-carousel__controls {
     color: rgb(0, 255, 42) !important;
 }
-.v-dialog.bubble_style {
-    /* max-width: 600px;     */
-    background: var(--background-gradient);
 
-    /* justify-self: center;
-    align-self: center; */
-}
 span.action{
     color: #2fff44;
     font-weight: bold;
@@ -58,6 +52,25 @@ span.action{
     justify-content: center;
     align-self: center;
     font-size: large;
+}
+.bubble_style {
+    font-family: "DreamingOutloud", Arial, sans-serif;
+    color: black;
+    height: 100vh;
+    /* max-width: 600px; */
+    background: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
+    justify-content: center;
+    align-self: center;
+    font-size: large;
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+}
+
+/* Gradient Animation */
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 </style>

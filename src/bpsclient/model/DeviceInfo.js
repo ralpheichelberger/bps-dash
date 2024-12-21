@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../BpsApiClient';
+import ApiClient from '../ApiClient';
 
 /**
  * The DeviceInfo model module.
@@ -28,13 +28,13 @@ class DeviceInfo {
      * @param type {String} type of the device
      * @param price {Number} price of the device in euro cent
      * @param state {String} state of the device if it is running or not
-     * @param duration {Number} duration for the relay the device in 1/10 of seconds
+     * @param impulsDuration {Number} duration for the relay the device in 1/10 of seconds
      * @param detergent {Boolean} if detergent is available
      * @param softener {Boolean} if softener is available
      */
-    constructor(name, location, type, price, state, duration, detergent, softener) { 
+    constructor(name, location, type, price, state, impulsDuration, detergent, softener) { 
         
-        DeviceInfo.initialize(this, name, location, type, price, state, duration, detergent, softener);
+        DeviceInfo.initialize(this, name, location, type, price, state, impulsDuration, detergent, softener);
     }
 
     /**
@@ -42,13 +42,13 @@ class DeviceInfo {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, name, location, type, price, state, duration, detergent, softener) { 
+    static initialize(obj, name, location, type, price, state, impulsDuration, detergent, softener) { 
         obj['name'] = name;
         obj['location'] = location;
         obj['type'] = type;
         obj['price'] = price;
         obj['state'] = state;
-        obj['duration'] = duration;
+        obj['impuls_duration'] = impulsDuration;
         obj['detergent'] = detergent;
         obj['softener'] = softener;
     }
@@ -79,8 +79,8 @@ class DeviceInfo {
             if (data.hasOwnProperty('state')) {
                 obj['state'] = ApiClient.convertToType(data['state'], 'String');
             }
-            if (data.hasOwnProperty('duration')) {
-                obj['duration'] = ApiClient.convertToType(data['duration'], 'Number');
+            if (data.hasOwnProperty('impuls_duration')) {
+                obj['impuls_duration'] = ApiClient.convertToType(data['impuls_duration'], 'Number');
             }
             if (data.hasOwnProperty('detergent')) {
                 obj['detergent'] = ApiClient.convertToType(data['detergent'], 'Boolean');
@@ -127,7 +127,7 @@ class DeviceInfo {
 
 }
 
-DeviceInfo.RequiredProperties = ["name", "location", "type", "price", "state", "duration", "detergent", "softener"];
+DeviceInfo.RequiredProperties = ["name", "location", "type", "price", "state", "impuls_duration", "detergent", "softener"];
 
 /**
  * name of the device used in MQTT communication
@@ -161,9 +161,9 @@ DeviceInfo.prototype['state'] = undefined;
 
 /**
  * duration for the relay the device in 1/10 of seconds
- * @member {Number} duration
+ * @member {Number} impuls_duration
  */
-DeviceInfo.prototype['duration'] = undefined;
+DeviceInfo.prototype['impuls_duration'] = undefined;
 
 /**
  * if detergent is available

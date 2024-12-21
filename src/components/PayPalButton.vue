@@ -22,6 +22,14 @@ loadScript({
     clientId: payPalClientId,
 }).then((paypal) => {
     paypal.Buttons({
+        style: {
+            layout: 'horizontal',
+            color: 'blue',
+            shape: 'rect',
+            label: 'paypal',
+            tagline: false,
+        },
+        
         createOrder: (data, actions) => {
             return actions.order.create({
                 purchase_units: [
@@ -37,7 +45,7 @@ loadScript({
         },
         onApprove: (data, actions) => {
             return actions.order.capture().then((details) => {
-                emit("transactionApproved", details);
+                emit("transactionApproved",'paypal', details);
             });
         },
         onCancel: (data) => {

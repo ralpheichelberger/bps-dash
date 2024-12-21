@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../BpsApiClient';
+import ApiClient from '../ApiClient';
 import Module from './Module';
 import PumpRelayStatus from './PumpRelayStatus';
 

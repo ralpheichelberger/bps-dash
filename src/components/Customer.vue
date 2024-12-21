@@ -1,24 +1,25 @@
 <template>
-  <v-card v-if="customer" class="bubble_style">
-    <v-card-title>
-      <v-row style="padding-bottom: 0">
-        <v-col>Konto {{ customer.name }} </v-col>
-        <v-col>Guthaben EUR {{ (customer.credit / 100).toFixed() }}</v-col>
-      </v-row>
-      <v-row style="padding-top: 0">
-        <v-col>
-          <small><small>ID: {{ customer.id }}</small></small> </v-col><v-col> </v-col><v-col>
-          <v-btn @click="dialog = true" size="x-large" elevation="5">Aufladen</v-btn>
-        </v-col>
-      </v-row>
-    </v-card-title>
-    <v-card-text>
-      <v-row><v-col>Karten ID </v-col></v-row>
-      <v-row><v-col></v-col></v-row>
-      <v-card-actions> </v-card-actions>
-      <v-row v-for="x in 10"><v-col>Datum Maschine Preis</v-col> </v-row>
-    </v-card-text>
-  </v-card>
+  <div v-if="customer" class="container bubble_style">
+    <div class="customerName">
+      Konto {{ customer.name }}
+    </div>
+    <div class="balance">
+      Guthaben EUR {{ cent2euro(customer.credit) }}
+    </div>
+    <div class="cardId">
+      ID: {{ customer.id }}
+    </div>
+    <div class="topUpButton">
+      <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
+        Aufladen
+      </v-btn>
+    </div>
+  </div>
+  <v-dialog v-if="customer" v-model="topUpDialog">
+    <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false"
+      @top-up="topUpCredit" />
+  </v-dialog>
+
   <v-card v-if="customer == null">
     <v-card-title style="font-size: 5rem">Sorry :(</v-card-title>
     <v-card-text>Es ist kein Kundenkonto gespeichert. <br /> Bitte <span class="action">scannen</span> Sie Ihre <span
@@ -28,19 +29,33 @@
       <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem" @click="closeError">Schließen</v-btn>
     </v-card-actions>
   </v-card>
-  <v-dialog v-model="dialog">
-    <TopUp :visible="dialog" :customer-id="customer.id" @close="dialog = false"
-      @top-up="(amount, details) => { topUp(customer.value.id, amount, details) }" />
-  </v-dialog>
+
 
 </template>
 
 <script setup>
-import { ref, watch, watchEffect } from "vue";
+import { ref } from "vue";
 import { useAPI } from "../composables/useAPI.js"
+import { usePayment } from "../composables/usePayment.js";
 
-const { customer, getCustomer, topUp } = useAPI()
+const { customer, getCustomer, cent2euro } = useAPI()
+const { topUp } = usePayment()
+const closeError = () => {
+  window.location.href = "/";
+};
+const topUpDialog = ref(false);
+const props = defineProps(["id"]);
 
-const dialog = ref(false)
-getCustomer()
+getCustomer(props.id)
+
+
+// getCustomer()
+
+const topUpCredit = (topAmount, details) => {
+  topUp(customer.value.id, topAmount, details).then(() => {
+    getCustomer()
+  })
+  topUpDialog.value = false
+}
+
 </script>

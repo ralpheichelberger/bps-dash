@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../BpsApiClient';
+import ApiClient from '../ApiClient';
 import ModulDurations from './ModulDurations';
 
 /**
@@ -69,8 +69,8 @@ class Module {
             if (data.hasOwnProperty('last_ping')) {
                 obj['last_ping'] = ApiClient.convertToType(data['last_ping'], 'Number');
             }
-            if (data.hasOwnProperty('moduleDuration')) {
-                obj['moduleDuration'] = ModulDurations.constructFromObject(data['moduleDuration']);
+            if (data.hasOwnProperty('durations')) {
+                obj['durations'] = ModulDurations.constructFromObject(data['durations']);
             }
         }
         return obj;
@@ -96,9 +96,9 @@ class Module {
         if (data['binary_type'] && !(typeof data['binary_type'] === 'string' || data['binary_type'] instanceof String)) {
             throw new Error("Expected the field `binary_type` to be a primitive type in the JSON string but got " + data['binary_type']);
         }
-        // validate the optional field `moduleDuration`
-        if (data['moduleDuration']) { // data not null
-          ModulDurations.validateJSON(data['moduleDuration']);
+        // validate the optional field `durations`
+        if (data['durations']) { // data not null
+          ModulDurations.validateJSON(data['durations']);
         }
 
         return true;
@@ -130,9 +130,9 @@ Module.prototype['last_seen'] = undefined;
 Module.prototype['last_ping'] = undefined;
 
 /**
- * @member {module:model/ModulDurations} moduleDuration
+ * @member {module:model/ModulDurations} durations
  */
-Module.prototype['moduleDuration'] = undefined;
+Module.prototype['durations'] = undefined;
 
 
 
