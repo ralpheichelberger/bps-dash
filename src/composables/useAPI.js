@@ -69,6 +69,20 @@ export function useAPI() {
 
   const cent2euro = (val) => (val / 100).toFixed(2);
 
+  const uploadModuleProgramm = async (moduleProgramm) => {
+    await authenticateClient();
+    return new Promise((resolve, reject) => {
+      api.moduleProgramm(moduleProgramm.typ,moduleProgramm.version,moduleProgramm.file, (error, data) => {
+        if (error) {
+          reject(new Error("Error uploading module programm: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+
   return {
     customer,
     locations,
@@ -78,5 +92,6 @@ export function useAPI() {
     getCustomer,
     getPriceLines,
     cent2euro,
+    uploadModuleProgramm,
   };
 }

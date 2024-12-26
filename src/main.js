@@ -13,10 +13,11 @@ import Home2 from './Home2.vue';
 
 const routes = [
     { path: '/B/:id', name: 'Customer', component: Customer, props: true },
-    { path: '/cp', name: 'PayDevice', component: PayDevice },
-    { path: '/admin', name: 'Admin', component: Admin },
+    { path: '/P/:devicename', name: 'PayDevice', component: PayDevice , props: true},
+    { path: '/admin', name: 'Admin', component: Admin }, // FIXME needs to be user in customers with type admin - PIN code?
     { path: '/', name: 'Home', component: Home },
     { path: '/manual/all.png', name: 'Home2', component: Home2 },
+    { path: '/:pathMatch(.*)*', redirect: '/' }
 ];
 
 const router = createRouter({
@@ -31,3 +32,12 @@ app.use(router);
 
 app.mount('#app');
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+            console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+        });
+}

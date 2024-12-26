@@ -8,8 +8,8 @@
         <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
           @update:modelValue="getDevices(loc)" </v-select>
           <v-btn @click="newDevice" elevation="5">Neu</v-btn>
-      </v-sheet>
-    </v-card-title>
+      </v-sheet><!-- // FIXME: show current shop address -->
+    </v-card-title> <!-- //FIXME: add search --> 
     <v-card-text>
       <v-table>
         <thead>

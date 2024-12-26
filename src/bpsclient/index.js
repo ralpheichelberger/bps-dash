@@ -13,7 +13,6 @@
 
 
 import ApiClient from './ApiClient';
-import Binary from './model/Binary';
 import CreditJournal from './model/CreditJournal';
 import Customer from './model/Customer';
 import Device from './model/Device';
@@ -21,6 +20,8 @@ import DeviceInfo from './model/DeviceInfo';
 import Location from './model/Location';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
+import ModuleProgramm from './model/ModuleProgramm';
+import ModuleProgramm200Response from './model/ModuleProgramm200Response';
 import Payment from './model/Payment';
 import PaymentRequest from './model/PaymentRequest';
 import PriceLine from './model/PriceLine';
@@ -30,6 +31,7 @@ import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
 import TopupCreditRequest from './model/TopupCreditRequest';
 import UpdateCustomerRequest from './model/UpdateCustomerRequest';
+import UpdateModuleBinary404Response from './model/UpdateModuleBinary404Response';
 import WasherStatus from './model/WasherStatus';
 import DefaultApi from './api/DefaultApi';
 
@@ -73,12 +75,6 @@ export {
     ApiClient,
 
     /**
-     * The Binary model constructor.
-     * @property {module:model/Binary}
-     */
-    Binary,
-
-    /**
      * The CreditJournal model constructor.
      * @property {module:model/CreditJournal}
      */
@@ -119,6 +115,18 @@ export {
      * @property {module:model/Module}
      */
     Module,
+
+    /**
+     * The ModuleProgramm model constructor.
+     * @property {module:model/ModuleProgramm}
+     */
+    ModuleProgramm,
+
+    /**
+     * The ModuleProgramm200Response model constructor.
+     * @property {module:model/ModuleProgramm200Response}
+     */
+    ModuleProgramm200Response,
 
     /**
      * The Payment model constructor.
@@ -173,6 +181,12 @@ export {
      * @property {module:model/UpdateCustomerRequest}
      */
     UpdateCustomerRequest,
+
+    /**
+     * The UpdateModuleBinary404Response model constructor.
+     * @property {module:model/UpdateModuleBinary404Response}
+     */
+    UpdateModuleBinary404Response,
 
     /**
      * The WasherStatus model constructor.

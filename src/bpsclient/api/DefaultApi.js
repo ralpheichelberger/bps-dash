@@ -18,12 +18,14 @@ import Customer from '../model/Customer';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
 import Location from '../model/Location';
+import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
 import PaymentRequest from '../model/PaymentRequest';
 import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
 import TopupCreditRequest from '../model/TopupCreditRequest';
 import UpdateCustomerRequest from '../model/UpdateCustomerRequest';
+import UpdateModuleBinary404Response from '../model/UpdateModuleBinary404Response';
 
 /**
 * Default service.
@@ -235,48 +237,6 @@ export default class DefaultApi {
       let returnType = Customer;
       return this.apiClient.callApi(
         '/customer', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the getCustomerAccount operation.
-     * @callback module:api/DefaultApi~getCustomerAccountCallback
-     * @param {String} error Error message, if any.
-     * @param {String} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns the customers user account
-     * @param {String} cardId 
-     * @param {module:api/DefaultApi~getCustomerAccountCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link String}
-     */
-    getCustomerAccount(cardId, callback) {
-      let postBody = null;
-      // verify the required parameter 'cardId' is set
-      if (cardId === undefined || cardId === null) {
-        throw new Error("Missing the required parameter 'cardId' when calling getCustomerAccount");
-      }
-
-      let pathParams = {
-        'card_id': cardId
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['BasicAuth'];
-      let contentTypes = [];
-      let accepts = ['text/html'];
-      let returnType = 'String';
-      return this.apiClient.callApi(
-        '/B/{card_id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -629,6 +589,59 @@ export default class DefaultApi {
       let returnType = [PriceLine];
       return this.apiClient.callApi(
         '/price_lines', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the moduleProgramm operation.
+     * @callback module:api/DefaultApi~moduleProgrammCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/ModuleProgramm200Response} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * @param {String} typ 
+     * @param {String} version 
+     * @param {File} file 
+     * @param {module:api/DefaultApi~moduleProgrammCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/ModuleProgramm200Response}
+     */
+    moduleProgramm(typ, version, file, callback) {
+      let postBody = null;
+      // verify the required parameter 'typ' is set
+      if (typ === undefined || typ === null) {
+        throw new Error("Missing the required parameter 'typ' when calling moduleProgramm");
+      }
+      // verify the required parameter 'version' is set
+      if (version === undefined || version === null) {
+        throw new Error("Missing the required parameter 'version' when calling moduleProgramm");
+      }
+      // verify the required parameter 'file' is set
+      if (file === undefined || file === null) {
+        throw new Error("Missing the required parameter 'file' when calling moduleProgramm");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+        'typ': typ,
+        'version': version,
+        'file': file
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['multipart/form-data'];
+      let accepts = ['application/json'];
+      let returnType = ModuleProgramm200Response;
+      return this.apiClient.callApi(
+        '/module_programm', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -991,6 +1004,53 @@ export default class DefaultApi {
       let returnType = Device;
       return this.apiClient.callApi(
         '/device', 'PUT',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the updateModuleBinary operation.
+     * @callback module:api/DefaultApi~updateModuleBinaryCallback
+     * @param {String} error Error message, if any.
+     * @param {File} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * @param {String} version 
+     * @param {String} mac 
+     * @param {module:api/DefaultApi~updateModuleBinaryCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link File}
+     */
+    updateModuleBinary(version, mac, callback) {
+      let postBody = null;
+      // verify the required parameter 'version' is set
+      if (version === undefined || version === null) {
+        throw new Error("Missing the required parameter 'version' when calling updateModuleBinary");
+      }
+      // verify the required parameter 'mac' is set
+      if (mac === undefined || mac === null) {
+        throw new Error("Missing the required parameter 'mac' when calling updateModuleBinary");
+      }
+
+      let pathParams = {
+        'version': version,
+        'mac': mac
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = [];
+      let accepts = ['application/octet-stream', 'application/json'];
+      let returnType = File;
+      return this.apiClient.callApi(
+        '/update_module_binary/{mac}/{version}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

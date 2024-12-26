@@ -1,4 +1,4 @@
-<template>
+<template> <!-- FIXME add AGBs / DSGVO -->
   <div v-if="customer" class="container bubble_style">
     <div class="customerName">
       Konto {{ customer.name }}

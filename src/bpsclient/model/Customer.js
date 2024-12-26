@@ -22,14 +22,15 @@ class Customer {
     /**
      * Constructs a new <code>Customer</code>.
      * @alias module:model/Customer
+     * @param typ {String} 
      * @param id {String} 
      * @param name {String} 
      * @param active {Boolean} 
      * @param credit {Number} credit amout in euro cent
      */
-    constructor(id, name, active, credit) { 
+    constructor(typ, id, name, active, credit) { 
         
-        Customer.initialize(this, id, name, active, credit);
+        Customer.initialize(this, typ, id, name, active, credit);
     }
 
     /**
@@ -37,7 +38,8 @@ class Customer {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, id, name, active, credit) { 
+    static initialize(obj, typ, id, name, active, credit) { 
+        obj['typ'] = typ;
         obj['id'] = id;
         obj['name'] = name;
         obj['active'] = active;
@@ -55,6 +57,9 @@ class Customer {
         if (data) {
             obj = obj || new Customer();
 
+            if (data.hasOwnProperty('typ')) {
+                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
+            }
             if (data.hasOwnProperty('id')) {
                 obj['id'] = ApiClient.convertToType(data['id'], 'String');
             }
@@ -84,6 +89,10 @@ class Customer {
             }
         }
         // ensure the json data is a string
+        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
+            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
+        }
+        // ensure the json data is a string
         if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
             throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
         }
@@ -98,7 +107,12 @@ class Customer {
 
 }
 
-Customer.RequiredProperties = ["id", "name", "active", "credit"];
+Customer.RequiredProperties = ["typ", "id", "name", "active", "credit"];
+
+/**
+ * @member {String} typ
+ */
+Customer.prototype['typ'] = undefined;
 
 /**
  * @member {String} id

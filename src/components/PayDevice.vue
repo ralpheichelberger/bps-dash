@@ -1,4 +1,4 @@
-<template>
+<template> <!-- FIXME add AGBs -->
   <div v-if="customer" class="container bubble_style">
     <div class="customerName">
       Konto {{ customer.name }}
@@ -27,7 +27,8 @@
       <PayPalButton :amount="paymentAmount" :customer-id="customer.id" @transactionApproved="payDeviceAndAllowStart" />
     </div>
     <div v-if="!payed" class="creditButton">
-      <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large;" @click="payDeviceAndAllowStart('credit')">
+      <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large;"
+        @click="payDeviceAndAllowStart('credit')">
         Mit Guthaben zahlen
       </v-btn>
     </div>
@@ -36,12 +37,11 @@
     </div>
   </div>
   <v-dialog v-if="customer" v-model="topUpDialog">
-    <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false"
-      @top-up="topUpCredit" />
+    <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false" @top-up="topUpCredit" />
   </v-dialog>
 
   <v-dialog v-model="errorDialog" class="ma-3" elevation="10">
-    <v-card  class="bubble_style">
+    <v-card class="bubble_style">
       <v-card-title style="font-size: 5rem">
         Sorry :(
       </v-card-title>
@@ -133,7 +133,6 @@ import { useAPI } from "../composables/useAPI";
 import { useDevices } from "../composables/useDevices";
 import { usePayment } from "../composables/usePayment";
 import TopUp from "./TopUp.vue";
-import { tr } from "vuetify/locale";
 
 const topUpDialog = ref(false);
 const errorDialog = ref(false);
@@ -153,12 +152,12 @@ const topUpCredit = (topAmount, details) => {
   topUpDialog.value = false
 }
 // Get device info based on query parameter "d".
-getDeviceInfo(new URLSearchParams(window.location.search).get("d"))
-  .catch((error) => {
-    errorMessage.value = "Dieses Gerät ist leider nicht registriert"
-    errorDetail.value = error;
-    errorDialog.value = true;
-  });
+const props = defineProps(["devicename"]);
+getDeviceInfo(props.devicename).catch((error) => {
+  errorMessage.value = "Dieses Gerät ist leider nicht registriert"
+  errorDetail.value = error;
+  errorDialog.value = true;
+});
 
 // Closes error dialog and redirects back to the homepage.
 const closeError = () => {
@@ -189,8 +188,8 @@ const paymentAmount = computed(() => {
 });
 
 // Handles payment logic and allows the device to start.
-const payDeviceAndAllowStart = (typ,details) => {
-  payment(customer.value.id, deviceInfo.value.name, deviceInfo.value.price, typ,details).then(() => {
+const payDeviceAndAllowStart = (typ, details) => {
+  payment(customer.value.id, deviceInfo.value.name, deviceInfo.value.price, typ, details).then(() => {
     allowStart(deviceInfo.value.name, deviceInfo.value.impuls_duration);
     getCustomer(); // update customer balance
     payed.value = true;
