@@ -17,6 +17,7 @@ import CreditJournal from '../model/CreditJournal';
 import Customer from '../model/Customer';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
+import DeviceType from '../model/DeviceType';
 import Location from '../model/Location';
 import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
@@ -24,7 +25,6 @@ import PaymentRequest from '../model/PaymentRequest';
 import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
 import TopupCreditRequest from '../model/TopupCreditRequest';
-import UpdateCustomerRequest from '../model/UpdateCustomerRequest';
 import UpdateModuleBinary404Response from '../model/UpdateModuleBinary404Response';
 
 /**
@@ -105,7 +105,7 @@ export default class DefaultApi {
     /**
      * Deletes a device
      * @param {String} location The shop location ID
-     * @param {String} typ The type of the device
+     * @param {module:model/DeviceType} typ The type of the device
      * @param {Number} nr The number of the device
      * @param {module:api/DefaultApi~deleteDeviceCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Status}
@@ -253,7 +253,7 @@ export default class DefaultApi {
     /**
      * Returns a device
      * @param {String} location The shop location ID
-     * @param {String} typ The type of the device
+     * @param {module:model/DeviceType} typ The type of the device
      * @param {Number} nr The number of the device
      * @param {module:api/DefaultApi~getDeviceCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Array.<module:model/Device>}
@@ -307,7 +307,7 @@ export default class DefaultApi {
     /**
      * Returns a device information
      * @param {String} location The shop location ID
-     * @param {String} typ The type of the device
+     * @param {module:model/DeviceType} typ The type of the device
      * @param {Number} nr The number of the device
      * @param {module:api/DefaultApi~getDeviceInfoCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/DeviceInfo}
@@ -603,7 +603,7 @@ export default class DefaultApi {
      */
 
     /**
-     * @param {String} typ 
+     * @param {module:model/DeviceType} typ 
      * @param {String} version 
      * @param {File} file 
      * @param {module:api/DefaultApi~moduleProgrammCallback} callback The callback function, accepting three arguments: error, data, response
@@ -934,23 +934,19 @@ export default class DefaultApi {
 
     /**
      * Updates the customer's name and active status
-     * @param {String} id The unique 9 characters card ID
-     * @param {Object} opts Optional parameters
-     * @param {module:model/UpdateCustomerRequest} [updateCustomerRequest] 
+     * @param {module:model/Customer} customer The updated customer object
      * @param {module:api/DefaultApi~updateCustomerCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    updateCustomer(id, opts, callback) {
-      opts = opts || {};
-      let postBody = opts['updateCustomerRequest'];
-      // verify the required parameter 'id' is set
-      if (id === undefined || id === null) {
-        throw new Error("Missing the required parameter 'id' when calling updateCustomer");
+    updateCustomer(customer, callback) {
+      let postBody = customer;
+      // verify the required parameter 'customer' is set
+      if (customer === undefined || customer === null) {
+        throw new Error("Missing the required parameter 'customer' when calling updateCustomer");
       }
 
       let pathParams = {
       };
       let queryParams = {
-        'id': id
       };
       let headerParams = {
       };
@@ -962,7 +958,7 @@ export default class DefaultApi {
       let accepts = ['application/json'];
       let returnType = null;
       return this.apiClient.callApi(
-        '/customer', 'PUT',
+        '/customer', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

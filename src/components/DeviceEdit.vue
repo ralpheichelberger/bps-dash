@@ -3,7 +3,8 @@
 		<v-card-actions>
 			<v-btn icon="mdi-close" @click="emit('close')"></v-btn>
 			<v-spacer></v-spacer>
-			<v-btn id="delete" color="error" :disabled="!update" text="Delete" variant="plain" @click="emit('delete-device')"></v-btn>
+			<v-btn id="delete" color="error" :disabled="!update" text="Delete" variant="plain"
+				@click="emit('delete-device')"></v-btn>
 			<!-- <v-btn id="close" text="Close" variant="plain" @click="dialog = false"></v-btn> -->
 			<v-btn id="save" color="primary" text="Save" variant="tonal" @click="saveChanges"></v-btn>
 		</v-card-actions>
@@ -91,7 +92,7 @@ import { useDevices } from '@/composables/useDevices';
 import { useAPI } from '@/composables/useAPI';
 
 const { priceLines, getPriceLines } = useAPI()
-const { devices, getDevices } = useDevices()
+const { devices, getDevices, updateDevice, newDevice } = useDevices()
 getPriceLines()
 const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
 const props = defineProps({
@@ -101,7 +102,7 @@ const props = defineProps({
 	update: Boolean,
 })
 
-const emit = defineEmits(['reload','close'])
+const emit = defineEmits(['reload', 'close'])
 
 const locationItems = ref([])
 props.locations.forEach(element => {
@@ -117,30 +118,25 @@ const update_disabled = () => {
 watch(() => props.device?.location, update_disabled)
 
 const saveChanges = () => {
-	var api = new bps.DefaultApi(new bps.ApiClient());
 	if (props.update) {
-		api.updateDevice(props.device, (error, data, response) => {
-			if (error) {
-				snackbar.value.text = response?.body?.message || 'An error occurred while saving the device'
-				snackbar.value.color = 'error'
-				snackbar.value.show = true
-			} else {
-				snackbar.value.text = `Device ${props.device.nr} for location ${props.device.location} saved`
-				snackbar.value.color = 'success'
-				snackbar.value.show = true
-			}
+		updateDevice(props.device).then((data) => {
+			snackbar.value.text = `Device ${props.device.nr} for location ${props.device.location} saved`
+			snackbar.value.color = 'success'
+			snackbar.value.show = true
+		}).catch((error) => {
+			snackbar.value.text = error || 'An error occurred while saving the device'
+			snackbar.value.color = 'error'
+			snackbar.value.show = true
 		});
 	} else {
-		api.newDevice(props.device, (error, data, response) => {
-			if (error) {
-				snackbar.value.text = response?.body?.message || 'An error occurred while saving the device'
-				snackbar.value.color = 'error'
-				snackbar.value.show = true
-			} else {
-				snackbar.value.text = `Device ${props.device.nr} for location ${props.device.location} saved`
-				snackbar.value.color = 'success'
-				snackbar.value.show = true
-			}
+		newDevice(props.device).then((data) => {
+			snackbar.value.text = `Device ${props.device.nr} for location ${props.device.location} saved`
+			snackbar.value.color = 'success'
+			snackbar.value.show = true
+		}).catch((error) => {
+			snackbar.value.text = error || 'An error occurred while saving the device'
+			snackbar.value.color = 'error'
+			snackbar.value.show = true
 		});
 	}
 	emit('reload')
@@ -149,7 +145,7 @@ const availablePumpRelays = ref([])
 const fetchLocationDevices = () => {
 	getDevices(props.device.location).then(() => {
 		availablePumpRelays.value = devices.value.filter(device => device.typ === 'pump').map(device => device.nr)
-	})	
+	})
 }
 fetchLocationDevices()
 const priceLinesItems = ref([])

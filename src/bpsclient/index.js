@@ -17,6 +17,7 @@ import CreditJournal from './model/CreditJournal';
 import Customer from './model/Customer';
 import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
+import DeviceType from './model/DeviceType';
 import Location from './model/Location';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
@@ -30,7 +31,6 @@ import PumpRelay from './model/PumpRelay';
 import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
 import TopupCreditRequest from './model/TopupCreditRequest';
-import UpdateCustomerRequest from './model/UpdateCustomerRequest';
 import UpdateModuleBinary404Response from './model/UpdateModuleBinary404Response';
 import WasherStatus from './model/WasherStatus';
 import DefaultApi from './api/DefaultApi';
@@ -97,6 +97,12 @@ export {
      * @property {module:model/DeviceInfo}
      */
     DeviceInfo,
+
+    /**
+     * The DeviceType model constructor.
+     * @property {module:model/DeviceType}
+     */
+    DeviceType,
 
     /**
      * The Location model constructor.
@@ -175,12 +181,6 @@ export {
      * @property {module:model/TopupCreditRequest}
      */
     TopupCreditRequest,
-
-    /**
-     * The UpdateCustomerRequest model constructor.
-     * @property {module:model/UpdateCustomerRequest}
-     */
-    UpdateCustomerRequest,
 
     /**
      * The UpdateModuleBinary404Response model constructor.

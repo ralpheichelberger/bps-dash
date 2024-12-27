@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import DeviceType from './DeviceType';
 
 /**
  * The DeviceInfo model module.
@@ -25,7 +26,7 @@ class DeviceInfo {
      * @alias module:model/DeviceInfo
      * @param name {String} name of the device used in MQTT communication
      * @param location {String} location of the device real address of the shop
-     * @param type {String} type of the device
+     * @param type {module:model/DeviceType} 
      * @param price {Number} price of the device in euro cent
      * @param state {String} state of the device if it is running or not
      * @param impulsDuration {Number} duration for the relay the device in 1/10 of seconds
@@ -71,7 +72,7 @@ class DeviceInfo {
                 obj['location'] = ApiClient.convertToType(data['location'], 'String');
             }
             if (data.hasOwnProperty('type')) {
-                obj['type'] = ApiClient.convertToType(data['type'], 'String');
+                obj['type'] = DeviceType.constructFromObject(data['type']);
             }
             if (data.hasOwnProperty('price')) {
                 obj['price'] = ApiClient.convertToType(data['price'], 'Number');
@@ -113,10 +114,6 @@ class DeviceInfo {
             throw new Error("Expected the field `location` to be a primitive type in the JSON string but got " + data['location']);
         }
         // ensure the json data is a string
-        if (data['type'] && !(typeof data['type'] === 'string' || data['type'] instanceof String)) {
-            throw new Error("Expected the field `type` to be a primitive type in the JSON string but got " + data['type']);
-        }
-        // ensure the json data is a string
         if (data['state'] && !(typeof data['state'] === 'string' || data['state'] instanceof String)) {
             throw new Error("Expected the field `state` to be a primitive type in the JSON string but got " + data['state']);
         }
@@ -142,8 +139,7 @@ DeviceInfo.prototype['name'] = undefined;
 DeviceInfo.prototype['location'] = undefined;
 
 /**
- * type of the device
- * @member {String} type
+ * @member {module:model/DeviceType} type
  */
 DeviceInfo.prototype['type'] = undefined;
 

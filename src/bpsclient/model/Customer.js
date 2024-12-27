@@ -22,7 +22,7 @@ class Customer {
     /**
      * Constructs a new <code>Customer</code>.
      * @alias module:model/Customer
-     * @param typ {String} 
+     * @param typ {module:model/Customer.TypEnum} 
      * @param id {String} 
      * @param name {String} 
      * @param active {Boolean} 
@@ -110,7 +110,7 @@ class Customer {
 Customer.RequiredProperties = ["typ", "id", "name", "active", "credit"];
 
 /**
- * @member {String} typ
+ * @member {module:model/Customer.TypEnum} typ
  */
 Customer.prototype['typ'] = undefined;
 
@@ -137,6 +137,33 @@ Customer.prototype['credit'] = undefined;
 
 
 
+
+
+/**
+ * Allowed values for the <code>typ</code> property.
+ * @enum {String}
+ * @readonly
+ */
+Customer['TypEnum'] = {
+
+    /**
+     * value: "admin"
+     * @const
+     */
+    "admin": "admin",
+
+    /**
+     * value: "customer"
+     * @const
+     */
+    "customer": "customer",
+
+    /**
+     * value: "staff"
+     * @const
+     */
+    "staff": "staff"
+};
 
 
 

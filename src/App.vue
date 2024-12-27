@@ -65,7 +65,9 @@ span.action{
     background-size: 400% 400%;
     animation: gradient 10s ease infinite;
 }
-
+.admin {
+    background: rgb(78, 208, 255) !important;
+}
 /* Gradient Animation */
 @keyframes gradient {
     0% { background-position: 0% 50%; }

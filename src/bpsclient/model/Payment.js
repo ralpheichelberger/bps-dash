@@ -22,7 +22,7 @@ class Payment {
     /**
      * Constructs a new <code>Payment</code>.
      * @alias module:model/Payment
-     * @param typ {String} 
+     * @param typ {module:model/Payment.TypEnum} 
      * @param billNr {String} 
      * @param machineName {String} 
      * @param cardId {String} 
@@ -117,7 +117,7 @@ class Payment {
 Payment.RequiredProperties = ["typ", "bill_nr", "machine_name", "card_id", "amount"];
 
 /**
- * @member {String} typ
+ * @member {module:model/Payment.TypEnum} typ
  */
 Payment.prototype['typ'] = undefined;
 
@@ -150,6 +150,27 @@ Payment.prototype['details'] = undefined;
 
 
 
+
+
+/**
+ * Allowed values for the <code>typ</code> property.
+ * @enum {String}
+ * @readonly
+ */
+Payment['TypEnum'] = {
+
+    /**
+     * value: "credit"
+     * @const
+     */
+    "credit": "credit",
+
+    /**
+     * value: "paypal"
+     * @const
+     */
+    "paypal": "paypal"
+};
 
 
 

@@ -24,9 +24,9 @@ export function useDevices() {
     const deleteDevice = async (deviceData) => {
         await authenticateClient();
 
-           // Return a Promise that resolves or rejects based on the API callback
+        // Return a Promise that resolves or rejects based on the API callback
         return new Promise((resolve, reject) => {
-            api.deleteDevice(deviceData.location,deviceData.typ,deviceData.nr, (error, data) => {
+            api.deleteDevice(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
                 if (error) {
                     reject(new Error("Error deleting device: " + error));
                 } else {
@@ -56,7 +56,7 @@ export function useDevices() {
         }
         // Return a Promise that resolves or rejects based on the API callback
         return new Promise((resolve, reject) => {
-            api.getDeviceInfo(deviceData.location,deviceData.typ,deviceData.nr, (error, data) => {
+            api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
                 if (error) {
                     reject(new Error("Error fetching device info: " + error));
                 } else {
@@ -71,14 +71,15 @@ export function useDevices() {
     const getLocationTypAndNumber = (name) => {
         // ATAHW1
         const location = name.slice(0, 4);
-        let typ = name.slice(4, 5);
+        let t = name.slice(4, 5);
         const idStr = name.slice(5);
         const nr = parseInt(idStr, 10);
         if (isNaN(nr)) {
             console.error("Failed to convert id to a number");
             return null;
         }
-        switch (typ) {
+        let typ = "unknown";
+        switch (t) {
             case "D":
                 typ = "dryer";
                 break;
@@ -88,12 +89,35 @@ export function useDevices() {
             case "P":
                 typ = "pump";
                 break;
-            default:
-                typ = "unknown";
         }
         return { location, typ, nr };
     };
 
+    const updateDevice = async (device) => {
+        await authenticateClient();
+        return new Promise((resolve, reject) => {
+            api.updateDevice(device, (error, data, response) => {
+                if (error) {
+                    reject(new Error("Error updating device: " + error));
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+    const newDevice = async (device) => {
+        await authenticateClient();
+        return new Promise((resolve, reject) => {
+            api.newDevice(device, (error, data, response) => {
+                if (error) {
+                    reject(new Error("Error creating device: " + error));
+                } else {
+                    resolve(data);
+                }
+            });
+        })
+    }
 
     return {
         devices,
@@ -101,6 +125,8 @@ export function useDevices() {
         getDevices,
         deleteDevice,
         getDeviceInfo,
+        updateDevice,
+        newDevice,
     };
 }
 

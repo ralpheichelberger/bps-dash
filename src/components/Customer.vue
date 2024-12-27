@@ -1,23 +1,32 @@
 <template> <!-- FIXME add AGBs / DSGVO -->
-  <div v-if="customer" class="container bubble_style">
+  <div v-if="customer" class="container bubble_style" :class="{ admin: admin }">
     <div class="customerName">
       Konto {{ customer.name }}
+      <h2 v-if="customer.typ == 'admin'">Admin</h2>
     </div>
-    <div class="balance">
-      Guthaben EUR {{ cent2euro(customer.credit) }}
-    </div>
-    <div class="cardId">
-      ID: {{ customer.id }}
-    </div>
-    <div class="topUpButton">
-      <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
-        Aufladen
-      </v-btn>
-    </div>
+    <span v-if="!admin">
+      <div class="balance">
+        Guthaben EUR {{ cent2euro(customer.credit) }}
+      </div>
+      <div class="cardId">
+        ID: {{ customer.id }}
+      </div>
+      <div class="topUpButton">
+        <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
+          Aufladen
+        </v-btn>
+      </div>
+    </span>
+    <span v-else>
+      <div class="topUpButton">
+        <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
+          Config
+        </v-btn>
+      </div>
+    </span>
   </div>
   <v-dialog v-if="customer" v-model="topUpDialog">
-    <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false"
-      @top-up="topUpCredit" />
+    <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false" @top-up="topUpCredit" />
   </v-dialog>
 
   <v-card v-if="customer == null">
@@ -34,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useAPI } from "../composables/useAPI.js"
 import { usePayment } from "../composables/usePayment.js";
 
@@ -45,9 +54,17 @@ const closeError = () => {
 };
 const topUpDialog = ref(false);
 const props = defineProps(["id"]);
-
+const admin = computed(() => {
+  if (customer.value) {
+    return customer.value.typ == "admin";
+  }
+  return false;
+}
+)
 getCustomer(props.id)
-
+const navigateToAdmin = () => {
+  window.location.href = "/admin";
+}
 
 // getCustomer()
 

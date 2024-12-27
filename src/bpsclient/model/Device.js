@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import DeviceType from './DeviceType';
 import Module from './Module';
 import Pump from './Pump';
 import WasherStatus from './WasherStatus';
@@ -26,7 +27,7 @@ class Device {
      * Constructs a new <code>Device</code>.
      * @alias module:model/Device
      * @param nr {Number} 
-     * @param typ {String} 
+     * @param typ {module:model/DeviceType} 
      * @param location {String} 
      * @param priceLine {String} 
      * @param module {module:model/Module} 
@@ -70,7 +71,7 @@ class Device {
                 obj['nr'] = ApiClient.convertToType(data['nr'], 'Number');
             }
             if (data.hasOwnProperty('typ')) {
-                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
+                obj['typ'] = DeviceType.constructFromObject(data['typ']);
             }
             if (data.hasOwnProperty('location')) {
                 obj['location'] = ApiClient.convertToType(data['location'], 'String');
@@ -105,10 +106,6 @@ class Device {
             if (!data.hasOwnProperty(property)) {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
-        }
-        // ensure the json data is a string
-        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
-            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
         }
         // ensure the json data is a string
         if (data['location'] && !(typeof data['location'] === 'string' || data['location'] instanceof String)) {
@@ -149,7 +146,7 @@ Device.RequiredProperties = ["nr", "typ", "location", "priceLine", "module", "de
 Device.prototype['nr'] = undefined;
 
 /**
- * @member {String} typ
+ * @member {module:model/DeviceType} typ
  */
 Device.prototype['typ'] = undefined;
 

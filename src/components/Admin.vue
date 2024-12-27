@@ -1,6 +1,6 @@
 <template> <!-- //FIXME change framework to vuestic? -->
     <v-sheet style="height: 100vh;">
-        <v-card>
+        <v-card v-if="locations">
             <v-tabs v-model="tab" bg-color="primary">
                 <v-tab value="devices">Geräte</v-tab>
                 <v-tab value="prices">Preise</v-tab>
@@ -10,7 +10,7 @@
             <v-card-text>
                 <v-tabs-window v-model="tab">
                     <v-tabs-window-item value="devices">
-                        <Devices></Devices>
+                        <Devices :device-types="deviceTypes" :locations="locations"></Devices>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="prices">
@@ -18,7 +18,7 @@
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="locations">
-                        <Locations></Locations>
+                        <Locations :locations="locations" @reloadLocations="reloadLoctions"></Locations>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="programm">
@@ -27,17 +27,33 @@
                 </v-tabs-window>
             </v-card-text>
         </v-card>
-        <v-footer></v-footer>
+        <v-empty-state v-else headline="Whoops, 401" title="Unauthorized"
+            text="You have no clearance to access this page">
+            <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large;"
+                @click="handleOkClick">Hompage</v-btn>
+        </v-empty-state>
+
     </v-sheet>
+
 </template>
 <script setup>
 import { ref } from 'vue'
+import { useAPI } from '@/composables/useAPI';
+const { locations, getLocations } = useAPI()
 import Locations from './Locations.vue'
 import PriceLines from './PriceLines.vue';
 import Devices from './Devices.vue'
 import moduleProgramm from './ModuleProgramm.vue';
+var deviceTypes = ref(['washer', 'dryer', 'pump']) // deliberately hard-coded
 
 const tab = ref('devices')
 
+const handleOkClick = () => {
+    window.location.href = "/";
+}
+const reloadLoctions = () => {
+    getLocations()
+}
+reloadLoctions()
 </script>
 <style></style>

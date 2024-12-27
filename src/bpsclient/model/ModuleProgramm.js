@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import DeviceType from './DeviceType';
 
 /**
  * The ModuleProgramm model module.
@@ -22,7 +23,7 @@ class ModuleProgramm {
     /**
      * Constructs a new <code>ModuleProgramm</code>.
      * @alias module:model/ModuleProgramm
-     * @param typ {String} type of the binary
+     * @param typ {module:model/DeviceType} 
      * @param version {String} version of the binary
      */
     constructor(typ, version) { 
@@ -52,7 +53,7 @@ class ModuleProgramm {
             obj = obj || new ModuleProgramm();
 
             if (data.hasOwnProperty('typ')) {
-                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
+                obj['typ'] = DeviceType.constructFromObject(data['typ']);
             }
             if (data.hasOwnProperty('binary')) {
                 obj['binary'] = ApiClient.convertToType(data['binary'], 'String');
@@ -77,10 +78,6 @@ class ModuleProgramm {
             }
         }
         // ensure the json data is a string
-        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
-            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
-        }
-        // ensure the json data is a string
         if (data['binary'] && !(typeof data['binary'] === 'string' || data['binary'] instanceof String)) {
             throw new Error("Expected the field `binary` to be a primitive type in the JSON string but got " + data['binary']);
         }
@@ -98,8 +95,7 @@ class ModuleProgramm {
 ModuleProgramm.RequiredProperties = ["typ", "version"];
 
 /**
- * type of the binary
- * @member {String} typ
+ * @member {module:model/DeviceType} typ
  */
 ModuleProgramm.prototype['typ'] = undefined;
 

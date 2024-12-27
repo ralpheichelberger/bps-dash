@@ -9,7 +9,7 @@
           @update:modelValue="getDevices(loc)" </v-select>
           <v-btn @click="newDevice" elevation="5">Neu</v-btn>
       </v-sheet><!-- // FIXME: show current shop address -->
-    </v-card-title> <!-- //FIXME: add search --> 
+    </v-card-title> <!-- //FIXME: add search -->
     <v-card-text>
       <v-table>
         <thead>
@@ -48,43 +48,45 @@
       </v-table>
     </v-card-text>
 
-    <v-container v-if="locations">
+    <v-container v-if="props.locations">
       <v-dialog id="washer-edit-dialog" v-model="deviceEdit" max-width="800px">
-        <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" @close="deviceEdit = false"
-          :update="updateDevice" @reload="getDevices(loc)" @delete-device="delDevice(device)" />
+        <DeviceEdit :device="device" :locations="props.locations" :deviceTypes="props.deviceTypes"
+          @close="deviceEdit = false" :update="updateDevice" @reload="getDevices(loc)"
+          @delete-device="delDevice(device)" />
       </v-dialog>
     </v-container>
   </v-card>
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watchEffect } from 'vue'
 import DeviceEdit from './DeviceEdit.vue'
-import { useAPI } from '@/composables/useAPI';
 import { useDevices } from '@/composables/useDevices';
 const { devices, getDevices, deleteDevice } = useDevices()
-const { locations, getLocations } = useAPI()
 const loc = ref(null)
-var deviceTypes = ref(['washer', 'dryer', 'pump']) // deliberately hard-coded
+const props = defineProps({
+  locations: Array,
+  deviceTypes: Array,
+})
 var device = ref()
 const deviceEdit = ref(false)
 const updateDevice = ref(false)
 const locationItems = ref([])
 const deviceName = (item) => { return item?.location + item?.typ.charAt(0).toUpperCase() + item?.nr }
-watch(locations, (locations) => {
-  locationItems.value = locations.map((item) => {
-    return {
-      title: item.id,
-      props: {
-        subtitle: item.address
-      },
-    }
-  })
+
+watchEffect(() => {
+  if (props.locations) {
+    locationItems.value = props.locations.map((item) => {
+      return {
+        title: item.id,
+        props: {
+          subtitle: item.address
+        }
+      }
+    })
+  }
 })
 
-
-
-getLocations()
 
 const delDevice = (device) => {
   deleteDevice({ location: device.location, typ: device.typ, nr: device.nr })

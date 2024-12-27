@@ -3,7 +3,7 @@
         <v-container>
             <v-form @submit.prevent="handleSubmit">
                 <v-text-field label="Type" v-model="formData.typ" required></v-text-field>
-                <v-text-field label="Version" v-model="formData.version" required></v-text-field>
+                <!-- <v-text-field label="Version" v-model="formData.version" required></v-text-field> -->
                 <v-file-input label="Binary File" v-model="formData.file" required></v-file-input>
                 <v-btn type="submit" color="primary">Upload</v-btn>
             </v-form>
@@ -22,7 +22,7 @@ const { uploadModuleProgramm } = useAPI();
 
 const formData = ref({
     typ: 'washer',
-    version: '0.1',
+    version: 'default',
     file: null,
 });
 

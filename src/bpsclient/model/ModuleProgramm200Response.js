@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import DeviceType from './DeviceType';
 
 /**
  * The ModuleProgramm200Response model module.
@@ -54,7 +55,7 @@ class ModuleProgramm200Response {
                 obj['filename'] = ApiClient.convertToType(data['filename'], 'String');
             }
             if (data.hasOwnProperty('typ')) {
-                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
+                obj['typ'] = DeviceType.constructFromObject(data['typ']);
             }
             if (data.hasOwnProperty('version')) {
                 obj['version'] = ApiClient.convertToType(data['version'], 'String');
@@ -76,10 +77,6 @@ class ModuleProgramm200Response {
         // ensure the json data is a string
         if (data['filename'] && !(typeof data['filename'] === 'string' || data['filename'] instanceof String)) {
             throw new Error("Expected the field `filename` to be a primitive type in the JSON string but got " + data['filename']);
-        }
-        // ensure the json data is a string
-        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
-            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
         }
         // ensure the json data is a string
         if (data['version'] && !(typeof data['version'] === 'string' || data['version'] instanceof String)) {
@@ -105,7 +102,7 @@ ModuleProgramm200Response.prototype['message'] = undefined;
 ModuleProgramm200Response.prototype['filename'] = undefined;
 
 /**
- * @member {String} typ
+ * @member {module:model/DeviceType} typ
  */
 ModuleProgramm200Response.prototype['typ'] = undefined;
 
