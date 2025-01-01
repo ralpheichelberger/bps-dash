@@ -25,12 +25,12 @@ class WasherStatus {
      * @param timestamp {Number} 
      * @param allowStart {Boolean} 
      * @param busy {Boolean} 
-     * @param wantDetergent {Boolean} 
-     * @param wantSoftener {Boolean} 
+     * @param allowDetergent {Boolean} 
+     * @param allowSoftener {Boolean} 
      */
-    constructor(timestamp, allowStart, busy, wantDetergent, wantSoftener) { 
+    constructor(timestamp, allowStart, busy, allowDetergent, allowSoftener) { 
         
-        WasherStatus.initialize(this, timestamp, allowStart, busy, wantDetergent, wantSoftener);
+        WasherStatus.initialize(this, timestamp, allowStart, busy, allowDetergent, allowSoftener);
     }
 
     /**
@@ -38,12 +38,12 @@ class WasherStatus {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, timestamp, allowStart, busy, wantDetergent, wantSoftener) { 
+    static initialize(obj, timestamp, allowStart, busy, allowDetergent, allowSoftener) { 
         obj['timestamp'] = timestamp;
         obj['allow_start'] = allowStart;
         obj['busy'] = busy;
-        obj['want_detergent'] = wantDetergent;
-        obj['want_softener'] = wantSoftener;
+        obj['allow_detergent'] = allowDetergent;
+        obj['allow_softener'] = allowSoftener;
     }
 
     /**
@@ -66,11 +66,11 @@ class WasherStatus {
             if (data.hasOwnProperty('busy')) {
                 obj['busy'] = ApiClient.convertToType(data['busy'], 'Boolean');
             }
-            if (data.hasOwnProperty('want_detergent')) {
-                obj['want_detergent'] = ApiClient.convertToType(data['want_detergent'], 'Boolean');
+            if (data.hasOwnProperty('allow_detergent')) {
+                obj['allow_detergent'] = ApiClient.convertToType(data['allow_detergent'], 'Boolean');
             }
-            if (data.hasOwnProperty('want_softener')) {
-                obj['want_softener'] = ApiClient.convertToType(data['want_softener'], 'Boolean');
+            if (data.hasOwnProperty('allow_softener')) {
+                obj['allow_softener'] = ApiClient.convertToType(data['allow_softener'], 'Boolean');
             }
         }
         return obj;
@@ -95,7 +95,7 @@ class WasherStatus {
 
 }
 
-WasherStatus.RequiredProperties = ["timestamp", "allow_start", "busy", "want_detergent", "want_softener"];
+WasherStatus.RequiredProperties = ["timestamp", "allow_start", "busy", "allow_detergent", "allow_softener"];
 
 /**
  * @member {Number} timestamp
@@ -113,14 +113,14 @@ WasherStatus.prototype['allow_start'] = undefined;
 WasherStatus.prototype['busy'] = undefined;
 
 /**
- * @member {Boolean} want_detergent
+ * @member {Boolean} allow_detergent
  */
-WasherStatus.prototype['want_detergent'] = undefined;
+WasherStatus.prototype['allow_detergent'] = undefined;
 
 /**
- * @member {Boolean} want_softener
+ * @member {Boolean} allow_softener
  */
-WasherStatus.prototype['want_softener'] = undefined;
+WasherStatus.prototype['allow_softener'] = undefined;
 
 
 

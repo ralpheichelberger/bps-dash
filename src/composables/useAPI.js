@@ -21,13 +21,15 @@ export function useAPI() {
         return null;
       }
       customer.value = data;
+      // store customer data in local storage
+      localStorage.setItem("customer", JSON.stringify(data));
     });
   };
 
 
   const locations = ref(null);
 
-  const getLocations = async () => {  
+  const getLocations = async () => {
     // Authenticate once
     await authenticateClient();
 
@@ -41,7 +43,7 @@ export function useAPI() {
   }
   const priceLines = ref(null);
 
-  const getPriceLines = async () => {  
+  const getPriceLines = async () => {
     // Authenticate once
     await authenticateClient();
 
@@ -72,7 +74,7 @@ export function useAPI() {
   const uploadModuleProgramm = async (moduleProgramm) => {
     await authenticateClient();
     return new Promise((resolve, reject) => {
-      api.moduleProgramm(moduleProgramm.typ,moduleProgramm.version,moduleProgramm.file, (error, data) => {
+      api.moduleProgramm(moduleProgramm.typ, moduleProgramm.version, moduleProgramm.file, (error, data) => {
         if (error) {
           reject(new Error("Error uploading module programm: " + error));
         } else {

@@ -27,10 +27,12 @@ class Customer {
      * @param name {String} 
      * @param active {Boolean} 
      * @param credit {Number} credit amout in euro cent
+     * @param salt {String} salt for the password
+     * @param prefs {Object} preferences of the customer
      */
-    constructor(typ, id, name, active, credit) { 
+    constructor(typ, id, name, active, credit, salt, prefs) { 
         
-        Customer.initialize(this, typ, id, name, active, credit);
+        Customer.initialize(this, typ, id, name, active, credit, salt, prefs);
     }
 
     /**
@@ -38,12 +40,14 @@ class Customer {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, typ, id, name, active, credit) { 
+    static initialize(obj, typ, id, name, active, credit, salt, prefs) { 
         obj['typ'] = typ;
         obj['id'] = id;
         obj['name'] = name;
         obj['active'] = active;
         obj['credit'] = credit;
+        obj['salt'] = salt;
+        obj['prefs'] = prefs;
     }
 
     /**
@@ -71,6 +75,12 @@ class Customer {
             }
             if (data.hasOwnProperty('credit')) {
                 obj['credit'] = ApiClient.convertToType(data['credit'], 'Number');
+            }
+            if (data.hasOwnProperty('salt')) {
+                obj['salt'] = ApiClient.convertToType(data['salt'], 'String');
+            }
+            if (data.hasOwnProperty('prefs')) {
+                obj['prefs'] = ApiClient.convertToType(data['prefs'], Object);
             }
         }
         return obj;
@@ -100,6 +110,10 @@ class Customer {
         if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
             throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
         }
+        // ensure the json data is a string
+        if (data['salt'] && !(typeof data['salt'] === 'string' || data['salt'] instanceof String)) {
+            throw new Error("Expected the field `salt` to be a primitive type in the JSON string but got " + data['salt']);
+        }
 
         return true;
     }
@@ -107,7 +121,7 @@ class Customer {
 
 }
 
-Customer.RequiredProperties = ["typ", "id", "name", "active", "credit"];
+Customer.RequiredProperties = ["typ", "id", "name", "active", "credit", "salt", "prefs"];
 
 /**
  * @member {module:model/Customer.TypEnum} typ
@@ -134,6 +148,18 @@ Customer.prototype['active'] = undefined;
  * @member {Number} credit
  */
 Customer.prototype['credit'] = undefined;
+
+/**
+ * salt for the password
+ * @member {String} salt
+ */
+Customer.prototype['salt'] = undefined;
+
+/**
+ * preferences of the customer
+ * @member {Object} prefs
+ */
+Customer.prototype['prefs'] = undefined;
 
 
 
@@ -162,7 +188,13 @@ Customer['TypEnum'] = {
      * value: "staff"
      * @const
      */
-    "staff": "staff"
+    "staff": "staff",
+
+    /**
+     * value: "internal"
+     * @const
+     */
+    "internal": "internal"
 };
 
 

@@ -24,11 +24,10 @@ class ModuleProgramm {
      * Constructs a new <code>ModuleProgramm</code>.
      * @alias module:model/ModuleProgramm
      * @param typ {module:model/DeviceType} 
-     * @param version {String} version of the binary
      */
-    constructor(typ, version) { 
+    constructor(typ) { 
         
-        ModuleProgramm.initialize(this, typ, version);
+        ModuleProgramm.initialize(this, typ);
     }
 
     /**
@@ -36,9 +35,8 @@ class ModuleProgramm {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, typ, version) { 
+    static initialize(obj, typ) { 
         obj['typ'] = typ;
-        obj['version'] = version;
     }
 
     /**
@@ -92,7 +90,7 @@ class ModuleProgramm {
 
 }
 
-ModuleProgramm.RequiredProperties = ["typ", "version"];
+ModuleProgramm.RequiredProperties = ["typ"];
 
 /**
  * @member {module:model/DeviceType} typ

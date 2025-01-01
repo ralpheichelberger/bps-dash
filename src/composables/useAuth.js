@@ -18,19 +18,28 @@ export function useAuth() {
       cardID.value = card_id;
       localStorage.setItem("cardID", card_id)
     }
-    const hash = await computeHash(cardID.value);
+    let salt= "";
+    const customerData = localStorage.getItem("customer");
+    if (customerData) { 
+      let data = JSON.parse(customerData);
+salt = data.salt;
+     }
+    const hash = await hashUsernameWithSalt(cardID.value, salt);
     client.authentications["BasicAuth"].username = cardID.value;
     client.authentications["BasicAuth"].password = hash;
   };
 
-
-  const computeHash = async (input) => {
+  async function hashUsernameWithSalt(username, salt) {
+    const input = username + salt;
+    console.log(input);
     const encoder = new TextEncoder();
     const data = encoder.encode(input);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-  };
+    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+
 
   return {
     authenticateClient,

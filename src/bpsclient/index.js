@@ -18,6 +18,7 @@ import Customer from './model/Customer';
 import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
 import DeviceType from './model/DeviceType';
+import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
 import Location from './model/Location';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
@@ -103,6 +104,12 @@ export {
      * @property {module:model/DeviceType}
      */
     DeviceType,
+
+    /**
+     * The DeviceUpdateLastPingRequest model constructor.
+     * @property {module:model/DeviceUpdateLastPingRequest}
+     */
+    DeviceUpdateLastPingRequest,
 
     /**
      * The Location model constructor.

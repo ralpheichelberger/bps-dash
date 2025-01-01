@@ -26,12 +26,13 @@ class Module {
      * @alias module:model/Module
      * @param mac {String} 
      * @param binaryType {String} 
+     * @param binaryVersion {String} 
      * @param lastSeen {Number} 
      * @param lastPing {Number} 
      */
-    constructor(mac, binaryType, lastSeen, lastPing) { 
+    constructor(mac, binaryType, binaryVersion, lastSeen, lastPing) { 
         
-        Module.initialize(this, mac, binaryType, lastSeen, lastPing);
+        Module.initialize(this, mac, binaryType, binaryVersion, lastSeen, lastPing);
     }
 
     /**
@@ -39,9 +40,10 @@ class Module {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, mac, binaryType, lastSeen, lastPing) { 
+    static initialize(obj, mac, binaryType, binaryVersion, lastSeen, lastPing) { 
         obj['mac'] = mac;
         obj['binary_type'] = binaryType;
+        obj['binary_version'] = binaryVersion;
         obj['last_seen'] = lastSeen;
         obj['last_ping'] = lastPing;
     }
@@ -62,6 +64,9 @@ class Module {
             }
             if (data.hasOwnProperty('binary_type')) {
                 obj['binary_type'] = ApiClient.convertToType(data['binary_type'], 'String');
+            }
+            if (data.hasOwnProperty('binary_version')) {
+                obj['binary_version'] = ApiClient.convertToType(data['binary_version'], 'String');
             }
             if (data.hasOwnProperty('last_seen')) {
                 obj['last_seen'] = ApiClient.convertToType(data['last_seen'], 'Number');
@@ -96,6 +101,10 @@ class Module {
         if (data['binary_type'] && !(typeof data['binary_type'] === 'string' || data['binary_type'] instanceof String)) {
             throw new Error("Expected the field `binary_type` to be a primitive type in the JSON string but got " + data['binary_type']);
         }
+        // ensure the json data is a string
+        if (data['binary_version'] && !(typeof data['binary_version'] === 'string' || data['binary_version'] instanceof String)) {
+            throw new Error("Expected the field `binary_version` to be a primitive type in the JSON string but got " + data['binary_version']);
+        }
         // validate the optional field `durations`
         if (data['durations']) { // data not null
           ModulDurations.validateJSON(data['durations']);
@@ -107,7 +116,7 @@ class Module {
 
 }
 
-Module.RequiredProperties = ["mac", "binary_type", "last_seen", "last_ping"];
+Module.RequiredProperties = ["mac", "binary_type", "binary_version", "last_seen", "last_ping"];
 
 /**
  * @member {String} mac
@@ -118,6 +127,11 @@ Module.prototype['mac'] = undefined;
  * @member {String} binary_type
  */
 Module.prototype['binary_type'] = undefined;
+
+/**
+ * @member {String} binary_version
+ */
+Module.prototype['binary_version'] = undefined;
 
 /**
  * @member {Number} last_seen

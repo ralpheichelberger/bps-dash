@@ -18,6 +18,7 @@ import Customer from '../model/Customer';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
 import DeviceType from '../model/DeviceType';
+import DeviceUpdateLastPingRequest from '../model/DeviceUpdateLastPingRequest';
 import Location from '../model/Location';
 import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
@@ -143,6 +144,47 @@ export default class DefaultApi {
       let returnType = Status;
       return this.apiClient.callApi(
         '/device', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the deviceUpdateLastPing operation.
+     * @callback module:api/DefaultApi~deviceUpdateLastPingCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates the last ping of a device
+     * @param {module:model/DeviceUpdateLastPingRequest} deviceUpdateLastPingRequest 
+     * @param {module:api/DefaultApi~deviceUpdateLastPingCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deviceUpdateLastPing(deviceUpdateLastPingRequest, callback) {
+      let postBody = deviceUpdateLastPingRequest;
+      // verify the required parameter 'deviceUpdateLastPingRequest' is set
+      if (deviceUpdateLastPingRequest === undefined || deviceUpdateLastPingRequest === null) {
+        throw new Error("Missing the required parameter 'deviceUpdateLastPingRequest' when calling deviceUpdateLastPing");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/device_update_last_ping', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -1014,25 +1056,14 @@ export default class DefaultApi {
      */
 
     /**
-     * @param {String} version 
-     * @param {String} mac 
+     * Updates the binary programm for a module
      * @param {module:api/DefaultApi~updateModuleBinaryCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link File}
      */
-    updateModuleBinary(version, mac, callback) {
+    updateModuleBinary(callback) {
       let postBody = null;
-      // verify the required parameter 'version' is set
-      if (version === undefined || version === null) {
-        throw new Error("Missing the required parameter 'version' when calling updateModuleBinary");
-      }
-      // verify the required parameter 'mac' is set
-      if (mac === undefined || mac === null) {
-        throw new Error("Missing the required parameter 'mac' when calling updateModuleBinary");
-      }
 
       let pathParams = {
-        'version': version,
-        'mac': mac
       };
       let queryParams = {
       };
@@ -1046,7 +1077,7 @@ export default class DefaultApi {
       let accepts = ['application/octet-stream', 'application/json'];
       let returnType = File;
       return this.apiClient.callApi(
-        '/update_module_binary/{mac}/{version}', 'GET',
+        '/update_module_binary', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
