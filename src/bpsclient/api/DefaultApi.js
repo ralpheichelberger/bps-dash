@@ -19,6 +19,8 @@ import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
 import DeviceType from '../model/DeviceType';
 import DeviceUpdateLastPingRequest from '../model/DeviceUpdateLastPingRequest';
+import DeviceUpdatePumpCountsRequest from '../model/DeviceUpdatePumpCountsRequest';
+import DeviceUpdateStatusRequest from '../model/DeviceUpdateStatusRequest';
 import Location from '../model/Location';
 import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
@@ -191,6 +193,88 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the deviceUpdatePumpCounts operation.
+     * @callback module:api/DefaultApi~deviceUpdatePumpCountsCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates the pump counts of a device
+     * @param {module:model/DeviceUpdatePumpCountsRequest} deviceUpdatePumpCountsRequest 
+     * @param {module:api/DefaultApi~deviceUpdatePumpCountsCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deviceUpdatePumpCounts(deviceUpdatePumpCountsRequest, callback) {
+      let postBody = deviceUpdatePumpCountsRequest;
+      // verify the required parameter 'deviceUpdatePumpCountsRequest' is set
+      if (deviceUpdatePumpCountsRequest === undefined || deviceUpdatePumpCountsRequest === null) {
+        throw new Error("Missing the required parameter 'deviceUpdatePumpCountsRequest' when calling deviceUpdatePumpCounts");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/device_update_pump_counts', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the deviceUpdateStatus operation.
+     * @callback module:api/DefaultApi~deviceUpdateStatusCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates the status of a device
+     * @param {module:model/DeviceUpdateStatusRequest} deviceUpdateStatusRequest 
+     * @param {module:api/DefaultApi~deviceUpdateStatusCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deviceUpdateStatus(deviceUpdateStatusRequest, callback) {
+      let postBody = deviceUpdateStatusRequest;
+      // verify the required parameter 'deviceUpdateStatusRequest' is set
+      if (deviceUpdateStatusRequest === undefined || deviceUpdateStatusRequest === null) {
+        throw new Error("Missing the required parameter 'deviceUpdateStatusRequest' when calling deviceUpdateStatus");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BasicAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/device_update_status', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getCreditJournal operation.
      * @callback module:api/DefaultApi~getCreditJournalCallback
      * @param {String} error Error message, if any.
@@ -288,7 +372,7 @@ export default class DefaultApi {
      * Callback function to receive the result of the getDevice operation.
      * @callback module:api/DefaultApi~getDeviceCallback
      * @param {String} error Error message, if any.
-     * @param {Array.<module:model/Device>} data The data returned by the service call.
+     * @param {module:model/Device} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -298,7 +382,7 @@ export default class DefaultApi {
      * @param {module:model/DeviceType} typ The type of the device
      * @param {Number} nr The number of the device
      * @param {module:api/DefaultApi~getDeviceCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link Array.<module:model/Device>}
+     * data is of type: {@link module:model/Device}
      */
     getDevice(location, typ, nr, callback) {
       let postBody = null;
@@ -330,7 +414,7 @@ export default class DefaultApi {
       let authNames = ['BasicAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = [Device];
+      let returnType = Device;
       return this.apiClient.callApi(
         '/device', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,

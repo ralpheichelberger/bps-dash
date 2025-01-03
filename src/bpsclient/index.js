@@ -19,6 +19,8 @@ import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
 import DeviceType from './model/DeviceType';
 import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
+import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest';
+import DeviceUpdateStatusRequest from './model/DeviceUpdateStatusRequest';
 import Location from './model/Location';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
@@ -110,6 +112,18 @@ export {
      * @property {module:model/DeviceUpdateLastPingRequest}
      */
     DeviceUpdateLastPingRequest,
+
+    /**
+     * The DeviceUpdatePumpCountsRequest model constructor.
+     * @property {module:model/DeviceUpdatePumpCountsRequest}
+     */
+    DeviceUpdatePumpCountsRequest,
+
+    /**
+     * The DeviceUpdateStatusRequest model constructor.
+     * @property {module:model/DeviceUpdateStatusRequest}
+     */
+    DeviceUpdateStatusRequest,
 
     /**
      * The Location model constructor.

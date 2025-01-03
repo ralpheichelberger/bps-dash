@@ -22,7 +22,7 @@ const { uploadModuleProgramm } = useAPI();
 
 const formData = ref({
     typ: 'washer',
-    version: 'default',
+    version: String(Math.floor(Date.now() / 1000)),
     file: null,
 });
 
