@@ -7,7 +7,7 @@
         </v-app-bar-title>
         <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
           @update:modelValue="getDevices(loc)" </v-select>
-          <v-btn @click="newDevice" elevation="5">Neu</v-btn>
+          <v-btn @click="createNewDevice" elevation="5">Neu</v-btn>
       </v-sheet><!-- // FIXME: show current shop address -->
     </v-card-title> <!-- //FIXME: add search -->
     <v-card-text>
@@ -50,7 +50,7 @@
 
     <v-container v-if="props.locations">
       <v-dialog id="washer-edit-dialog" v-model="deviceEdit" max-width="800px">
-        <DeviceEdit :device="device" :locations="props.locations" :deviceTypes="props.deviceTypes"
+        <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" :newDevice="newDevice"
           @close="deviceEdit = false" :update="updateDevice" @reload="getDevices(loc)"
           @delete-device="delDevice(device)" />
       </v-dialog>
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import DeviceEdit from './DeviceEdit.vue'
 import { useDevices } from '@/composables/useDevices';
 const { devices, getDevices, deleteDevice } = useDevices()
@@ -67,35 +67,14 @@ const loc = ref(null)
 const props = defineProps({
   locations: Array,
   deviceTypes: Array,
+  newDevice: String,
 })
 var device = ref()
 const deviceEdit = ref(false)
 const updateDevice = ref(false)
 const locationItems = ref([])
 const deviceName = (item) => { return item?.location + item?.typ.charAt(0).toUpperCase() + item?.nr }
-
-watchEffect(() => {
-  if (props.locations) {
-    locationItems.value = props.locations.map((item) => {
-      return {
-        title: item.id,
-        props: {
-          subtitle: item.address
-        }
-      }
-    })
-  }
-})
-
-
-const delDevice = (device) => {
-  deleteDevice({ location: device.location, typ: device.typ, nr: device.nr })
-
-  deviceEdit.value = false
-}
-
-
-const newDevice = () => {
+const createNewDevice = () => {
   device.value = {
     typ: "",
     nr: "",
@@ -135,4 +114,32 @@ const newDevice = () => {
   deviceEdit.value = true;
   updateDevice.value = false;
 };
+watchEffect(() => {
+  if (props.locations) {
+    locationItems.value = props.locations.map((item) => {
+      return {
+        title: item.id,
+        props: {
+          subtitle: item.address
+        }
+      }
+    })
+  }
+})
+
+if (props.newDevice) {
+  createNewDevice()
+  device.value.module.mac = props.newDevice
+  device.value.typ = "washer"
+  deviceEdit.value = true
+}
+
+const delDevice = (device) => {
+  deleteDevice({ location: device.location, typ: device.typ, nr: device.nr })
+
+  deviceEdit.value = false
+}
+
+
+
 </script>

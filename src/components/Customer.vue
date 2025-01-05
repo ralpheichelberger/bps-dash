@@ -61,7 +61,11 @@ const admin = computed(() => {
   return false;
 }
 )
-getCustomer(props.id)
+getCustomer(props.id).then(() => {
+  console.dir(customer.value)
+}).catch(() => {
+  console.log("no customer found")
+})
 const navigateToAdmin = () => {
   window.location.href = "/admin";
 }

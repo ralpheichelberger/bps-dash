@@ -10,7 +10,7 @@
             <v-card-text>
                 <v-tabs-window v-model="tab">
                     <v-tabs-window-item value="devices">
-                        <Devices :device-types="deviceTypes" :locations="locations"></Devices>
+                        <Devices :device-types="deviceTypes" :locations="locations" :newDevice="newDeviceMac"></Devices>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="prices">
@@ -55,5 +55,14 @@ const reloadLoctions = () => {
     getLocations()
 }
 reloadLoctions()
+
+let tabvalue='devices'
+
+tab.value = tabvalue
+const newDeviceMac=ref('')
+//parameter newDeviceMac on URL 
+const urlParams = new URLSearchParams(window.location.search);
+newDeviceMac.value = urlParams.get('newDeviceMac') || '';
+
 </script>
 <style></style>

@@ -18,6 +18,11 @@ export function useAPI() {
     api.getCustomer(cardID.value, (error, data) => {
       if (error) {
         console.error("Error fetching customer", error);
+        if (error.status === 401) {
+          console.error("Unauthorized");
+          // remove customer data from local storage
+          localStorage.removeItem("customer");
+        }
         return null;
       }
       customer.value = data;
