@@ -45,14 +45,11 @@ class ApiClient {
          * @type {Array.<String>}
          */
         this.authentications = {
-            'BasicAuth': { type: 'basic' }
-        };
+            'BasicAuth': {type: 'basic'},
+            'BearerAuth': {type: 'bearer'}
+        }
 
-        // Configure BasicAuth using environment variables
-        this.authentications['BasicAuth'].username = import.meta.env.VITE_API_USERNAME;
-        this.authentications['BasicAuth'].password = import.meta.env.VITE_API_PASSWORD;
-
-        /**
+	/**
          * The default HTTP headers to be included for all API calls.
          * @type {Array.<String>}
          * @default {}
@@ -76,7 +73,7 @@ class ApiClient {
          */
         this.cache = true;
 
-        /**
+	/**
          * If set to true, the client will save the cookies from each server
          * response, and return them in the next request.
          * @default false

@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { useAuth } from "./useAuth.js";
+import { tr } from "vuetify/locale";
 
 const { authenticateClient, api, cardID } = useAuth();
 
@@ -9,25 +10,29 @@ export function useAPI() {
   const getCustomer = async (card_id) => {
     // Authenticate once
     await authenticateClient(card_id);
-
-    // Fetch customer data
-    if (!cardID.value) {
-      console.error("No card ID set");
-      return null;
-    }
-    api.getCustomer(cardID.value, (error, data) => {
-      if (error) {
-        console.error("Error fetching customer", error);
-        if (error.status === 401) {
-          console.error("Unauthorized");
-          // remove customer data from local storage
-          localStorage.removeItem("customer");
-        }
-        return null;
+    return new Promise((resolve, reject) => {
+      // Fetch customer data
+      if (!card_id) {
+        reject(new Error("No card ID set"));
       }
-      customer.value = data;
-      // store customer data in local storage
-      localStorage.setItem("customer", JSON.stringify(data));
+      api.getCustomer(cardID.value, (error, data) => {
+        if (error) {
+          console.error("Error fetching customer", error);
+          if (error.status === 401) {
+            console.error("Unauthorized");
+            // remove customer data from local storage
+            if (localStorage.getItem("customer")) {
+              localStorage.removeItem("customer");
+              getCustomer(card_id)
+            }
+          } else reject(new Error("Error fetching customer: " + error));
+        } else {
+          customer.value = data;
+          // store customer data in local storage
+          localStorage.setItem("customer", JSON.stringify(data));
+          resolve(data);
+        }
+      });
     });
   };
 

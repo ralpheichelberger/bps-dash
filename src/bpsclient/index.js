@@ -21,7 +21,10 @@ import DeviceType from './model/DeviceType';
 import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest';
 import DeviceUpdateStatusRequest from './model/DeviceUpdateStatusRequest';
+import GetCustomerByTokenRequest from './model/GetCustomerByTokenRequest';
 import Location from './model/Location';
+import MailTo200Response from './model/MailTo200Response';
+import MailToRequest from './model/MailToRequest';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
 import ModuleProgramm from './model/ModuleProgramm';
@@ -126,10 +129,28 @@ export {
     DeviceUpdateStatusRequest,
 
     /**
+     * The GetCustomerByTokenRequest model constructor.
+     * @property {module:model/GetCustomerByTokenRequest}
+     */
+    GetCustomerByTokenRequest,
+
+    /**
      * The Location model constructor.
      * @property {module:model/Location}
      */
     Location,
+
+    /**
+     * The MailTo200Response model constructor.
+     * @property {module:model/MailTo200Response}
+     */
+    MailTo200Response,
+
+    /**
+     * The MailToRequest model constructor.
+     * @property {module:model/MailToRequest}
+     */
+    MailToRequest,
 
     /**
      * The ModulDurations model constructor.

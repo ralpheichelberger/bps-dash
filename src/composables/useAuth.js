@@ -11,34 +11,17 @@ export function useAuth() {
   const api = new bps.DefaultApi(client);
 
 
-  // Authenticate once and store authentication state
   const authenticateClient = async (card_id) => {
-    cardID.value = localStorage.getItem("cardID");
-    if (card_id) {
-      cardID.value = card_id;
-      localStorage.setItem("cardID", card_id)
+    // Set the card ID
+    cardID.value = card_id
+    var token=card_id
+    const customerLocal=localStorage.getItem("customer");
+    if (customerLocal) {
+      let data = JSON.parse(customerLocal);
+      token = data.token;
     }
-    let salt = "";
-    const customerData = localStorage.getItem("customer");
-    if (customerData) {
-      let data = JSON.parse(customerData);
-      salt = data.salt;
-    }
-    const hash = await hashUsernameWithSalt(cardID.value, salt);
-    client.authentications["BasicAuth"].username = cardID.value;
-    client.authentications["BasicAuth"].password = hash;
+    client.authentications["BearerAuth"].accessToken = token
   };
-
-  async function hashUsernameWithSalt(username, salt) {
-    const input = username + salt;
-    const encoder = new TextEncoder();
-    const data = encoder.encode(input);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-  }
-
-
 
   return {
     authenticateClient,
