@@ -1,20 +1,15 @@
 import { ref } from "vue";
 import { useAuth } from "./useAuth.js";
-import { tr } from "vuetify/locale";
 
 const { authenticateClient, api, cardID } = useAuth();
 
 export function useAPI() {
   const customer = ref(null);
-
   const getCustomer = async (card_id) => {
     // Authenticate once
     await authenticateClient(card_id);
     return new Promise((resolve, reject) => {
-      // Fetch customer data
-      if (!card_id) {
-        reject(new Error("No card ID set"));
-      }
+
       api.getCustomer(cardID.value, (error, data) => {
         if (error) {
           console.error("Error fetching customer", error);

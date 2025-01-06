@@ -70,11 +70,10 @@ const navigateToAdmin = () => {
   window.location.href = "/admin";
 }
 
-// getCustomer()
 
 const topUpCredit = (topAmount, details) => {
   topUp(customer.value.id, topAmount, details).then(() => {
-    getCustomer()
+    getCustomer(customer.value.id)
   })
   topUpDialog.value = false
 }

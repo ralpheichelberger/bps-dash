@@ -95,6 +95,7 @@ import { useAPI } from "../composables/useAPI";
 import { useDevices } from "../composables/useDevices";
 import { usePayment } from "../composables/usePayment";
 import TopUp from "./TopUp.vue";
+import { useAuth } from "../composables/useAuth";
 
 const topUpDialog = ref(false);
 const errorDialog = ref(false);
@@ -103,10 +104,11 @@ const errorMessage = ref("");
 const payed = ref(false);
 
 const { customer, getCustomer, cent2euro } = useAPI();
+const { cardID } = useAuth();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, allowStart, payment } = usePayment();
 // Fetch the customer data.
-getCustomer();
+getCustomer(cardID.value);
 const admin = computed(() => {
   if (customer.value) {
     return customer.value.typ == "admin";
@@ -121,7 +123,7 @@ const navigateToAdmin = () => {
 }
 const topUpCredit = (topAmount, details) => {
   topUp(customer.value.id, topAmount, details).then(() => {
-    getCustomer()
+    getCustomer(customer.value.id)
   })
   topUpDialog.value = false
 }
