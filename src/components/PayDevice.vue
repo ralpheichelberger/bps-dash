@@ -183,6 +183,7 @@ const payDeviceAndAllowStart = (typ, details) => {
 <style>
 .container {
   height: 100vh;
+  width: 100%;
   padding: 1rem;
   font-size: 1.5rem;
   display: grid;
@@ -198,6 +199,16 @@ const payDeviceAndAllowStart = (typ, details) => {
     "shopAddress price"
     "payPalButton payPalButton"
     "creditButton creditButton";
+    animation: 2s myFadeIn;
+}
+
+@keyframes myFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .customerName {
@@ -248,5 +259,25 @@ const payDeviceAndAllowStart = (typ, details) => {
 .creditButton {
   grid-area: creditButton;
   margin-top: auto;
+}
+
+.error-dialog {
+  opacity: 0;
+  animation: fadeIn 3s ease-in-out forwards;
+  background-color: rgba(0, 0, 0, 0.762);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 </style>

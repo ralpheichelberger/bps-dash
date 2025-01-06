@@ -24,10 +24,329 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bubblepoint Waschsalons</title>
 </head>
+<style>
 
+  :root {
+    --background-gradient: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
+    /* Pastel gradient */
+    --v-theme-on-surface-variant: #FF6A88;
+}
+  body {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(0deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
+    font-size: 14px;
+    font-family: 'Nova Mono', monospace;
+  }
+
+  #wrapper {
+    position: fixed;
+    bottom: 1rem;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeout 0.5s 3s forwards;
+  }
+
+  /* WASHING MACHINE */
+
+  #washingMachine {
+    background: #ececf4;
+    width: 300px;
+    height: calc(300px + 300px / 3.4);
+    border-radius: 15px;
+    border-top: 15px solid #80819c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset -15px -15px 0 0 rgba(196, 196, 210, 0.3);
+    padding: calc(70px + 15px) 0 calc(30px + 15px);
+  }
+
+  #washingMachine:before,
+  #washingMachine:after {
+    content: "";
+    position: absolute;
+    border: 4px solid transparent;
+    width: 150%;
+  }
+
+  #washingMachine:before {
+    border-bottom-color: #c4c4d2;
+    height: 70px;
+    top: 0;
+    border-radius: 50%;
+    box-shadow: inset 0 -15px 0 0 rgba(196, 196, 210, 0.3);
+  }
+
+  #washingMachine:after {
+    border-top-color: #c4c4d2;
+    height: 30px;
+    bottom: 0;
+  }
+
+  #controls {
+    top: calc((70px - (70px / 2.2)) / 2);
+    text-align: center;
+    right: calc(15px + 15px);
+    background: #242527;
+    color: lightgreen;
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-weight: 500;
+    font-size: 1em;
+    justify-content: center;
+    position: absolute;
+    height: calc(70px / 2.2 - (70px / 2.2 / 4));
+    min-width: calc(300px / 5);
+  }
+
+  #controls:before {
+    content: "━━";
+    font-size: 14px;
+    color: #80819c;
+    box-shadow: inset 0px -15px 0px 0px rgba(196, 196, 210, 0.3);
+    height: calc(70px / 2.2);
+    width: calc(70px / 2.2);
+    border: 3px solid #c4c4d2;
+    border-radius: 100%;
+    transform: rotate(0deg);
+    left: calc(100% + (15px + 15px - 300px / 2 - 70px / 2.2 / 2));
+    position: absolute;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s cubic-bezier(.56, .35, 0, 1.35);
+  }
+
+  #controls:after {
+    content: "";
+    left: calc(100% + (15px + 15px - 300px + 15px + 15px));
+    background: rgba(196, 196, 210, 0.3);
+    border-radius: 3px 3px 10px 10px;
+    border: 3px solid #c4c4d2;
+    box-shadow: inset 0 10px 0 0 #c4c4d2;
+    height: calc(70px / 2.2 - (70px / 2.2 / 4));
+    min-width: calc(300px / 5);
+    position: absolute;
+  }
+
+  #door {
+    width: calc(300px / 1.5);
+    height: calc(300px / 1.5);
+    border: 25px solid #80819c;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    box-shadow: inset 5px 10px 0 0 transparent, 5px -1px 0 0 transparent;
+    transform-origin: 0% 0%;
+    transform: rotateY(0deg);
+    transition: all 0.2s ease-in-out;
+  }
+
+  #door:before {
+    content: "";
+    width: 60%;
+    height: 60%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 50%;
+    border: 5px solid transparent;
+    border-left: 15px solid white;
+    transform: translateY(-50%) rotate(45deg);
+    opacity: 0.2;
+    box-shadow: inset -10px 10px 0 0 rgba(255, 255, 255, 0.2);
+    position: absolute;
+    z-index: 2;
+  }
+
+  #door:after {
+    content: "";
+    background: #70697d;
+    height: 50%;
+    width: 17%;
+    right: 0;
+    border-radius: 40% 30% 30% 40% / 50% 45% 45% 50%;
+    transition: all 0.2s ease-in-out;
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  #tub {
+    width: calc(300px / 1.5 - 25px);
+    height: calc(300px / 1.5 - 25px);
+    background: #453e57;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 0;
+    box-shadow: 0 0 0 7px rgba(196, 196, 210, 0.3);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .clothes {
+    position: absolute;
+    opacity: 0;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .clothes:nth-child(1) {
+    background: linear-gradient(#48873e, #7b9f17);
+    width: 70%;
+    height: 25%;
+    bottom: 10%;
+    right: -20%;
+    transform: rotate(-20deg);
+    border-radius: 49% 38% 65% 8% / 30% 12% 51% 36%;
+  }
+
+  .clothes:nth-child(2) {
+    background: linear-gradient(#c22323, #e15050);
+    width: 100%;
+    height: 20%;
+    border-radius: 64% 40% 27% 47% / 63% 63% 32% 36%;
+    bottom: 0;
+  }
+
+  .clothes:nth-child(3) {
+    background: linear-gradient(#5a5589, #4f46b4);
+    width: 70%;
+    height: 25%;
+    transform: rotate(40deg);
+    border-radius: 41% 38% 71% 8% / 51% 36% 51% 24%;
+    bottom: 0;
+    left: -10%;
+  }
+
+  /* ACTIONS */
+
+  #washingMachine.isOpen #door {
+    transform: rotateY(45deg);
+    box-shadow: inset 5px 10px 0 0 rgba(0, 0, 0, 0.1), 5px -1px 0 0 #a3a4b2;
+  }
+
+  #washingMachine.isOpen #door:after {
+    box-shadow: 5px -1px 0 0 #5c5d73;
+  }
+
+  #washingMachine.isWashing {
+    animation-name: shake;
+    animation-duration: 100ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  #washingMachine.isWashing #controls:before {
+    transform: rotate(45deg);
+  }
+
+  #washingMachine.isWashing #tub {
+    animation-name: rotate;
+    animation-duration: 0.6s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  #washingMachine.isFilled #tub .clothes {
+    opacity: 1;
+  }
+
+  /* ANIMATIONS */
+
+  @keyframes shake {
+
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(0);
+    }
+
+    25% {
+      transform: translate(-1.5px, 1.5px) rotate(0.5deg);
+    }
+
+    50% {
+      transform: translate(-0.5px, -0.5px) rotate(0.5deg);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* PLAYGROUND */
+
+  #playground {
+    margin-top: 25px;
+    width: 300px;
+    display: flex;
+  }
+
+  #playground button {
+    flex: 1;
+    background: #ececf4;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    padding: 7px 10px;
+    box-shadow: -1px 2px 0 0 rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease-in-out;
+    font: inherit;
+    font-size: 0.8em;
+  }
+
+  #playground button#opening {
+    margin: 0 15px;
+  }
+
+  #playground button:hover:not(:disabled) {
+    background: white;
+    cursor: pointer;
+  }
+
+  #playground button:active:not(:disabled) {
+    box-shadow: 0px 1px 0 0 rgba(0, 0, 0, 0.2);
+  }
+
+  #playground button::-moz-focus-inner {
+    border: 0;
+  }
+</style>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div id="wrapper">
+      <div id="washingMachine" class="isFilled isOpen">
+        <div id="controls">READY</div>
+        <div id="door"></div>
+        <div id="tub">
+          <span class="clothes"></span>
+          <span class="clothes"></span>
+          <span class="clothes"></span>
+        </div>
+      </div>
+
+      <div id="playground">
+        <button id="content">EMPTY</button>
+        <button id="opening">CLOSE</button>
+        <button id="power" disabled>START</button>
+      </div>
+      <p>Credits: <a href="https://codepen.io/Arkellys/pens/forked">Arkellys</a></p>
+      <script src="/src/washer.js"></script>
+    </div>
+  </div>
   <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>
+
