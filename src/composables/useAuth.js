@@ -17,9 +17,9 @@ export function useAuth() {
       cardID.value = card_id
     }
     var token=card_id
-    const customerLocal=localStorage.getItem("customer");
-    if (customerLocal) {
-      let data = JSON.parse(customerLocal);
+    const userLocal=localStorage.getItem("user");
+    if (userLocal) {
+      let data = JSON.parse(userLocal);
       token = data.token;
     }
     client.authentications["BearerAuth"].accessToken = token

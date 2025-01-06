@@ -27,12 +27,11 @@ class User {
      * @param name {String} 
      * @param active {Boolean} 
      * @param credit {Number} credit amout in euro cent
-     * @param token {String} token for the password
      * @param prefs {Object} preferences of the user
      */
-    constructor(typ, id, name, active, credit, token, prefs) { 
+    constructor(typ, id, name, active, credit, prefs) { 
         
-        User.initialize(this, typ, id, name, active, credit, token, prefs);
+        User.initialize(this, typ, id, name, active, credit, prefs);
     }
 
     /**
@@ -40,13 +39,12 @@ class User {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, typ, id, name, active, credit, token, prefs) { 
+    static initialize(obj, typ, id, name, active, credit, prefs) { 
         obj['typ'] = typ;
         obj['id'] = id;
         obj['name'] = name;
         obj['active'] = active;
         obj['credit'] = credit;
-        obj['token'] = token;
         obj['prefs'] = prefs;
     }
 
@@ -121,7 +119,7 @@ class User {
 
 }
 
-User.RequiredProperties = ["typ", "id", "name", "active", "credit", "token", "prefs"];
+User.RequiredProperties = ["typ", "id", "name", "active", "credit", "prefs"];
 
 /**
  * @member {module:model/User.TypEnum} typ

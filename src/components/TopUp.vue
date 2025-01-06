@@ -16,8 +16,8 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <PayPalButton2 :amount="amount.toString()" :customer-id="customerId"
-                        @transactionApproved="topUpCustomer" @transactionCanncelled="showCustomerCancelled" 
+                    <PayPalButton2 :amount="amount.toString()" :user-id="userId"
+                        @transactionApproved="topUpUser" @transactionCanncelled="showUserCancelled" 
                         @transactionError="showError"
                         />
                 </v-col>
@@ -30,7 +30,7 @@
 import { ref } from "vue"
 const payPalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID
 const props = defineProps({
-    customerId: {
+    userId: {
         type: String,
         required: true,
     },
@@ -41,11 +41,11 @@ const props = defineProps({
 });
 const emit = defineEmits(["close", "top-up"])
 const amount = ref(20)
-const topUpCustomer = (details) => {
+const topUpUser = (details) => {
     emit("top-up", amount.value * 100, details) // convert to cents
     emit("close")
 }
-const showCustomerCancelled = () => {
+const showUserCancelled = () => {
     alert("Bezahlung abgebrochen")
 }
 const showError = (err) => {

@@ -1,14 +1,14 @@
 <template> <!-- FIXME add AGBs -->
-  <div v-if="customer" class="container bubble_style" :class="{ admin: admin }">
-    <div class="customerName">
-      Konto {{ customer.name }}
-      <h2 v-if="customer.typ == 'admin'">Admin</h2>
+  <div v-if="user" class="container bubble_style" :class="{ admin: admin }">
+    <div class="userName">
+      Konto {{ user.name }}
+      <h2 v-if="user.typ == 'admin'">Admin</h2>
     </div>
     <div v-if="!admin" class="balance">
-      Guthaben EUR {{ cent2euro(customer.credit) }}
+      Guthaben EUR {{ cent2euro(user.credit) }}
     </div>
     <div v-if="!admin" class="cardId">
-      ID: {{ customer.id }}
+      ID: {{ user.id }}
     </div>
     <div v-if="!admin" class="topUpButton">
       <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
@@ -44,7 +44,7 @@
       Preis: EUR {{ cent2euro(deviceInfo.price) }}
     </div>
     <div v-if="!payed && !admin && choosen" class="payPalButton" :disabled="choosen">
-      <PayPalButton :amount="paymentAmount" :customer-id="customer.id" @transactionApproved="payDeviceAndAllowStart" />
+      <PayPalButton :amount="paymentAmount" :user-id="user.id" @transactionApproved="payDeviceAndAllowStart" />
     </div>
     <div v-if="!choosen" class="payPalButton" style="text-align: center;">
       <h3>Bitte wählen Sie Waschmittel und Weichspüler</h3>
@@ -59,8 +59,8 @@
       <h1>Maschine ist {{ admin ? "freigeschalten" : "bezahlt" }}</h1>
     </div>
   </div>
-  <v-dialog v-if="customer" v-model="topUpDialog">
-    <TopUp :visible="topUpDialog" :customer-id="customer.id" @close="topUpDialog = false" @top-up="topUpCredit" />
+  <v-dialog v-if="user" v-model="topUpDialog">
+    <TopUp :visible="topUpDialog" :user-id="user.id" @close="topUpDialog = false" @top-up="topUpCredit" />
   </v-dialog>
 
   <v-dialog v-model="errorDialog" class="ma-3" elevation="10">
@@ -103,15 +103,15 @@ const errorDetail = ref("");
 const errorMessage = ref("");
 const payed = ref(false);
 
-const { customer, getCustomer, cent2euro } = useAPI();
+const { user, getUser, cent2euro } = useAPI();
 const { cardID } = useAuth();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, allowStart, payment } = usePayment();
-// Fetch the customer data.
-getCustomer(cardID.value);
+// Fetch the user data.
+getUser(cardID.value);
 const admin = computed(() => {
-  if (customer.value) {
-    return customer.value.typ == "admin";
+  if (user.value) {
+    return user.value.typ == "admin";
   }
   return false;
 })
@@ -122,8 +122,8 @@ const navigateToAdmin = () => {
   window.location.href = "/admin";
 }
 const topUpCredit = (topAmount, details) => {
-  topUp(customer.value.id, topAmount, details).then(() => {
-    getCustomer(customer.value.id)
+  topUp(user.value.id, topAmount, details).then(() => {
+    getUser(user.value.id)
   })
   topUpDialog.value = false
 }
@@ -168,9 +168,9 @@ const softener = ref(null);
 // Handles payment logic and allows the device to start.
 const payDeviceAndAllowStart = (typ, details) => {
   // FIXME send selected detergent and softener to the server
-  payment(customer.value.id, deviceInfo.value.name, deviceInfo.value.price, typ, details).then(() => {
+  payment(user.value.id, deviceInfo.value.name, deviceInfo.value.price, typ, details).then(() => {
     // allowStart(deviceInfo.value.name, deviceInfo.value.impuls_duration);
-    getCustomer(); // update customer balance
+    getUser(); // update user balance
     payed.value = true;
   }).catch((error) => {
     errorMessage.value = "Die Zahlung konnte nicht abgeschlossen werden"
@@ -192,7 +192,7 @@ const payDeviceAndAllowStart = (typ, details) => {
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
-    "customerName balance"
+    "userName balance"
     "cardId topUpButton"
     "maschineName ."
     "detergent softener"
@@ -211,8 +211,8 @@ const payDeviceAndAllowStart = (typ, details) => {
   }
 }
 
-.customerName {
-  grid-area: customerName;
+.userName {
+  grid-area: userName;
 }
 
 .balance {

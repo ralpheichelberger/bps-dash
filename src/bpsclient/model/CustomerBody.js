@@ -15,29 +15,29 @@
 import ApiClient from '../BpsApiClient';
 
 /**
- * The CustomerBody model module.
- * @module model/CustomerBody
+ * The UserBody model module.
+ * @module model/UserBody
  * @version 0.1.0
  */
-export default class CustomerBody {
+export default class UserBody {
   /**
-   * Constructs a new <code>CustomerBody</code>.
-   * @alias module:model/CustomerBody
+   * Constructs a new <code>UserBody</code>.
+   * @alias module:model/UserBody
    * @class
    */
   constructor() {
   }
 
   /**
-   * Constructs a <code>CustomerBody</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>UserBody</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/CustomerBody} obj Optional instance to populate.
-   * @return {module:model/CustomerBody} The populated <code>CustomerBody</code> instance.
+   * @param {module:model/UserBody} obj Optional instance to populate.
+   * @return {module:model/UserBody} The populated <code>UserBody</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new CustomerBody();
+      obj = obj || new UserBody();
       if (data.hasOwnProperty('name'))
         obj.name = ApiClient.convertToType(data['name'], 'String');
       if (data.hasOwnProperty('active'))
@@ -48,14 +48,14 @@ export default class CustomerBody {
 }
 
 /**
- * The new name of the customer
+ * The new name of the user
  * @member {String} name
  */
-CustomerBody.prototype.name = undefined;
+UserBody.prototype.name = undefined;
 
 /**
- * Indicates if the customer is active
+ * Indicates if the user is active
  * @member {Boolean} active
  */
-CustomerBody.prototype.active = undefined;
+UserBody.prototype.active = undefined;
 

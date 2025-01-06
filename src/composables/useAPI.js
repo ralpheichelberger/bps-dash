@@ -4,27 +4,35 @@ import { useAuth } from "./useAuth.js";
 const { authenticateClient, api, cardID } = useAuth();
 
 export function useAPI() {
+  const user = ref(null);
   const customer = ref(null);
-  const getCustomer = async (card_id) => {
+  const getUser = async (card_id) => {
     // Authenticate once
     await authenticateClient(card_id);
     return new Promise((resolve, reject) => {
 
-      api.getCustomer(cardID.value, (error, data) => {
+      api.getUser(cardID.value, (error, data) => {
         if (error) {
-          console.error("Error fetching customer", error);
+          console.error("Error fetching user", error);
           if (error.status === 401) {
             console.error("Unauthorized");
-            // remove customer data from local storage
-            if (localStorage.getItem("customer")) {
-              localStorage.removeItem("customer");
-              getCustomer(card_id)
+            // remove user data from local storage
+            if (localStorage.getItem("user")) {
+              localStorage.removeItem("user");
+              getUser(card_id)
             }
-          } else reject(new Error("Error fetching customer: " + error));
+          } else reject(new Error("Error fetching user: " + error));
         } else {
-          customer.value = data;
-          // store customer data in local storage
-          localStorage.setItem("customer", JSON.stringify(data));
+          // store user data in local storage
+          if (localStorage.getItem("user")) {
+            user.value = JSON.parse(localStorage.getItem("user"));
+            if (user.value.typ === "admin" && data.typ === "customer") {
+              customer.value = data
+            }
+          } else {
+            user.value = data;
+            localStorage.setItem("user", JSON.stringify(data));
+          }
           resolve(data);
         }
       });
@@ -92,11 +100,12 @@ export function useAPI() {
 
   return {
     customer,
+    user,
     locations,
     priceLines,
     newPriceLine,
     getLocations,
-    getCustomer,
+    getUser,
     getPriceLines,
     cent2euro,
     uploadModuleProgramm,

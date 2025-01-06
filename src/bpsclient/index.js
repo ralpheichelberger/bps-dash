@@ -14,14 +14,13 @@
 
 import ApiClient from './ApiClient';
 import CreditJournal from './model/CreditJournal';
-import Customer from './model/Customer';
 import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
 import DeviceType from './model/DeviceType';
 import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest';
 import DeviceUpdateStatusRequest from './model/DeviceUpdateStatusRequest';
-import GetCustomerByTokenRequest from './model/GetCustomerByTokenRequest';
+import GetUserByTokenRequest from './model/GetUserByTokenRequest';
 import Location from './model/Location';
 import MailTo200Response from './model/MailTo200Response';
 import MailToRequest from './model/MailToRequest';
@@ -38,6 +37,7 @@ import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
 import TopupCreditRequest from './model/TopupCreditRequest';
 import UpdateModuleBinary404Response from './model/UpdateModuleBinary404Response';
+import User from './model/User';
 import WasherStatus from './model/WasherStatus';
 import DefaultApi from './api/DefaultApi';
 
@@ -87,12 +87,6 @@ export {
     CreditJournal,
 
     /**
-     * The Customer model constructor.
-     * @property {module:model/Customer}
-     */
-    Customer,
-
-    /**
      * The Device model constructor.
      * @property {module:model/Device}
      */
@@ -129,10 +123,10 @@ export {
     DeviceUpdateStatusRequest,
 
     /**
-     * The GetCustomerByTokenRequest model constructor.
-     * @property {module:model/GetCustomerByTokenRequest}
+     * The GetUserByTokenRequest model constructor.
+     * @property {module:model/GetUserByTokenRequest}
      */
-    GetCustomerByTokenRequest,
+    GetUserByTokenRequest,
 
     /**
      * The Location model constructor.
@@ -229,6 +223,12 @@ export {
      * @property {module:model/UpdateModuleBinary404Response}
      */
     UpdateModuleBinary404Response,
+
+    /**
+     * The User model constructor.
+     * @property {module:model/User}
+     */
+    User,
 
     /**
      * The WasherStatus model constructor.

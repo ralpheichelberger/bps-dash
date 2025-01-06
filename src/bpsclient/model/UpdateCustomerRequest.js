@@ -14,18 +14,18 @@
 import ApiClient from '../ApiClient';
 
 /**
- * The UpdateCustomerRequest model module.
- * @module model/UpdateCustomerRequest
+ * The UpdateUserRequest model module.
+ * @module model/UpdateUserRequest
  * @version 0.1.0
  */
-class UpdateCustomerRequest {
+class UpdateUserRequest {
     /**
-     * Constructs a new <code>UpdateCustomerRequest</code>.
-     * @alias module:model/UpdateCustomerRequest
+     * Constructs a new <code>UpdateUserRequest</code>.
+     * @alias module:model/UpdateUserRequest
      */
     constructor() { 
         
-        UpdateCustomerRequest.initialize(this);
+        UpdateUserRequest.initialize(this);
     }
 
     /**
@@ -37,15 +37,15 @@ class UpdateCustomerRequest {
     }
 
     /**
-     * Constructs a <code>UpdateCustomerRequest</code> from a plain JavaScript object, optionally creating a new instance.
+     * Constructs a <code>UpdateUserRequest</code> from a plain JavaScript object, optionally creating a new instance.
      * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @param {module:model/UpdateCustomerRequest} obj Optional instance to populate.
-     * @return {module:model/UpdateCustomerRequest} The populated <code>UpdateCustomerRequest</code> instance.
+     * @param {module:model/UpdateUserRequest} obj Optional instance to populate.
+     * @return {module:model/UpdateUserRequest} The populated <code>UpdateUserRequest</code> instance.
      */
     static constructFromObject(data, obj) {
         if (data) {
-            obj = obj || new UpdateCustomerRequest();
+            obj = obj || new UpdateUserRequest();
 
             if (data.hasOwnProperty('name')) {
                 obj['name'] = ApiClient.convertToType(data['name'], 'String');
@@ -58,9 +58,9 @@ class UpdateCustomerRequest {
     }
 
     /**
-     * Validates the JSON data with respect to <code>UpdateCustomerRequest</code>.
+     * Validates the JSON data with respect to <code>UpdateUserRequest</code>.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>UpdateCustomerRequest</code>.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>UpdateUserRequest</code>.
      */
     static validateJSON(data) {
         // ensure the json data is a string
@@ -77,21 +77,21 @@ class UpdateCustomerRequest {
 
 
 /**
- * The new name of the customer
+ * The new name of the user
  * @member {String} name
  */
-UpdateCustomerRequest.prototype['name'] = undefined;
+UpdateUserRequest.prototype['name'] = undefined;
 
 /**
- * Indicates if the customer is active
+ * Indicates if the user is active
  * @member {Boolean} active
  */
-UpdateCustomerRequest.prototype['active'] = undefined;
+UpdateUserRequest.prototype['active'] = undefined;
 
 
 
 
 
 
-export default UpdateCustomerRequest;
+export default UpdateUserRequest;
 

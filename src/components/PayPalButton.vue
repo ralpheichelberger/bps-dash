@@ -9,7 +9,7 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    customerId: {
+    userId: {
         type: String,
         required: true,
     },
@@ -34,7 +34,7 @@ loadScript({
             return actions.order.create({
                 purchase_units: [
                     {
-                        customer_id: props.customerId,
+                        user_id: props.userId,
                         amount: {
                             currency: "EUR",
                             value: props.amount,

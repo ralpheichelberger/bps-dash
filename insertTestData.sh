@@ -1,4 +1,4 @@
 #/bin/bash
-mongosh bubblepoint --eval 'db.customers.insertMany([{id: "d2gH29R0H", name: "John Doe", active: true, credit: 5000},{id: "CtZbJVMC6", name: "Jane Mow", active: true, credit: 3500}])'
+mongosh bubblepoint --eval 'db.users.insertMany([{id: "d2gH29R0H", name: "John Doe", active: true, credit: 5000},{id: "CtZbJVMC6", name: "Jane Mow", active: true, credit: 3500}])'
 mongosh bubblepoint --eval "db.price_lines.insertMany([  { id: 'washer_small',    price: 400  },  { id: 'washer_medium',    price: 600  },  {  id: 'washer_big',    price: 900  },  { id: 'dryer_10_minutes',    price: 100  }])"
 mongosh bubblepoint --eval "db.locations.insertMany([  {id: 'ATAH',    address: 'Andreas-Hofer-Straße 37, 6020 Innsbruck'  },  { id: 'ATFW',    address: 'Fürstenweg 8, 6020 Innsbruck'  },  {   id: 'ATMW',    address: 'Mitterweg 58, 6020 Innsbruck'  },  {  id: 'ATBX',    address: 'Brixnerstraße 1, 6020 Innsbruck'  }])"

@@ -78,7 +78,8 @@ span.action {
 }
 
 .admin {
-    background: rgb(78, 208, 255) !important;
+    background: rgb(2, 27, 36) !important;
+    color: snow !important;
 }
 
 /* Gradient Animation */

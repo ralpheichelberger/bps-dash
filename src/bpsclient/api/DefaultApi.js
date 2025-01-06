@@ -14,14 +14,13 @@
 
 import ApiClient from "../ApiClient";
 import CreditJournal from '../model/CreditJournal';
-import Customer from '../model/Customer';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
 import DeviceType from '../model/DeviceType';
 import DeviceUpdateLastPingRequest from '../model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from '../model/DeviceUpdatePumpCountsRequest';
 import DeviceUpdateStatusRequest from '../model/DeviceUpdateStatusRequest';
-import GetCustomerByTokenRequest from '../model/GetCustomerByTokenRequest';
+import GetUserByTokenRequest from '../model/GetUserByTokenRequest';
 import Location from '../model/Location';
 import MailTo200Response from '../model/MailTo200Response';
 import MailToRequest from '../model/MailToRequest';
@@ -32,6 +31,7 @@ import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
 import TopupCreditRequest from '../model/TopupCreditRequest';
 import UpdateModuleBinary404Response from '../model/UpdateModuleBinary404Response';
+import User from '../model/User';
 
 /**
 * Default service.
@@ -89,7 +89,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -143,7 +143,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -184,7 +184,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -225,7 +225,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -266,7 +266,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -318,95 +318,12 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = CreditJournal;
       return this.apiClient.callApi(
         '/credit_journal', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the getCustomer operation.
-     * @callback module:api/DefaultApi~getCustomerCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/Customer} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns a customer with credit info
-     * @param {String} id the unique 9 characters card ID
-     * @param {module:api/DefaultApi~getCustomerCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/Customer}
-     */
-    getCustomer(id, callback) {
-      let postBody = null;
-      // verify the required parameter 'id' is set
-      if (id === undefined || id === null) {
-        throw new Error("Missing the required parameter 'id' when calling getCustomer");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-        'id': id
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['BasicAuth', 'BearerAuth'];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = Customer;
-      return this.apiClient.callApi(
-        '/customer', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the getCustomerByToken operation.
-     * @callback module:api/DefaultApi~getCustomerByTokenCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/Customer} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Returns a customer by the token
-     * @param {module:model/GetCustomerByTokenRequest} getCustomerByTokenRequest 
-     * @param {module:api/DefaultApi~getCustomerByTokenCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/Customer}
-     */
-    getCustomerByToken(getCustomerByTokenRequest, callback) {
-      let postBody = getCustomerByTokenRequest;
-      // verify the required parameter 'getCustomerByTokenRequest' is set
-      if (getCustomerByTokenRequest === undefined || getCustomerByTokenRequest === null) {
-        throw new Error("Missing the required parameter 'getCustomerByTokenRequest' when calling getCustomerByToken");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['BasicAuth', 'BearerAuth'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Customer;
-      return this.apiClient.callApi(
-        '/customer_by_token', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -455,7 +372,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Device;
@@ -497,7 +414,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Device;
@@ -551,7 +468,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = DeviceInfo;
@@ -591,7 +508,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = [Device];
@@ -633,7 +550,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Location;
@@ -669,7 +586,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = [Location];
@@ -717,7 +634,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = [Payment];
@@ -759,7 +676,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = PriceLine;
@@ -795,12 +712,95 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = [PriceLine];
       return this.apiClient.callApi(
         '/price_lines', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getUser operation.
+     * @callback module:api/DefaultApi~getUserCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/User} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a user with credit info
+     * @param {String} id the unique 9 characters card ID
+     * @param {module:api/DefaultApi~getUserCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/User}
+     */
+    getUser(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getUser");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = User;
+      return this.apiClient.callApi(
+        '/user', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getUserByToken operation.
+     * @callback module:api/DefaultApi~getUserByTokenCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/User} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a user by the token
+     * @param {module:model/GetUserByTokenRequest} getUserByTokenRequest 
+     * @param {module:api/DefaultApi~getUserByTokenCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/User}
+     */
+    getUserByToken(getUserByTokenRequest, callback) {
+      let postBody = getUserByTokenRequest;
+      // verify the required parameter 'getUserByTokenRequest' is set
+      if (getUserByTokenRequest === undefined || getUserByTokenRequest === null) {
+        throw new Error("Missing the required parameter 'getUserByTokenRequest' when calling getUserByToken");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = User;
+      return this.apiClient.callApi(
+        '/user_by_token', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -836,7 +836,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = MailTo200Response;
@@ -889,7 +889,7 @@ export default class DefaultApi {
         'file': file
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['multipart/form-data'];
       let accepts = ['application/json'];
       let returnType = ModuleProgramm200Response;
@@ -930,7 +930,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -971,7 +971,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -1012,7 +1012,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -1032,7 +1032,7 @@ export default class DefaultApi {
      */
 
     /**
-     * Adds a credit journal entry and updates the customer's credit
+     * Adds a credit journal entry and updates the user's credit
      * @param {module:model/PaymentRequest} paymentRequest 
      * @param {module:api/DefaultApi~paymentCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Status}
@@ -1053,7 +1053,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -1125,7 +1125,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Status;
@@ -1145,7 +1145,7 @@ export default class DefaultApi {
      */
 
     /**
-     * Adds a credit journal entry and updates the customer's credit
+     * Adds a credit journal entry and updates the user's credit
      * @param {module:model/TopupCreditRequest} topupCreditRequest 
      * @param {module:api/DefaultApi~topupCreditCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Status}
@@ -1166,52 +1166,12 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Status;
       return this.apiClient.callApi(
         '/topup_credit', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the updateCustomer operation.
-     * @callback module:api/DefaultApi~updateCustomerCallback
-     * @param {String} error Error message, if any.
-     * @param data This operation does not return a value.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Updates the customer's name and active status
-     * @param {module:model/Customer} customer The updated customer object
-     * @param {module:api/DefaultApi~updateCustomerCallback} callback The callback function, accepting three arguments: error, data, response
-     */
-    updateCustomer(customer, callback) {
-      let postBody = customer;
-      // verify the required parameter 'customer' is set
-      if (customer === undefined || customer === null) {
-        throw new Error("Missing the required parameter 'customer' when calling updateCustomer");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['BasicAuth', 'BearerAuth'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = null;
-      return this.apiClient.callApi(
-        '/customer', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -1247,7 +1207,7 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Device;
@@ -1283,12 +1243,52 @@ export default class DefaultApi {
       let formParams = {
       };
 
-      let authNames = ['BasicAuth', 'BearerAuth'];
+      let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/octet-stream', 'application/json'];
       let returnType = File;
       return this.apiClient.callApi(
         '/update_module_binary', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the updateUser operation.
+     * @callback module:api/DefaultApi~updateUserCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates the user's name and active status
+     * @param {module:model/User} user The updated user object
+     * @param {module:api/DefaultApi~updateUserCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    updateUser(user, callback) {
+      let postBody = user;
+      // verify the required parameter 'user' is set
+      if (user === undefined || user === null) {
+        throw new Error("Missing the required parameter 'user' when calling updateUser");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = null;
+      return this.apiClient.callApi(
+        '/user', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
