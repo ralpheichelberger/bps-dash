@@ -26,7 +26,7 @@ export function useAPI() {
           // store user data in local storage
           if (localStorage.getItem("user")) {
             user.value = JSON.parse(localStorage.getItem("user"));
-            if (user.value.typ === "admin" && data.typ === "customer") {
+            if (user.value.typ === "admin" && data.typ === "user") {
               customer.value = data
             }
           } else {
