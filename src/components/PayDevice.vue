@@ -7,7 +7,7 @@
     <div v-if="!admin" class="balance">
       Guthaben EUR {{ cent2euro(user.credit) }}
     </div>
-    <div v-if="!admin" class="cardId">
+    <div v-if="!admin" class="card-id">
       ID: {{ user.id }}
     </div>
     <div v-if="!admin" class="topUpButton">
@@ -193,7 +193,7 @@ const payDeviceAndAllowStart = (typ, details) => {
   grid-auto-flow: row;
   grid-template-areas:
     "userName balance"
-    "cardId topUpButton"
+    "card-id topUpButton"
     "maschineName ."
     "detergent softener"
     "shopAddress price"
@@ -220,8 +220,8 @@ const payDeviceAndAllowStart = (typ, details) => {
   text-align: right;
 }
 
-.cardId {
-  grid-area: cardId;
+.card-id {
+  grid-area: card-id;
 }
 
 .topUpButton {

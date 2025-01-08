@@ -7,7 +7,6 @@ export function useDevices() {
 
     const devices = ref(null);
     const getDevices = async (location) => {
-        // Authenticate once
         await authenticateClient();
         return new Promise((resolve, reject) => {
             api.getDevices({ location: location }, (error, data) => {
@@ -23,8 +22,6 @@ export function useDevices() {
 
     const deleteDevice = async (deviceData) => {
         await authenticateClient();
-
-        // Return a Promise that resolves or rejects based on the API callback
         return new Promise((resolve, reject) => {
             api.deleteDevice(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
                 if (error) {
@@ -39,8 +36,6 @@ export function useDevices() {
     const deviceInfo = ref(null);
     const getDeviceInfo = async (deviceId) => {
         await authenticateClient();
-
-        // Basic validations — throw an Error so we can catch() it later
         if (!cardID.value) {
             throw new Error("No card ID set");
         }
@@ -54,7 +49,6 @@ export function useDevices() {
         if (deviceData.typ === "unknown") {
             throw new Error("Unknown device type");
         }
-        // Return a Promise that resolves or rejects based on the API callback
         return new Promise((resolve, reject) => {
             api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
                 if (error) {
@@ -69,7 +63,6 @@ export function useDevices() {
 
 
     const getLocationTypAndNumber = (name) => {
-        // ATAHW1
         const location = name.slice(0, 4);
         let t = name.slice(4, 5);
         const idStr = name.slice(5);

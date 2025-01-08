@@ -6,7 +6,6 @@ export function usePayment() {
     const topUp = async (card_id, amount, details) => {
         // Ensure client is authenticated before making the API call
         await authenticateClient();
-
         const topUpBody = {
             card_id: card_id,
             amount: amount,
@@ -27,7 +26,6 @@ export function usePayment() {
 
     const payment = async (card_id, name, amount, typ, details) => {
         await authenticateClient();
-
         const paymentBody = {
             card_id: card_id,
             machine_name: name,
