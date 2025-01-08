@@ -5,6 +5,7 @@ import * as bps from "../bpsclient";
  * returns {init function, api bps.DefaultApi, cardID ref}
  */
 export function useAuth() {
+  const cardID = ref("");
   const u = ref(localStorage.getItem("user") || ""); 
   if (u.value) {
     cardID.value = JSON.parse(u.value).id
