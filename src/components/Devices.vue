@@ -15,6 +15,9 @@
         <thead>
           <tr>
             <th class="text-left">
+              ID
+            </th>
+            <th class="text-left">
               Name
             </th>
             <th class="text-left">
@@ -37,9 +40,10 @@
         <tbody>
           <tr v-for="item in devices" :key="item.id"
             @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
+            <td>{{ item.id }}</td>
             <td>{{ deviceName(item) }}</td>
             <td>{{ item.type }}</td>
-            <td>{{ item.id }}</td>
+            <td>{{ item.nr }}</td>
             <td>{{ item.priceLine }}</td>
             <td>{{ item.module.mac }}</td>
             <td>todo</td>

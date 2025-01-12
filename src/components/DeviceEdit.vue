@@ -22,7 +22,12 @@
 						:items="locationItems" @update:modelValue="fetchLocationDevices"></v-select>
 				</v-col>
 				<v-col cols="12">
-					<v-text-field id="device-id" type="number" v-model.number="device.nr" :disabled="disabled || update"
+					<v-text-field id="device-id" v-model="device.id" :disabled="disabled"
+						label="Device ID" required>
+					</v-text-field>
+				</v-col>
+				<v-col cols="12">
+					<v-text-field id="device-nr" type="number" v-model.number="device.nr" :disabled="disabled"
 						label="Device Nummer" required>
 					</v-text-field>
 				</v-col>

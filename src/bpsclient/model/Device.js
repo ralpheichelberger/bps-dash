@@ -26,6 +26,7 @@ class Device {
     /**
      * Constructs a new <code>Device</code>.
      * @alias module:model/Device
+     * @param id {String} 
      * @param nr {Number} 
      * @param typ {module:model/DeviceType} 
      * @param location {String} 
@@ -35,9 +36,9 @@ class Device {
      * @param softener {module:model/Pump} 
      * @param status {module:model/WasherStatus} 
      */
-    constructor(nr, typ, location, priceLine, module, detergent, softener, status) { 
+    constructor(id, nr, typ, location, priceLine, module, detergent, softener, status) { 
         
-        Device.initialize(this, nr, typ, location, priceLine, module, detergent, softener, status);
+        Device.initialize(this, id, nr, typ, location, priceLine, module, detergent, softener, status);
     }
 
     /**
@@ -45,7 +46,8 @@ class Device {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, nr, typ, location, priceLine, module, detergent, softener, status) { 
+    static initialize(obj, id, nr, typ, location, priceLine, module, detergent, softener, status) { 
+        obj['id'] = id;
         obj['nr'] = nr;
         obj['typ'] = typ;
         obj['location'] = location;
@@ -67,6 +69,9 @@ class Device {
         if (data) {
             obj = obj || new Device();
 
+            if (data.hasOwnProperty('id')) {
+                obj['id'] = ApiClient.convertToType(data['id'], 'String');
+            }
             if (data.hasOwnProperty('nr')) {
                 obj['nr'] = ApiClient.convertToType(data['nr'], 'Number');
             }
@@ -108,6 +113,10 @@ class Device {
             }
         }
         // ensure the json data is a string
+        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
+            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
+        }
+        // ensure the json data is a string
         if (data['location'] && !(typeof data['location'] === 'string' || data['location'] instanceof String)) {
             throw new Error("Expected the field `location` to be a primitive type in the JSON string but got " + data['location']);
         }
@@ -138,7 +147,12 @@ class Device {
 
 }
 
-Device.RequiredProperties = ["nr", "typ", "location", "priceLine", "module", "detergent", "softener", "status"];
+Device.RequiredProperties = ["id", "nr", "typ", "location", "priceLine", "module", "detergent", "softener", "status"];
+
+/**
+ * @member {String} id
+ */
+Device.prototype['id'] = undefined;
 
 /**
  * @member {Number} nr
