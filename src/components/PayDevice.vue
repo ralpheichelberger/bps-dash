@@ -37,7 +37,7 @@
       </v-radio-group>
     </div>
     <div v-if="deviceInfo" class="shopAddress">
-      <h3>{{ deviceName() }}</h3>
+      <h3>{{ deviceDisplayName() }}</h3>
       {{ deviceInfo.location }}
     </div>
     <div v-if="deviceInfo" class="price">
@@ -106,8 +106,8 @@ const payed = ref(false);
 const { user, getUser, cent2euro } = useAPI();
 const { cardID } = useAuth();
 const { deviceInfo, getDeviceInfo } = useDevices();
-const { topUp, allowStart, payment } = usePayment();
-// Fetch the user data.
+const { topUp, payment } = usePayment();
+
 getUser(cardID.value);
 const admin = computed(() => {
   if (user.value) {
@@ -128,8 +128,8 @@ const topUpCredit = (topAmount, details) => {
   topUpDialog.value = false
 }
 // Get device info based on query parameter "d".
-const props = defineProps(["devicename"]);
-getDeviceInfo(props.devicename).catch((error) => {
+const props = defineProps(["deviceId"]);
+getDeviceInfo(props.deviceId).catch((error) => {
   errorMessage.value = "Dieses Gerät ist leider nicht registriert"
   errorDetail.value = error;
   errorDialog.value = true;
@@ -142,13 +142,15 @@ const closeError = () => {
 };
 
 // Returns a label for the device depending on its name.
-const deviceName = () => {
+const deviceDisplayName = () => {
   if (deviceInfo.value) {
-    switch (deviceInfo.value.name.substring(4, 5)) {
+    var sname= deviceInfo.value.name.split("/");
+    var t=sname[1].substring(0,1).toUpperCase();
+    switch (t) {
       case "W":
-        return "Waschmaschine Nr. " + deviceInfo.value.name.substring(5);
+        return "Waschmaschine Nr. " + sname[1].substring(1);
       case "D":
-        return "Trockner Nr. " + deviceInfo.value.name.substring(5);
+        return "Trockner Nr. " + sname.substring(1);
       default:
         return deviceInfo.value.name;
     }

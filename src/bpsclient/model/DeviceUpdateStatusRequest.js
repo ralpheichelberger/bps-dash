@@ -23,12 +23,12 @@ class DeviceUpdateStatusRequest {
     /**
      * Constructs a new <code>DeviceUpdateStatusRequest</code>.
      * @alias module:model/DeviceUpdateStatusRequest
-     * @param name {String} The name of the device
+     * @param id {String} The name of the device
      * @param status {module:model/WasherStatus} 
      */
-    constructor(name, status) { 
+    constructor(id, status) { 
         
-        DeviceUpdateStatusRequest.initialize(this, name, status);
+        DeviceUpdateStatusRequest.initialize(this, id, status);
     }
 
     /**
@@ -36,8 +36,8 @@ class DeviceUpdateStatusRequest {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, name, status) { 
-        obj['name'] = name;
+    static initialize(obj, id, status) { 
+        obj['id'] = id;
         obj['status'] = status;
     }
 
@@ -52,8 +52,8 @@ class DeviceUpdateStatusRequest {
         if (data) {
             obj = obj || new DeviceUpdateStatusRequest();
 
-            if (data.hasOwnProperty('name')) {
-                obj['name'] = ApiClient.convertToType(data['name'], 'String');
+            if (data.hasOwnProperty('id')) {
+                obj['id'] = ApiClient.convertToType(data['id'], 'String');
             }
             if (data.hasOwnProperty('status')) {
                 obj['status'] = WasherStatus.constructFromObject(data['status']);
@@ -75,8 +75,8 @@ class DeviceUpdateStatusRequest {
             }
         }
         // ensure the json data is a string
-        if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
-            throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
+        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
+            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
         }
         // validate the optional field `status`
         if (data['status']) { // data not null
@@ -89,13 +89,13 @@ class DeviceUpdateStatusRequest {
 
 }
 
-DeviceUpdateStatusRequest.RequiredProperties = ["name", "status"];
+DeviceUpdateStatusRequest.RequiredProperties = ["id", "status"];
 
 /**
  * The name of the device
- * @member {String} name
+ * @member {String} id
  */
-DeviceUpdateStatusRequest.prototype['name'] = undefined;
+DeviceUpdateStatusRequest.prototype['id'] = undefined;
 
 /**
  * @member {module:model/WasherStatus} status

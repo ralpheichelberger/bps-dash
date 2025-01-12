@@ -42,30 +42,35 @@ export function useDevices() {
         if (!deviceId) {
             throw new Error("No deviceId set");
         }
-        if (deviceId.length < 6) {
+        if (deviceId.length < 1) {
             throw new Error("Invalid deviceId");
         }
-        const deviceData = getLocationTypAndNumber(deviceId);
-        if (deviceData.typ === "unknown") {
-            throw new Error("Unknown device type");
-        }
         return new Promise((resolve, reject) => {
-            api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
+            api.getDeviceById(deviceId, (error, data) => {
                 if (error) {
                     reject(new Error("Error fetching device info: " + error));
                 } else {
-                    deviceInfo.value = data;
-                    resolve(data);
+                    const deviceData = data;
+                    api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
+                        if (error) {
+                            reject(new Error("Error fetching device info: " + error));
+                        } else {
+                            deviceInfo.value = data;
+                            resolve(data);
+                        }
+                    });
                 }
-            });
-        });
-    };
+            })
+        })
+    }
+    
 
 
     const getLocationTypAndNumber = (name) => {
-        const location = name.slice(0, 4);
-        let t = name.slice(4, 5);
-        const idStr = name.slice(5);
+    const sname=name.split("/");
+        const location = sname[0]
+        let t = sname[1].slice(0, 1);
+        const idStr = sname[1].slice(1);
         const nr = parseInt(idStr, 10);
         if (isNaN(nr)) {
             console.error("Failed to convert id to a number");

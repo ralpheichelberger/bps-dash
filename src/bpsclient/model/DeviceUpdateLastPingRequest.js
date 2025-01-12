@@ -22,11 +22,11 @@ class DeviceUpdateLastPingRequest {
     /**
      * Constructs a new <code>DeviceUpdateLastPingRequest</code>.
      * @alias module:model/DeviceUpdateLastPingRequest
-     * @param name {String} The name of the device
+     * @param id {String} The ID of the device
      */
-    constructor(name) { 
+    constructor(id) { 
         
-        DeviceUpdateLastPingRequest.initialize(this, name);
+        DeviceUpdateLastPingRequest.initialize(this, id);
     }
 
     /**
@@ -34,8 +34,8 @@ class DeviceUpdateLastPingRequest {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, name) { 
-        obj['name'] = name;
+    static initialize(obj, id) { 
+        obj['id'] = id;
     }
 
     /**
@@ -49,8 +49,8 @@ class DeviceUpdateLastPingRequest {
         if (data) {
             obj = obj || new DeviceUpdateLastPingRequest();
 
-            if (data.hasOwnProperty('name')) {
-                obj['name'] = ApiClient.convertToType(data['name'], 'String');
+            if (data.hasOwnProperty('id')) {
+                obj['id'] = ApiClient.convertToType(data['id'], 'String');
             }
         }
         return obj;
@@ -69,8 +69,8 @@ class DeviceUpdateLastPingRequest {
             }
         }
         // ensure the json data is a string
-        if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
-            throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
+        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
+            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
         }
 
         return true;
@@ -79,13 +79,13 @@ class DeviceUpdateLastPingRequest {
 
 }
 
-DeviceUpdateLastPingRequest.RequiredProperties = ["name"];
+DeviceUpdateLastPingRequest.RequiredProperties = ["id"];
 
 /**
- * The name of the device
- * @member {String} name
+ * The ID of the device
+ * @member {String} id
  */
-DeviceUpdateLastPingRequest.prototype['name'] = undefined;
+DeviceUpdateLastPingRequest.prototype['id'] = undefined;
 
 
 

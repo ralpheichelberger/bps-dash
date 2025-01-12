@@ -384,6 +384,48 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getDeviceById operation.
+     * @callback module:api/DefaultApi~getDeviceByIdCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Device} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a device by the ID
+     * @param {String} id The ID of the device
+     * @param {module:api/DefaultApi~getDeviceByIdCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Device}
+     */
+    getDeviceById(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getDeviceById");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Device;
+      return this.apiClient.callApi(
+        '/device_by_id', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getDeviceByMac operation.
      * @callback module:api/DefaultApi~getDeviceByMacCallback
      * @param {String} error Error message, if any.

@@ -77,7 +77,7 @@ var device = ref()
 const deviceEdit = ref(false)
 const updateDevice = ref(false)
 const locationItems = ref([])
-const deviceName = (item) => { return item?.location + item?.typ.charAt(0).toUpperCase() + item?.nr }
+const deviceName = (item) => { return item?.location +"/"+ item?.typ.charAt(0).toUpperCase() + item?.nr }
 const createNewDevice = () => {
   device.value = {
     typ: "",
