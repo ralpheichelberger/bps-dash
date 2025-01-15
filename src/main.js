@@ -6,6 +6,7 @@ import { registerPlugins } from '@/plugins'
 import App from './App.vue';
 import User from './components/User.vue';
 import PayDevice from './components/PayDevice.vue';
+import Marketing from './components/Marketing.vue';
 import Admin from './components/Admin.vue';
 import Home from './Home.vue';
 import Home2 from './Home2.vue';
@@ -14,6 +15,7 @@ import Home2 from './Home2.vue';
 const routes = [
     { path: '/B/:id', name: 'User', component: User, props: true },
     { path: '/P/:deviceId', name: 'PayDevice', component: PayDevice , props: true},
+    { path: '/M/:code', name: 'Marketing', component: Marketing , props: true},
     { path: '/admin', name: 'Admin', component: Admin }, // FIXME needs to be user in Users with type admin - PIN code?
     { path: '/', name: 'Home', component: Home },
     { path: '/manual/all.png', name: 'Home2', component: Home2 },

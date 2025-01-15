@@ -24,6 +24,7 @@ import GetUserByTokenRequest from '../model/GetUserByTokenRequest';
 import Location from '../model/Location';
 import MailTo200Response from '../model/MailTo200Response';
 import MailToRequest from '../model/MailToRequest';
+import Marketing from '../model/Marketing';
 import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
 import PaymentRequest from '../model/PaymentRequest';
@@ -640,6 +641,54 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getMarketing operation.
+     * @callback module:api/DefaultApi~getMarketingCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Marketing} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Gets a marketing logging by code and uuid
+     * @param {String} code The marketing code
+     * @param {String} uuid The user UUID
+     * @param {module:api/DefaultApi~getMarketingCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Marketing}
+     */
+    getMarketing(code, uuid, callback) {
+      let postBody = null;
+      // verify the required parameter 'code' is set
+      if (code === undefined || code === null) {
+        throw new Error("Missing the required parameter 'code' when calling getMarketing");
+      }
+      // verify the required parameter 'uuid' is set
+      if (uuid === undefined || uuid === null) {
+        throw new Error("Missing the required parameter 'uuid' when calling getMarketing");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'code': code,
+        'uuid': uuid
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Marketing;
+      return this.  apiClient.callApi(
+        '/marketing', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getPayments operation.
      * @callback module:api/DefaultApi~getPaymentsCallback
      * @param {String} error Error message, if any.
@@ -1025,6 +1074,47 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the newMarketing operation.
+     * @callback module:api/DefaultApi~newMarketingCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/MailTo200Response} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Sends a marketing email to all users
+     * @param {module:model/Marketing} marketing 
+     * @param {module:api/DefaultApi~newMarketingCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/MailTo200Response}
+     */
+    newMarketing(marketing, callback) {
+      let postBody = marketing;
+      // verify the required parameter 'marketing' is set
+      if (marketing === undefined || marketing === null) {
+        throw new Error("Missing the required parameter 'marketing' when calling newMarketing");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = MailTo200Response;
+      return this.apiClient.callApi(
+        '/marketing', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the newPriceLine operation.
      * @callback module:api/DefaultApi~newPriceLineCallback
      * @param {String} error Error message, if any.
@@ -1255,6 +1345,47 @@ export default class DefaultApi {
       let returnType = Device;
       return this.apiClient.callApi(
         '/device', 'PUT',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the updateMarketing operation.
+     * @callback module:api/DefaultApi~updateMarketingCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/MailTo200Response} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates a marketing logging by code and uuid
+     * @param {module:model/Marketing} marketing 
+     * @param {module:api/DefaultApi~updateMarketingCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/MailTo200Response}
+     */
+    updateMarketing(marketing, callback) {
+      let postBody = marketing;
+      // verify the required parameter 'marketing' is set
+      if (marketing === undefined || marketing === null) {
+        throw new Error("Missing the required parameter 'marketing' when calling updateMarketing");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = MailTo200Response;
+      return this.apiClient.callApi(
+        '/marketing', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

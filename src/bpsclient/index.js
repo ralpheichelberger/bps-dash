@@ -24,6 +24,7 @@ import GetUserByTokenRequest from './model/GetUserByTokenRequest';
 import Location from './model/Location';
 import MailTo200Response from './model/MailTo200Response';
 import MailToRequest from './model/MailToRequest';
+import Marketing from './model/Marketing';
 import ModulDurations from './model/ModulDurations';
 import Module from './model/Module';
 import ModuleProgramm from './model/ModuleProgramm';
@@ -145,6 +146,12 @@ export {
      * @property {module:model/MailToRequest}
      */
     MailToRequest,
+
+    /**
+     * The Marketing model constructor.
+     * @property {module:model/Marketing}
+     */
+    Marketing,
 
     /**
      * The ModulDurations model constructor.

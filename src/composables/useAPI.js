@@ -39,6 +39,44 @@ export function useAPI() {
     });
   };
 
+  const getMarketing = async (code,uuid) => {
+    await authenticateClient();
+    return new Promise((resolve, reject) => {
+      api.getMarketing(code,uuid, (error, data) => {
+        if (error) {
+          reject(new Error("Error fetching marketing: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+  
+  const saveMarketing = async (marketing) => {
+    await authenticateClient();
+    return new Promise((resolve, reject) => {
+      api.newMarketing(marketing, (error, data) => {
+        if (error) {
+          reject(new Error("Error saving marketing: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+  
+  const updateMarketing = async (marketing) => {
+    await authenticateClient();
+    return new Promise((resolve, reject) => {
+      api.updateMarketing(marketing, (error, data) => {
+        if (error) {
+          reject(new Error("Error updating marketing: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
 
   const locations = ref(null);
 
@@ -98,6 +136,7 @@ export function useAPI() {
   }
 
 
+
   return {
     customer,
     user,
@@ -109,5 +148,8 @@ export function useAPI() {
     getPriceLines,
     cent2euro,
     uploadModuleProgramm,
+    saveMarketing,
+    updateMarketing,
+    getMarketing,
   };
 }
