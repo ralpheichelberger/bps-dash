@@ -681,7 +681,7 @@ export default class DefaultApi {
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Marketing;
-      return this.  apiClient.callApi(
+      return this.apiClient.callApi(
         '/marketing', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback

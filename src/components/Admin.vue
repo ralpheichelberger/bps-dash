@@ -22,7 +22,7 @@
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="programm">
-                        <moduleProgramm></moduleProgramm>
+                        <moduleProgramm :device-types="deviceTypes"></moduleProgramm>
                     </v-tabs-window-item>
                 </v-tabs-window>
             </v-card-text>
@@ -44,7 +44,7 @@ import Locations from './Locations.vue'
 import PriceLines from './PriceLines.vue';
 import Devices from './Devices.vue'
 import moduleProgramm from './ModuleProgramm.vue';
-var deviceTypes = ref(['washer', 'dryer', 'pump']) // deliberately hard-coded
+var deviceTypes = ref(['washer', 'dryer', 'pump']) // FIXME: get from API
 
 const tab = ref('devices')
 
