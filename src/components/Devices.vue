@@ -80,19 +80,19 @@ const locationItems = ref([])
 const deviceName = (item) => { return item?.location +"/"+ item?.typ.charAt(0).toUpperCase() + item?.nr }
 const createNewDevice = () => {
   device.value = {
-    typ: "",
+    typ: "washer",
     nr: "",
-    price_line: "",
+    price_line: "washer_small",
     location: loc,
     module: {
       mac: "",
-      binaryType: "",
+      binaryType: "washer", // FIXME: get from config
       lastSeen: 0,
       lastPing: 0,
       durations: {
-        self: 0,
-        detergent: 0,
-        softener: 0,
+        impuls: 9000, // 15 min FIXME: get from config
+        detergent: 100,
+        softener: 100,
       },
     },
     detergent: {

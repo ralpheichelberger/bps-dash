@@ -22,13 +22,12 @@
 						:items="locationItems" @update:modelValue="fetchLocationDevices"></v-select>
 				</v-col>
 				<v-col cols="12">
-					<v-text-field id="device-id" v-model="device.id" :disabled="disabled"
-						label="Device ID" required>
+					<v-text-field id="device-id" v-model="device.id" :disabled="disabled" label="Device ID" required>
 					</v-text-field>
 				</v-col>
 				<v-col cols="12">
 					<v-text-field id="device-nr" type="number" v-model.number="device.nr" :disabled="disabled"
-						label="Device Nummer" required>
+						@change="update_pump_relays" label="Device Nummer" required>
 					</v-text-field>
 				</v-col>
 			</v-row>
@@ -41,7 +40,7 @@
 					<v-select id="price" v-model="device.priceLine" :disabled="disabled" label="Price line" required
 						hide-details :items="priceLinesItems"></v-select>
 				</v-col>
-				<v-col v-if="device.typ != 'pump'" cols="12">
+				<v-col v-if="device.typ != 'pump' && device.typ != 'dryer'" cols="12">
 					<v-text-field id="moduleDuration" type="number" v-model.number="device.module.durations.impuls"
 						:disabled="disabled" label="Impuls Duration" required hide-details></v-text-field>
 				</v-col>
@@ -106,7 +105,14 @@ const props = defineProps({
 	deviceTypes: Array,
 	update: Boolean,
 })
-
+const update_pump_relays = () => {
+	if (props.device.detergent.nr === 0) {
+		props.device.detergent.nr = props.device.nr
+	}
+	if (props.device.softener.nr === 0) {
+		props.device.softener.nr = props.device.nr
+	}
+}
 const emit = defineEmits(['reload', 'close'])
 
 const locationItems = ref([])
