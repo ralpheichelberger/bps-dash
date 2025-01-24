@@ -125,7 +125,7 @@ export function useAPI() {
   const uploadModuleProgramm = async (moduleProgramm) => {
     await authenticateClient();
     return new Promise((resolve, reject) => {
-      api.moduleProgramm(moduleProgramm.typ, moduleProgramm.version, moduleProgramm.file, (error, data) => {
+      api.moduleProgramm(moduleProgramm.typ, moduleProgramm.version, moduleProgramm.file, moduleProgramm.checksum, (error, data) => {
         if (error) {
           reject(new Error("Error uploading module programm: " + error));
         } else {

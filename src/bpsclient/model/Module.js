@@ -27,13 +27,13 @@ class Module {
      * @param mac {String} 
      * @param binaryType {String} 
      * @param binaryVersion {String} 
-     * @param updateStatus {module:model/Module.UpdateStatusEnum} 
+     * @param updatestatus {module:model/Module.UpdatestatusEnum} 
      * @param lastSeen {Number} 
      * @param lastPing {Number} 
      */
-    constructor(mac, binaryType, binaryVersion, updateStatus, lastSeen, lastPing) { 
+    constructor(mac, binaryType, binaryVersion, updatestatus, lastSeen, lastPing) { 
         
-        Module.initialize(this, mac, binaryType, binaryVersion, updateStatus, lastSeen, lastPing);
+        Module.initialize(this, mac, binaryType, binaryVersion, updatestatus, lastSeen, lastPing);
     }
 
     /**
@@ -41,11 +41,11 @@ class Module {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, mac, binaryType, binaryVersion, updateStatus, lastSeen, lastPing) { 
+    static initialize(obj, mac, binaryType, binaryVersion, updatestatus, lastSeen, lastPing) { 
         obj['mac'] = mac;
         obj['binary_type'] = binaryType;
         obj['binary_version'] = binaryVersion;
-        obj['update_status'] = updateStatus;
+        obj['updatestatus'] = updatestatus;
         obj['last_seen'] = lastSeen;
         obj['last_ping'] = lastPing;
     }
@@ -70,8 +70,8 @@ class Module {
             if (data.hasOwnProperty('binary_version')) {
                 obj['binary_version'] = ApiClient.convertToType(data['binary_version'], 'String');
             }
-            if (data.hasOwnProperty('update_status')) {
-                obj['update_status'] = ApiClient.convertToType(data['update_status'], 'String');
+            if (data.hasOwnProperty('updatestatus')) {
+                obj['updatestatus'] = ApiClient.convertToType(data['updatestatus'], 'String');
             }
             if (data.hasOwnProperty('last_seen')) {
                 obj['last_seen'] = ApiClient.convertToType(data['last_seen'], 'Number');
@@ -111,8 +111,8 @@ class Module {
             throw new Error("Expected the field `binary_version` to be a primitive type in the JSON string but got " + data['binary_version']);
         }
         // ensure the json data is a string
-        if (data['update_status'] && !(typeof data['update_status'] === 'string' || data['update_status'] instanceof String)) {
-            throw new Error("Expected the field `update_status` to be a primitive type in the JSON string but got " + data['update_status']);
+        if (data['updatestatus'] && !(typeof data['updatestatus'] === 'string' || data['updatestatus'] instanceof String)) {
+            throw new Error("Expected the field `updatestatus` to be a primitive type in the JSON string but got " + data['updatestatus']);
         }
         // validate the optional field `durations`
         if (data['durations']) { // data not null
@@ -125,7 +125,7 @@ class Module {
 
 }
 
-Module.RequiredProperties = ["mac", "binary_type", "binary_version", "update_status", "last_seen", "last_ping"];
+Module.RequiredProperties = ["mac", "binary_type", "binary_version", "updatestatus", "last_seen", "last_ping"];
 
 /**
  * @member {String} mac
@@ -143,9 +143,9 @@ Module.prototype['binary_type'] = undefined;
 Module.prototype['binary_version'] = undefined;
 
 /**
- * @member {module:model/Module.UpdateStatusEnum} update_status
+ * @member {module:model/Module.UpdatestatusEnum} updatestatus
  */
-Module.prototype['update_status'] = undefined;
+Module.prototype['updatestatus'] = undefined;
 
 /**
  * @member {Number} last_seen
@@ -167,11 +167,11 @@ Module.prototype['durations'] = undefined;
 
 
 /**
- * Allowed values for the <code>update_status</code> property.
+ * Allowed values for the <code>updatestatus</code> property.
  * @enum {String}
  * @readonly
  */
-Module['UpdateStatusEnum'] = {
+Module['UpdatestatusEnum'] = {
 
     /**
      * value: "outdated"

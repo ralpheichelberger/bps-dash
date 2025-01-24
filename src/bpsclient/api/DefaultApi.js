@@ -25,6 +25,7 @@ import Location from '../model/Location';
 import MailTo200Response from '../model/MailTo200Response';
 import MailToRequest from '../model/MailToRequest';
 import Marketing from '../model/Marketing';
+import ModuleProgramm from '../model/ModuleProgramm';
 import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
 import PaymentRequest from '../model/PaymentRequest';
@@ -689,6 +690,84 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getModuleProgramm operation.
+     * @callback module:api/DefaultApi~getModuleProgrammCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/ModuleProgramm} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a module programm by checksum
+     * @param {String} checksum The checksum of the binary
+     * @param {module:api/DefaultApi~getModuleProgrammCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/ModuleProgramm}
+     */
+    getModuleProgramm(checksum, callback) {
+      let postBody = null;
+      // verify the required parameter 'checksum' is set
+      if (checksum === undefined || checksum === null) {
+        throw new Error("Missing the required parameter 'checksum' when calling getModuleProgramm");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'checksum': checksum
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = ModuleProgramm;
+      return this.apiClient.callApi(
+        '/module_programm', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getModuleProgramms operation.
+     * @callback module:api/DefaultApi~getModuleProgrammsCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/ModuleProgramm>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns list of module programms
+     * @param {module:api/DefaultApi~getModuleProgrammsCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<module:model/ModuleProgramm>}
+     */
+    getModuleProgramms(callback) {
+      let postBody = null;
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [ModuleProgramm];
+      return this.apiClient.callApi(
+        '/module_programms', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getPayments operation.
      * @callback module:api/DefaultApi~getPaymentsCallback
      * @param {String} error Error message, if any.
@@ -950,10 +1029,11 @@ export default class DefaultApi {
      * @param {module:model/DeviceType} typ 
      * @param {String} version 
      * @param {File} file 
+     * @param {String} checksum 
      * @param {module:api/DefaultApi~moduleProgrammCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/ModuleProgramm200Response}
      */
-    moduleProgramm(typ, version, file, callback) {
+    moduleProgramm(typ, version, file, checksum, callback) {
       let postBody = null;
       // verify the required parameter 'typ' is set
       if (typ === undefined || typ === null) {
@@ -967,6 +1047,10 @@ export default class DefaultApi {
       if (file === undefined || file === null) {
         throw new Error("Missing the required parameter 'file' when calling moduleProgramm");
       }
+      // verify the required parameter 'checksum' is set
+      if (checksum === undefined || checksum === null) {
+        throw new Error("Missing the required parameter 'checksum' when calling moduleProgramm");
+      }
 
       let pathParams = {
       };
@@ -977,7 +1061,8 @@ export default class DefaultApi {
       let formParams = {
         'typ': typ,
         'version': version,
-        'file': file
+        'file': file,
+        'checksum': checksum
       };
 
       let authNames = ['BearerAuth'];

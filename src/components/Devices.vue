@@ -66,6 +66,8 @@
 import { ref, watch, watchEffect } from 'vue'
 import DeviceEdit from './DeviceEdit.vue'
 import { useDevices } from '@/composables/useDevices';
+import { Module } from "../bpsclient";
+
 const { devices, getDevices, deleteDevice } = useDevices()
 const loc = ref(null)
 const props = defineProps({
@@ -94,6 +96,7 @@ const createNewDevice = () => {
         detergent: 100,
         softener: 100,
       },
+      updatestatus: Module.UpdatestatusEnum.start,
     },
     detergent: {
       id: 0,

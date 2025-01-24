@@ -24,10 +24,14 @@ class ModuleProgramm {
      * Constructs a new <code>ModuleProgramm</code>.
      * @alias module:model/ModuleProgramm
      * @param typ {module:model/DeviceType} 
+     * @param filename {String} 
+     * @param checksum {String} checksum of the binary
+     * @param timestamp {Number} timestamp of the binary upload
+     * @param verified {Boolean} if the binary is verified to be working correctly
      */
-    constructor(typ) { 
+    constructor(typ, filename, checksum, timestamp, verified) { 
         
-        ModuleProgramm.initialize(this, typ);
+        ModuleProgramm.initialize(this, typ, filename, checksum, timestamp, verified);
     }
 
     /**
@@ -35,8 +39,12 @@ class ModuleProgramm {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, typ) { 
+    static initialize(obj, typ, filename, checksum, timestamp, verified) { 
         obj['typ'] = typ;
+        obj['filename'] = filename;
+        obj['checksum'] = checksum;
+        obj['timestamp'] = timestamp;
+        obj['verified'] = verified;
     }
 
     /**
@@ -53,11 +61,23 @@ class ModuleProgramm {
             if (data.hasOwnProperty('typ')) {
                 obj['typ'] = DeviceType.constructFromObject(data['typ']);
             }
+            if (data.hasOwnProperty('filename')) {
+                obj['filename'] = ApiClient.convertToType(data['filename'], 'String');
+            }
             if (data.hasOwnProperty('binary')) {
-                obj['binary'] = ApiClient.convertToType(data['binary'], 'String');
+                obj['binary'] = ApiClient.convertToType(data['binary'], File);
             }
             if (data.hasOwnProperty('version')) {
                 obj['version'] = ApiClient.convertToType(data['version'], 'String');
+            }
+            if (data.hasOwnProperty('checksum')) {
+                obj['checksum'] = ApiClient.convertToType(data['checksum'], 'String');
+            }
+            if (data.hasOwnProperty('timestamp')) {
+                obj['timestamp'] = ApiClient.convertToType(data['timestamp'], 'Number');
+            }
+            if (data.hasOwnProperty('verified')) {
+                obj['verified'] = ApiClient.convertToType(data['verified'], 'Boolean');
             }
         }
         return obj;
@@ -76,12 +96,16 @@ class ModuleProgramm {
             }
         }
         // ensure the json data is a string
-        if (data['binary'] && !(typeof data['binary'] === 'string' || data['binary'] instanceof String)) {
-            throw new Error("Expected the field `binary` to be a primitive type in the JSON string but got " + data['binary']);
+        if (data['filename'] && !(typeof data['filename'] === 'string' || data['filename'] instanceof String)) {
+            throw new Error("Expected the field `filename` to be a primitive type in the JSON string but got " + data['filename']);
         }
         // ensure the json data is a string
         if (data['version'] && !(typeof data['version'] === 'string' || data['version'] instanceof String)) {
             throw new Error("Expected the field `version` to be a primitive type in the JSON string but got " + data['version']);
+        }
+        // ensure the json data is a string
+        if (data['checksum'] && !(typeof data['checksum'] === 'string' || data['checksum'] instanceof String)) {
+            throw new Error("Expected the field `checksum` to be a primitive type in the JSON string but got " + data['checksum']);
         }
 
         return true;
@@ -90,7 +114,7 @@ class ModuleProgramm {
 
 }
 
-ModuleProgramm.RequiredProperties = ["typ"];
+ModuleProgramm.RequiredProperties = ["typ", "filename", "checksum", "timestamp", "verified"];
 
 /**
  * @member {module:model/DeviceType} typ
@@ -98,8 +122,13 @@ ModuleProgramm.RequiredProperties = ["typ"];
 ModuleProgramm.prototype['typ'] = undefined;
 
 /**
+ * @member {String} filename
+ */
+ModuleProgramm.prototype['filename'] = undefined;
+
+/**
  * module programm binary
- * @member {String} binary
+ * @member {File} binary
  */
 ModuleProgramm.prototype['binary'] = undefined;
 
@@ -108,6 +137,24 @@ ModuleProgramm.prototype['binary'] = undefined;
  * @member {String} version
  */
 ModuleProgramm.prototype['version'] = undefined;
+
+/**
+ * checksum of the binary
+ * @member {String} checksum
+ */
+ModuleProgramm.prototype['checksum'] = undefined;
+
+/**
+ * timestamp of the binary upload
+ * @member {Number} timestamp
+ */
+ModuleProgramm.prototype['timestamp'] = undefined;
+
+/**
+ * if the binary is verified to be working correctly
+ * @member {Boolean} verified
+ */
+ModuleProgramm.prototype['verified'] = undefined;
 
 
 

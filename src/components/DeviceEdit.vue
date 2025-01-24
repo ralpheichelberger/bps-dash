@@ -10,9 +10,9 @@
 		</v-card-actions>
 		<v-card-title>
 			<v-row dense>
-				<v-select id="device_type" v-model="device.typ" :items="deviceTypes" label="Device type" required
+				<v-combobox id="device_type" v-model="device.typ" :items="deviceTypes" label="Device type" required
 					hide-details>
-				</v-select>
+				</v-combobox>
 			</v-row>
 		</v-card-title>
 		<v-card-text v-if="device.typ">
@@ -36,7 +36,7 @@
 					<v-text-field id="mac" v-model="device.module.mac" :disabled="disabled" label="MAC" required
 						hide-details></v-text-field>
 				</v-col>
-				<v-col v-if="device.typ != 'pump' && priceLines" cols="12">
+				<v-col v-if="(device.typ == 'washer' || device.typ == 'dryer') && priceLines" cols="12">
 					<v-select id="price" v-model="device.priceLine" :disabled="disabled" label="Price line" required
 						hide-details :items="priceLinesItems"></v-select>
 				</v-col>
