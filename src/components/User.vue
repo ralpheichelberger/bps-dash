@@ -1,97 +1,138 @@
-<template> <!-- FIXME add AGBs / DSGVO -->
-  <div class="container bubble_style" :class="{ admin: admin }">
-    <template v-if="user">
+<template> <!-- FIXME add AGBs -->
+  <div v-if="user" class="container bubble_style" :class="{ admin: admin }">
+    <div class="user">
+
       <div class="userName">
         Konto {{ user.name }}
         <h2 v-if="user.typ == 'admin'">Admin</h2>
       </div>
-      <template v-if="!admin">
-        <div class="balance">
-          Guthaben EUR {{ cent2euro(user.credit) }}
-        </div>
-        <div class="cardId">
-          ID: {{ user.id }}
-        </div>
-        <div class="topUpButton">
-          <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
-            Aufladen
-          </v-btn>
-        </div>
-      </template>
-      <div v-if="admin" class="balance">
+      <div v-if="!admin" class="balance">
+        Guthaben EUR {{ cent2euro(user.credit) }}
+      </div>
+      <div v-if="!admin" class="card-id">
+        ID: {{ user.id }}
+      </div>
+      <div v-if="!admin" class="topUpButton">
+        <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
+          Aufladen
+        </v-btn>
+      </div>
+      <div v-if="admin" class="topUpButton">
         <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
           Config
         </v-btn>
       </div>
-      <div v-if="customer" class="transactions">
-        <p>
-          ID: {{ customer.id }}
-        </p>
-        <p>
-          Name: {{ customer.name }}
-        </p>
-        <p>
-          Balance: {{ customer.credit }}
-        </p>
-        <p>
-          Typ: {{ customer.typ }}
-        </p>
-        <p>
-          Active: {{ customer.active }}
-        </p>
+    </div>
+    <div v-if="userPayments" class="payments">
+      <v-table :height="(windowInnerHeight-240)+'px'" width="100%" fixed-header>
+        <thead>
+          <tr>
+            <th>Zeit</th>
+            <th>Betrag</th>
+            <th>Gerät</th>
+            <th>Typ</th>
+            <!-- <th>Rechnung</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in userPayments" :key="item.timestamp">
+            <td>{{ toDateTime(item.timestamp) }}</td>
+            <td>{{ centToEuro(item.amount) }}</td>
+            <td>{{ item.machine_name }}</td>
+            <td>{{ item.typ }}</td>
+            <!-- <td>{{ item.bill_nr }}</td> -->
+          </tr>
+        </tbody>
+      </v-table>
+    </div>
 
-      </div>
-    </template>
   </div>
   <v-dialog v-if="user" v-model="topUpDialog">
     <TopUp :visible="topUpDialog" :user-id="user.id" @close="topUpDialog = false" @top-up="topUpCredit" />
   </v-dialog>
 
-  <v-dialog v-model="errorDialog" class="error-dialog">
-    <v-card-title style="font-size: 5rem">Sorry :(</v-card-title>
-    <v-card-text>Es ist kein Kundenkonto gespeichert. <br /> Bitte <span class="action">scannen</span> Sie Ihre <span
-        class="action">Bubble Card</span> erneut oder wenden Sie sich
-      an unseren Kundenservice!</v-card-text>
-    <v-card-actions>
-      <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem" @click="closeError">Schließen</v-btn>
-    </v-card-actions>
+  <v-dialog v-model="errorDialog" class="ma-3" elevation="10">
+    <v-card class="bubble_style">
+      <v-card-title style="font-size: 5rem">
+        Sorry :(
+      </v-card-title>
+      <v-card-text style="font-size: x-large;">
+        {{ errorMessage }}
+        <br />Bitte wenden Sie sich an unseren Kundenservice!
+        <br />
+        <v-expansion-panels>
+          <v-expansion-panel style="font-family: 'Courier New', Courier, monospace; font-size: small;" title="Details"
+            :text="errorDetail">
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem" @click="closeError">
+          Schließen
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
-
 
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
-import { useAPI } from "../composables/useAPI.js"
-import { usePayment } from "../composables/usePayment.js";
+import { useAPI } from "../composables/useAPI";
+import TopUp from "./TopUp.vue";
+import { useAuth } from "../composables/useAuth";
+import { usePayment } from "../composables/usePayment";
 
-const { user, getUser, cent2euro, customer } = useAPI()
-const { topUp } = usePayment()
-const closeError = () => {
-  window.location.href = "/";
-};
 const topUpDialog = ref(false);
-const errorDialog = computed(() => {
-  return !user.value
-})
+const errorDetail = ref("");
+const errorMessage = ref("");
+const userPayments = ref([]);
+
+const { user, getUser, cent2euro } = useAPI();
+const { cardID } = useAuth();
+const { topUp, payments } = usePayment();
 const props = defineProps(["id"]);
+const errorDialog = ref(false);
+const windowInnerHeight = ref(window.innerHeight);
+window.addEventListener('resize', updateListHeight);
+function updateListHeight() {
+  windowInnerHeight.value = window.innerHeight;
+}
+setTimeout(() => {
+  errorDialog.value = !user.value
+}, 3000);
+cardID.value = props.id;
+if (!cardID.value) {
+  errorDialog.value = true;
+  errorMessage.value = "Es ist kein Kundenkonto gespeichert.";
+  errorDetail.value = "Bitte scannen Sie Ihre Bubble Card erneut oder wenden Sie sich an unseren Kundenservice!";
+}
+getUser(cardID.value).then((dbUser) => {
+  localStorage.setItem("user", JSON.stringify(dbUser))
+  payments(cardID.value).then((data) => {
+    userPayments.value = data
+  }).catch((error) => {
+    console.log(error)
+  });
+}).catch((error) => {
+  if (error.response.status == 401) {
+    errorDialog.value = true;
+    errorMessage.value = "Kundenkonto gesperrt.";
+    errorDetail.value = "Bitte scannen Sie eine andere Bubble Card oder wenden Sie sich an unseren Kundenservice!";
+  }
+});
 const admin = computed(() => {
   if (user.value) {
     return user.value.typ == "admin";
   }
   return false;
-}
-)
-getUser(props.id).then(() => {
-  console.dir(user.value)
-}).catch(() => {
-  console.log("no user found")
 })
+
+
 const navigateToAdmin = () => {
   window.location.href = "/admin";
 }
-
-
 const topUpCredit = (topAmount, details) => {
   topUp(user.value.id, topAmount, details).then(() => {
     getUser(user.value.id)
@@ -99,16 +140,24 @@ const topUpCredit = (topAmount, details) => {
   topUpDialog.value = false
 }
 
+// Closes error dialog and redirects back to the homepage.
+const closeError = () => {
+  errorDialog.value = false;
+  window.location.href = "/";
+};
+const toDateTime = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+  return date.toLocaleString();
+};
+const centToEuro = (cent) => {
+  return (cent / 100).toFixed(2);
+};
+
+
 </script>
-<style scoped>
-.transactions {
+<style>
+.payments {
   grid-row: 4;
-  grid-column: 1 / 3;
-  padding: 1rem;
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.4);
-  border-radius: 1rem;
-  background: var(--background-gradient);
-  color: black;
-  width: 100%;
+  grid-column: span 2;
 }
 </style>

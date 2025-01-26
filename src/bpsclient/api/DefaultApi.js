@@ -977,6 +977,54 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getUserPayments operation.
+     * @callback module:api/DefaultApi~getUserPaymentsCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/Payment>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a list of payments for a user
+     * @param {String} id the unique 9 characters card ID
+     * @param {Object} opts Optional parameters
+     * @param {Number} [from] UTC timestamp start from
+     * @param {Number} [to] UTC timestamp end at
+     * @param {module:api/DefaultApi~getUserPaymentsCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<module:model/Payment>}
+     */
+    getUserPayments(id, opts, callback) {
+      opts = opts || {};
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getUserPayments");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id,
+        'from': opts['from'],
+        'to': opts['to']
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [Payment];
+      return this.apiClient.callApi(
+        '/user_payments', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the mailTo operation.
      * @callback module:api/DefaultApi~mailToCallback
      * @param {String} error Error message, if any.

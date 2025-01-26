@@ -35,6 +35,7 @@ export function useAPI() {
           }
           resolve(data);
         }
+        reject(error);
       });
     });
   };

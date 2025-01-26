@@ -24,52 +24,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bubblepoint Waschsalons</title>
 </head>
-<style>
 
-  .bubble-logo {
-    display: block;
-    margin: 0 auto;
-    width: 100px;
-    height: 100px;
-    background: url('/static/favicon/favicon-32x32.png') no-repeat;
-    background-size: contain;
-  }
-  /* ANIMATIONS */
-
-  @keyframes shake {
-
-    0%,
-    100% {
-      transform: translate(0, 0) rotate(0);
-    }
-
-    25% {
-      transform: translate(-1.5px, 1.5px) rotate(0.5deg);
-    }
-
-    50% {
-      transform: translate(-0.5px, -0.5px) rotate(0.5deg);
-    }
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-
-</style>
 <body>
-  <div id="app">
-    <div class="bubble-logo" @click="shakeLogo" :style="{animation: shakeAnimation}"></div>
-  </div>
+  <div id="app"> </div>  
   <script type="module" src="/src/main.js"></script>
+
 </body>
 
 </html>
-

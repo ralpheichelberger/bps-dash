@@ -9,21 +9,23 @@
     </head>
 
     <body>
-
+        <v-app>
+                <router-view />
+        </v-app>
     </body>
 
     </html>
-    <v-app>
-        <router-view />
-    </v-app>
+
 </template>
 
 <script>
 export default {
     name: 'App',
 };
+
 </script>
 <style>
+@import '@/assets/bubble.css';
 body {
     height: unset !important;
     display: unset !important;
@@ -36,6 +38,8 @@ body {
     --background-gradient: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
     /* Pastel gradient */
     --v-theme-on-surface-variant: #FF6A88;
+    --user-padding-left: 1rem;
+    --user-padding-right: 1rem;
 }
 
 @font-face {
@@ -64,19 +68,6 @@ span.action {
     font-size: large;
 }
 
-.bubble_style {
-    font-family: "DreamingOutloud", Arial, sans-serif;
-    color: black;
-    height: 100vh;
-    /* max-width: 600px; */
-    background: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
-    justify-content: center;
-    align-self: center;
-    font-size: large;
-    background-size: 400% 400%;
-    animation: gradient 10s ease infinite;
-}
-
 .admin {
     background: rgb(2, 27, 36) !important;
     color: snow !important;
@@ -94,6 +85,16 @@ span.action {
 
     100% {
         background-position: 0% 50%;
+    }
+}
+
+@keyframes myFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
 </style>

@@ -22,15 +22,17 @@ class Payment {
     /**
      * Constructs a new <code>Payment</code>.
      * @alias module:model/Payment
+     * @param timestamp {Number} 
      * @param typ {module:model/Payment.TypEnum} 
      * @param billNr {String} 
      * @param machineName {String} 
+     * @param machineId {Number} 
      * @param cardId {String} 
      * @param amount {Number} amount in cent; negative deducts from credit; positive adds to credit
      */
-    constructor(typ, billNr, machineName, cardId, amount) { 
+    constructor(timestamp, typ, billNr, machineName, machineId, cardId, amount) { 
         
-        Payment.initialize(this, typ, billNr, machineName, cardId, amount);
+        Payment.initialize(this, timestamp, typ, billNr, machineName, machineId, cardId, amount);
     }
 
     /**
@@ -38,10 +40,12 @@ class Payment {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, typ, billNr, machineName, cardId, amount) { 
+    static initialize(obj, timestamp, typ, billNr, machineName, machineId, cardId, amount) { 
+        obj['timestamp'] = timestamp;
         obj['typ'] = typ;
         obj['bill_nr'] = billNr;
         obj['machine_name'] = machineName;
+        obj['machine_id'] = machineId;
         obj['card_id'] = cardId;
         obj['amount'] = amount;
     }
@@ -57,6 +61,9 @@ class Payment {
         if (data) {
             obj = obj || new Payment();
 
+            if (data.hasOwnProperty('timestamp')) {
+                obj['timestamp'] = ApiClient.convertToType(data['timestamp'], 'Number');
+            }
             if (data.hasOwnProperty('typ')) {
                 obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
             }
@@ -65,6 +72,9 @@ class Payment {
             }
             if (data.hasOwnProperty('machine_name')) {
                 obj['machine_name'] = ApiClient.convertToType(data['machine_name'], 'String');
+            }
+            if (data.hasOwnProperty('machine_id')) {
+                obj['machine_id'] = ApiClient.convertToType(data['machine_id'], 'Number');
             }
             if (data.hasOwnProperty('card_id')) {
                 obj['card_id'] = ApiClient.convertToType(data['card_id'], 'String');
@@ -114,7 +124,12 @@ class Payment {
 
 }
 
-Payment.RequiredProperties = ["typ", "bill_nr", "machine_name", "card_id", "amount"];
+Payment.RequiredProperties = ["timestamp", "typ", "bill_nr", "machine_name", "machine_id", "card_id", "amount"];
+
+/**
+ * @member {Number} timestamp
+ */
+Payment.prototype['timestamp'] = undefined;
 
 /**
  * @member {module:model/Payment.TypEnum} typ
@@ -130,6 +145,11 @@ Payment.prototype['bill_nr'] = undefined;
  * @member {String} machine_name
  */
 Payment.prototype['machine_name'] = undefined;
+
+/**
+ * @member {Number} machine_id
+ */
+Payment.prototype['machine_id'] = undefined;
 
 /**
  * @member {String} card_id
