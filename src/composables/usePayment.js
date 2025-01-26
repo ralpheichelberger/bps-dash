@@ -24,7 +24,7 @@ export function usePayment() {
         })
     };
 
-    const payment = async (card_id, name, id, amount, dryTime, typ, details) => {
+    const payment = async (card_id, name, amount, id, dryTime, typ, details) => {
         await authenticateClient();
         if (dryTime){
             amount=amount*(dryTime/10) // FIXME hardcoded time 10 minutes per price unit

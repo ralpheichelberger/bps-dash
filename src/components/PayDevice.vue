@@ -60,7 +60,7 @@
     <div v-if="deviceInfo" class="price">
       Preis: EUR {{ cent2euro(deviceInfo.price) }}
     </div>
-    <div v-if="!payed && !admin && (choosen || (deviceInfo && deviceInfo.type=='dryer'))" class="payPalButton" >
+    <div v-if="!payed && !admin && (choosen || (deviceInfo && deviceInfo.type == 'dryer'))" class="payPalButton">
       <PayPalButton :amount="paymentAmount" :user-id="user.id" @transactionApproved="payDeviceAndAllowStart" />
     </div>
     <div v-if="!choosen && deviceInfo && deviceInfo.type == 'washer'" class="payPalButton" style="text-align: center;">
@@ -203,9 +203,12 @@ const payDeviceAndAllowStart = (typ, details) => {
   if (deviceInfo.value.type == 'washer') {
     dryTime.value = 0;
   }
-  payment(user.value.id, deviceInfo.value.name, deviceInfo.value.price, props.deviceId, dryTime.value, typ, details).then(() => {
-    // allowStart(deviceInfo.value.name, deviceInfo.value.impuls_duration);
-    getUser(); // update user balance
+  const machine_id = parseInt(props.deviceId, 10);
+  payment(user.value.id, deviceInfo.value.name, deviceInfo.value.price, machine_id, dryTime.value, typ, details).then(() => {
+    getUser(cardID.value).then((dbUser) => {
+      localStorage.setItem("user", JSON.stringify(dbUser))
+      user.value = dbUser;
+    })
     payed.value = true;
   }).catch((error) => {
     errorMessage.value = "Die Zahlung konnte nicht abgeschlossen werden"

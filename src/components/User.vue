@@ -135,7 +135,17 @@ const navigateToAdmin = () => {
 }
 const topUpCredit = (topAmount, details) => {
   topUp(user.value.id, topAmount, details).then(() => {
-    getUser(user.value.id)
+    getUser(user.value.id).then((dbUser) => {
+      localStorage.setItem("user", JSON.stringify(dbUser))
+      user.value = dbUser
+      payments(user.value.id).then((data) => {
+        userPayments.value = data
+      }).catch((error) => {
+        console.log(error)
+      });
+    }).catch((error) => {
+      console.log(error)
+    });
   })
   topUpDialog.value = false
 }
