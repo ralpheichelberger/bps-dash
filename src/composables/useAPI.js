@@ -40,10 +40,10 @@ export function useAPI() {
     });
   };
 
-  const getMarketing = async (code,uuid) => {
+  const getMarketing = async (code, uuid) => {
     await authenticateClient();
     return new Promise((resolve, reject) => {
-      api.getMarketing(code,uuid, (error, data) => {
+      api.getMarketing(code, uuid, (error, data) => {
         if (error) {
           reject(new Error("Error fetching marketing: " + error));
         } else {
@@ -52,7 +52,7 @@ export function useAPI() {
       });
     });
   }
-  
+
   const saveMarketing = async (marketing) => {
     await authenticateClient();
     return new Promise((resolve, reject) => {
@@ -65,7 +65,7 @@ export function useAPI() {
       });
     });
   }
-  
+
   const updateMarketing = async (marketing) => {
     await authenticateClient();
     return new Promise((resolve, reject) => {
@@ -84,14 +84,18 @@ export function useAPI() {
   const getLocations = async () => {
     // Authenticate once
     await authenticateClient();
-
-    api.getLocations((error, data) => {
-      if (error) {
-        console.error("Error fetching locations", error);
-        return null;
-      }
-      locations.value = data;
+    return new Promise((resolve, reject) => {
+      api.getLocations((error, data) => {
+        if (error) {
+          console.error("Error fetching locations", error);
+          reject(new Error("Error fetching locations: " + error));
+        } else {
+          locations.value = data;
+          resolve(data);
+        }
+      });
     });
+
   }
   const priceLines = ref(null);
 

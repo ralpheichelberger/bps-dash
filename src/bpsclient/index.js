@@ -22,6 +22,7 @@ import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest
 import DeviceUpdateStatusRequest from './model/DeviceUpdateStatusRequest';
 import GetUserByTokenRequest from './model/GetUserByTokenRequest';
 import Location from './model/Location';
+import LocationTypDevices from './model/LocationTypDevices';
 import MailTo200Response from './model/MailTo200Response';
 import MailToRequest from './model/MailToRequest';
 import Marketing from './model/Marketing';
@@ -30,13 +31,13 @@ import Module from './model/Module';
 import ModuleProgramm from './model/ModuleProgramm';
 import ModuleProgramm200Response from './model/ModuleProgramm200Response';
 import Payment from './model/Payment';
-import PaymentRequest from './model/PaymentRequest';
 import PriceLine from './model/PriceLine';
 import Pump from './model/Pump';
 import PumpRelay from './model/PumpRelay';
 import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
 import TopupCreditRequest from './model/TopupCreditRequest';
+import TypDevices from './model/TypDevices';
 import UpdateModuleBinary404Response from './model/UpdateModuleBinary404Response';
 import User from './model/User';
 import WasherStatus from './model/WasherStatus';
@@ -136,6 +137,12 @@ export {
     Location,
 
     /**
+     * The LocationTypDevices model constructor.
+     * @property {module:model/LocationTypDevices}
+     */
+    LocationTypDevices,
+
+    /**
      * The MailTo200Response model constructor.
      * @property {module:model/MailTo200Response}
      */
@@ -184,12 +191,6 @@ export {
     Payment,
 
     /**
-     * The PaymentRequest model constructor.
-     * @property {module:model/PaymentRequest}
-     */
-    PaymentRequest,
-
-    /**
      * The PriceLine model constructor.
      * @property {module:model/PriceLine}
      */
@@ -224,6 +225,12 @@ export {
      * @property {module:model/TopupCreditRequest}
      */
     TopupCreditRequest,
+
+    /**
+     * The TypDevices model constructor.
+     * @property {module:model/TypDevices}
+     */
+    TypDevices,
 
     /**
      * The UpdateModuleBinary404Response model constructor.

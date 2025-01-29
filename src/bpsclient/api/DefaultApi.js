@@ -22,13 +22,13 @@ import DeviceUpdatePumpCountsRequest from '../model/DeviceUpdatePumpCountsReques
 import DeviceUpdateStatusRequest from '../model/DeviceUpdateStatusRequest';
 import GetUserByTokenRequest from '../model/GetUserByTokenRequest';
 import Location from '../model/Location';
+import LocationTypDevices from '../model/LocationTypDevices';
 import MailTo200Response from '../model/MailTo200Response';
 import MailToRequest from '../model/MailToRequest';
 import Marketing from '../model/Marketing';
 import ModuleProgramm from '../model/ModuleProgramm';
 import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
-import PaymentRequest from '../model/PaymentRequest';
 import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
 import TopupCreditRequest from '../model/TopupCreditRequest';
@@ -600,6 +600,43 @@ export default class DefaultApi {
       let returnType = Location;
       return this.apiClient.callApi(
         '/location', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getLocationTypDevices operation.
+     * @callback module:api/DefaultApi~getLocationTypDevicesCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<Array>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Get devices categorized by location and type
+     * Returns a list of all devices grouped by their location and type.
+     * @param {module:api/DefaultApi~getLocationTypDevicesCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<Array>}
+     */
+    getLocationTypDevices(callback) {
+      let postBody = null;
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [Array];
+      return this.apiClient.callApi(
+        '/location_typ_devices', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -1298,15 +1335,15 @@ export default class DefaultApi {
 
     /**
      * Adds a credit journal entry and updates the user's credit
-     * @param {module:model/PaymentRequest} paymentRequest 
+     * @param {module:model/Payment} payment 
      * @param {module:api/DefaultApi~paymentCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Status}
      */
-    payment(paymentRequest, callback) {
-      let postBody = paymentRequest;
-      // verify the required parameter 'paymentRequest' is set
-      if (paymentRequest === undefined || paymentRequest === null) {
-        throw new Error("Missing the required parameter 'paymentRequest' when calling payment");
+    payment(payment, callback) {
+      let postBody = payment;
+      // verify the required parameter 'payment' is set
+      if (payment === undefined || payment === null) {
+        throw new Error("Missing the required parameter 'payment' when calling payment");
       }
 
       let pathParams = {

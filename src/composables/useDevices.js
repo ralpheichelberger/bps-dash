@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { useAuth } from "./useAuth.js";
+import { get } from "superagent";
 
 const { authenticateClient, api, cardID } = useAuth();
 
@@ -63,11 +64,33 @@ export function useDevices() {
             })
         })
     }
-    
 
+    // static initialize(obj, id, nr, typ, location, priceLine, module, detergent, softener, status) { 
+    //     obj['id'] = id;
+    //     obj['nr'] = nr;
+    //     obj['typ'] = typ;
+    //     obj['location'] = location;
+    //     obj['priceLine'] = priceLine;
+    //     obj['module'] = module;
+    //     obj['detergent'] = detergent;
+    //     obj['softener'] = softener;
+    //     obj['status'] = status;
+    // }
+
+
+    const getDeviceTypes = (devices) => {
+        const types = ['WASHER', 'DRYER', 'PUMP'];
+        devices.forEach((device) => {
+            const typ = device.typ.toUpperCase();
+            if (!types.includes(typ)) {
+                types.push(typ);
+            }
+        });
+        return types;
+    }
 
     const getLocationTypAndNumber = (name) => {
-    const sname=name.split("/");
+        const sname = name.split("/");
         const location = sname[0]
         let t = sname[1].slice(0, 1);
         const idStr = sname[1].slice(1);
@@ -117,12 +140,31 @@ export function useDevices() {
         })
     }
 
+    const locationTypDevices = ref([]);
+    const getLocationTypDevices = async () => {
+        await authenticateClient();
+        return new Promise((resolve, reject) => {
+            api.getLocationTypDevices((error, data, result) => {
+                if (error) {
+                    reject(new Error("Error fetching devices: " + error));
+                } else {
+                    locationTypDevices.value = data;
+                    resolve(data);
+                }
+            });
+        });
+
+        return locationTypDevices;
+    }
+
     return {
         devices,
         deviceInfo,
         getDevices,
         deleteDevice,
+        getDeviceTypes,
         getDeviceInfo,
+        getLocationTypDevices,
         updateDevice,
         newDevice,
     };

@@ -82,8 +82,8 @@ class Payment {
             if (data.hasOwnProperty('amount')) {
                 obj['amount'] = ApiClient.convertToType(data['amount'], 'Number');
             }
-            if (data.hasOwnProperty('details')) {
-                obj['details'] = ApiClient.convertToType(data['details'], Object);
+            if (data.hasOwnProperty('paypal_details')) {
+                obj['paypal_details'] = ApiClient.convertToType(data['paypal_details'], Object);
             }
         }
         return obj;
@@ -164,9 +164,9 @@ Payment.prototype['amount'] = undefined;
 
 /**
  * details from the paypal transaction
- * @member {Object} details
+ * @member {Object} paypal_details
  */
-Payment.prototype['details'] = undefined;
+Payment.prototype['paypal_details'] = undefined;
 
 
 
