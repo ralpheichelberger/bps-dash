@@ -37,6 +37,7 @@ import PumpRelay from './model/PumpRelay';
 import PumpRelayStatus from './model/PumpRelayStatus';
 import Status from './model/Status';
 import TopupCreditRequest from './model/TopupCreditRequest';
+import TypDeviceLocations from './model/TypDeviceLocations';
 import TypDevices from './model/TypDevices';
 import UpdateModuleBinary404Response from './model/UpdateModuleBinary404Response';
 import User from './model/User';
@@ -225,6 +226,12 @@ export {
      * @property {module:model/TopupCreditRequest}
      */
     TopupCreditRequest,
+
+    /**
+     * The TypDeviceLocations model constructor.
+     * @property {module:model/TypDeviceLocations}
+     */
+    TypDeviceLocations,
 
     /**
      * The TypDevices model constructor.

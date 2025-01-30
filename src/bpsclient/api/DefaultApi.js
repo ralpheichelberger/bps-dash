@@ -22,7 +22,6 @@ import DeviceUpdatePumpCountsRequest from '../model/DeviceUpdatePumpCountsReques
 import DeviceUpdateStatusRequest from '../model/DeviceUpdateStatusRequest';
 import GetUserByTokenRequest from '../model/GetUserByTokenRequest';
 import Location from '../model/Location';
-import LocationTypDevices from '../model/LocationTypDevices';
 import MailTo200Response from '../model/MailTo200Response';
 import MailToRequest from '../model/MailToRequest';
 import Marketing from '../model/Marketing';
@@ -32,6 +31,7 @@ import Payment from '../model/Payment';
 import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
 import TopupCreditRequest from '../model/TopupCreditRequest';
+import TypDeviceLocations from '../model/TypDeviceLocations';
 import UpdateModuleBinary404Response from '../model/UpdateModuleBinary404Response';
 import User from '../model/User';
 
@@ -609,7 +609,7 @@ export default class DefaultApi {
      * Callback function to receive the result of the getLocationTypDevices operation.
      * @callback module:api/DefaultApi~getLocationTypDevicesCallback
      * @param {String} error Error message, if any.
-     * @param {Array.<Array>} data The data returned by the service call.
+     * @param {module:model/TypDeviceLocations} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -617,7 +617,7 @@ export default class DefaultApi {
      * Get devices categorized by location and type
      * Returns a list of all devices grouped by their location and type.
      * @param {module:api/DefaultApi~getLocationTypDevicesCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link Array.<Array>}
+     * data is of type: {@link module:model/TypDeviceLocations}
      */
     getLocationTypDevices(callback) {
       let postBody = null;
@@ -634,7 +634,7 @@ export default class DefaultApi {
       let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = [Array];
+      let returnType = TypDeviceLocations;
       return this.apiClient.callApi(
         '/location_typ_devices', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,

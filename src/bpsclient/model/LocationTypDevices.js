@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import Location from './Location';
 import TypDevices from './TypDevices';
 
 /**
@@ -23,7 +24,7 @@ class LocationTypDevices {
     /**
      * Constructs a new <code>LocationTypDevices</code>.
      * @alias module:model/LocationTypDevices
-     * @param location {String} 
+     * @param location {module:model/Location} 
      * @param typDevices {Array.<module:model/TypDevices>} 
      */
     constructor(location, typDevices) { 
@@ -53,7 +54,7 @@ class LocationTypDevices {
             obj = obj || new LocationTypDevices();
 
             if (data.hasOwnProperty('location')) {
-                obj['location'] = ApiClient.convertToType(data['location'], 'String');
+                obj['location'] = Location.constructFromObject(data['location']);
             }
             if (data.hasOwnProperty('typ_devices')) {
                 obj['typ_devices'] = ApiClient.convertToType(data['typ_devices'], [TypDevices]);
@@ -74,9 +75,9 @@ class LocationTypDevices {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['location'] && !(typeof data['location'] === 'string' || data['location'] instanceof String)) {
-            throw new Error("Expected the field `location` to be a primitive type in the JSON string but got " + data['location']);
+        // validate the optional field `location`
+        if (data['location']) { // data not null
+          Location.validateJSON(data['location']);
         }
         if (data['typ_devices']) { // data not null
             // ensure the json data is an array
@@ -98,7 +99,7 @@ class LocationTypDevices {
 LocationTypDevices.RequiredProperties = ["location", "typ_devices"];
 
 /**
- * @member {String} location
+ * @member {module:model/Location} location
  */
 LocationTypDevices.prototype['location'] = undefined;
 
