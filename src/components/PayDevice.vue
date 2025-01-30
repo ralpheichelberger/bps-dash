@@ -22,22 +22,21 @@
         Config
       </v-btn>
     </div>
-    <div class="maschineName">
+    <div v-if="deviceInfo" class="maschineName">
+      <h1>{{ deviceDisplayName() }}</h1>
+    </div>
+    <div v-if="deviceInfo" class="shopAddress">
+      {{ deviceInfo.location }}
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'washer'" class="selection">
       <div class="detergent">
-        <label>Waschmittel:</label>
-        <v-radio-group v-model="detergent" mandatory>
-          <v-radio :disabled="!deviceInfo.detergent" label="On" value="on"></v-radio>
-          <v-radio label="Off" value="off"></v-radio>
-        </v-radio-group>
+        <label>Waschmittel</label>
+        <TriState v-model="detergent" :onlyOff="!deviceInfo.detergent" />
       </div>
+      <div style="width: 1rem;"></div>
       <div class="softener">
-        <label>Weichspüler:</label>
-        <v-radio-group v-model="softener" mandatory>
-          <v-radio :disabled="!deviceInfo.softener" label="On" value="on"></v-radio>
-          <v-radio label="Off" value="off"></v-radio>
-        </v-radio-group>
+        <label>Weichspüler</label>
+        <TriState v-model="softener" :onlyOff="!deviceInfo.softener" />
       </div>
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="selection">
@@ -52,11 +51,7 @@
         </v-btn>
       </div>
     </div>
-    <div v-if="deviceInfo" class="shopAddress">
-      <h3>{{ deviceDisplayName() }}</h3>
-      {{ deviceInfo.location }}
-      <!-- {{ deviceInfo }} -->
-    </div>
+
     <div v-if="deviceInfo" class="price">
       Preis: EUR {{ cent2euro(deviceInfo.price) }}
     </div>
@@ -229,14 +224,15 @@ const payDeviceAndAllowStart = (typ, details) => {
   font-size: 1.5rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 2fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
     "userName balance"
     "card-id topUpButton"
-    "shopAddress price"
-    "maschineName ."
+    "maschineName maschineName"
+    "shopAddress shopAddress"
+    "price price"
     "detergent softener"
     "payPalButton payPalButton"
     "creditButton creditButton";
@@ -277,6 +273,12 @@ const payDeviceAndAllowStart = (typ, details) => {
 
 .maschineName {
   grid-area: maschineName;
+  justify-items: center;
+}
+
+.shopAddress {
+  grid-area: shopAddress;
+  text-align: center;
 }
 
 .user {
@@ -299,24 +301,27 @@ const payDeviceAndAllowStart = (typ, details) => {
 }
 
 .selection {
-  grid-row: 5;
+  grid-row: 6;
   grid-column: span 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr .2fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
-    "detergent softener";
+    "detergent . softener";
   /* border: solid 1px rgb(106, 106, 106); */
   border-radius: .2rem;
   background-color: rgba(251, 250, 169, 0.179);
   box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
+  padding: 1rem;
 }
 
 .detergent {
-  padding-left: 50px;
+  padding-left: 1rem;
+  ;
   grid-area: detergent;
+  justify-items: center;
 }
 
 .dry-time-container {
@@ -355,19 +360,13 @@ const payDeviceAndAllowStart = (typ, details) => {
 
 .softener {
   grid-area: softener;
-}
-
-.shopAddress {
-  padding-left: 30px;
-
-  grid-area: shopAddress;
+  justify-items: center;
 }
 
 .price {
   grid-area: price;
-  text-align: right;
-  margin-top: auto;
-  padding-right: var(--user-padding-right);
+  font-size: xx-large;
+  text-align: center;
 }
 
 .payPalButton {
