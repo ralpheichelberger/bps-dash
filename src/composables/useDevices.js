@@ -1,14 +1,12 @@
 import { ref } from "vue";
 import { useAuth } from "./useAuth.js";
-import { get } from "superagent";
 
-const { authenticateClient, api, cardID } = useAuth();
+const { api } = useAuth();
 
 export function useDevices() {
 
     const devices = ref(null);
     const getDevices = async (location) => {
-        await authenticateClient();
         return new Promise((resolve, reject) => {
             api.getDevices({ location: location }, (error, data) => {
                 if (error) {
@@ -22,7 +20,6 @@ export function useDevices() {
     };
 
     const deleteDevice = async (deviceData) => {
-        await authenticateClient();
         return new Promise((resolve, reject) => {
             api.deleteDevice(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
                 if (error) {
@@ -36,10 +33,6 @@ export function useDevices() {
 
     const deviceInfo = ref(null);
     const getDeviceInfo = async (deviceId) => {
-        await authenticateClient();
-        if (!cardID.value) {
-            throw new Error("No card ID set");
-        }
         if (!deviceId) {
             throw new Error("No deviceId set");
         }
@@ -115,7 +108,6 @@ export function useDevices() {
     };
 
     const updateDevice = async (device) => {
-        await authenticateClient();
         return new Promise((resolve, reject) => {
             api.updateDevice(device, (error, data, response) => {
                 if (error) {
@@ -128,7 +120,6 @@ export function useDevices() {
     }
 
     const newDevice = async (device) => {
-        await authenticateClient();
         return new Promise((resolve, reject) => {
             api.newDevice(device, (error, data, response) => {
                 if (error) {
@@ -142,7 +133,6 @@ export function useDevices() {
 
     const locationTypDevices = ref([]);
     const getLocationTypDevices = async () => {
-        await authenticateClient();
         return new Promise((resolve, reject) => {
             api.getLocationTypDevices((error, data, result) => {
                 if (error) {

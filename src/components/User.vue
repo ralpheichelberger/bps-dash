@@ -8,7 +8,7 @@
         </v-btn>
       </div>
       <div :class="{ userName: !admin, adminUser: admin }">
-        {{ admin ? "Admin" : "Konto" }} <br />
+        Konto <br />
         <p style="font-size:1.5rem"> {{ user.name }} </p>
         <p v-if="user.typ == 'admin'">Admin</p>
       </div>
@@ -54,6 +54,62 @@
   <v-dialog v-if="user" v-model="topUpDialog">
     <TopUp :visible="topUpDialog" :user-id="user.id" @close="topUpDialog = false" @top-up="topUpCredit" />
   </v-dialog>
+  <v-dialog v-if="customer" v-model="customerDialog">
+    <v-card class="bubble_style customer pa-4" elevation="4">
+
+      <v-card-title class="headline">Customer Details
+        <v-card-subtitle>ID: {{ customer.id }}
+        </v-card-subtitle>
+      </v-card-title>
+      <v-card-text>
+        <v-table density="compact">
+          <tbody>
+            <tr>
+              <td><strong>Name:</strong></td>
+              <td>{{ customer.name }}</td>
+            </tr>
+            <tr>
+              <td><strong>Balance:</strong></td>
+              <td>{{ cent2euro(customer.credit) }}</td>
+            </tr>
+            <tr>
+              <td><strong>Type:</strong></td>
+              <td>{{ customer.typ }}</td>
+            </tr>
+            <tr>
+              <td><strong>Active:</strong></td>
+              <td>{{ customer.active ? 'Yes' : 'No' }}</td>
+            </tr>
+          </tbody>
+        </v-table>
+        <v-divider></v-divider>
+        <v-row>
+          <v-col>
+            <v-text-field v-model.number="customerTopupAmount">EUR</v-text-field>
+          </v-col>
+          <v-col>
+            <v-radio-group v-model="customerTopupType" class="ma-2">
+              <v-radio label="Admin" value="admin"></v-radio>
+              <v-radio label="Bar" value="cash"></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn elevation="4" color="#800" dark @click="resetCustomer">Reset</v-btn>
+        <!-- <v-btn elevation="4" color="#505" dark @click="toggleActiveCustomer">{{ customer.active ? 'deactivate' :
+          'activate' }} </v-btn> -->
+        <v-spacer></v-spacer>
+
+        <v-btn elevation="4" color="#050" dark @click="topUpCustomerCredit"
+          :disabled="customerTopupAmount == 0 || customerTopupType == 'cash' && customerTopupAmount < 0">
+          Aufladen
+        </v-btn>
+        <v-btn elevation="4" color="#050" dark @click="customer = null">Close</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 
   <v-dialog v-model="errorDialog" class="ma-3" elevation="10">
     <v-card class="bubble_style">
@@ -78,23 +134,31 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-
+  <v-snackbar v-model="snackbar.show" :color="snackbar.color">
+    {{ snackbar.text }}
+  </v-snackbar>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { useAPI } from "../composables/useAPI";
+import { useUser } from "../composables/useUser";
 import TopUp from "./TopUp.vue";
-import { useAuth } from "../composables/useAuth";
 import { usePayment } from "../composables/usePayment";
 
+const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
+
+const user = ref(null)
 const topUpDialog = ref(false);
+const customerDialog = computed(() => customer.value ? true : false);
 const errorDetail = ref("");
 const errorMessage = ref("");
 const userPayments = ref([]);
+const customerTopupAmount = ref(0);
+const customerTopupType = ref("admin");
 
-const { user, getUser, cent2euro } = useAPI();
-const { cardID } = useAuth();
+const { customer, getUser, resetUser } = useUser();
+const { cent2euro } = useAPI();
 const { topUp, payments } = usePayment();
 const props = defineProps(["id"]);
 const errorDialog = ref(false);
@@ -106,26 +170,34 @@ function updateListHeight() {
 setTimeout(() => {
   errorDialog.value = !user.value
 }, 3000);
-cardID.value = props.id;
-if (!cardID.value) {
-  errorDialog.value = true;
-  errorMessage.value = "Es ist kein Kundenkonto gespeichert.";
-  errorDetail.value = "Bitte scannen Sie Ihre Bubble Card erneut oder wenden Sie sich an unseren Kundenservice!";
-}
-getUser(cardID.value).then((dbUser) => {
+
+
+getUser(props.id).then((dbUser) => {
   localStorage.setItem("user", JSON.stringify(dbUser))
-  payments(cardID.value).then((data) => {
-    userPayments.value = data
-  }).catch((error) => {
-    console.log(error)
-  });
+  user.value = dbUser
+  if (user.value) {
+    payments(user.value.id).then((data) => {
+      userPayments.value = data
+    }).catch((error) => {
+      console.log(error)
+      if (error.response && error.response.status == 401) {
+        errorUnauthorized()
+      }
+    });
+  }
 }).catch((error) => {
-  if (error.response.status == 401) {
-    errorDialog.value = true;
-    errorMessage.value = "Kundenkonto gesperrt.";
-    errorDetail.value = "Bitte scannen Sie eine andere Bubble Card oder wenden Sie sich an unseren Kundenservice!";
+  if (error.response && error.response.status == 401) {
+    errorUnauthorized()
   }
 });
+
+const errorUnauthorized = () => {
+  localStorage.removeItem("user");
+  errorDialog.value = true;
+  errorMessage.value = "Kundenkonto gesperrt.";
+  errorDetail.value = "Bitte scannen Sie eine andere Bubble Card oder wenden Sie sich an unseren Kundenservice!";
+}
+
 const admin = computed(() => {
   if (user.value) {
     return user.value.typ == "admin";
@@ -138,7 +210,7 @@ const navigateToAdmin = () => {
   window.location.href = "/admin";
 }
 const topUpCredit = (topAmount, details) => {
-  topUp(user.value.id, topAmount, details).then(() => {
+  topUp(user.value.id, topAmount, 'topup', details).then(() => {
     getUser(user.value.id).then((dbUser) => {
       localStorage.setItem("user", JSON.stringify(dbUser))
       user.value = dbUser
@@ -167,8 +239,33 @@ const centToEuro = (cent) => {
   return (cent / 100).toFixed(2);
 };
 
+const toggleActiveCustomer = () => {
+  customer.value.active = !customer.value.active;
+}
+
+const resetCustomer = () => {
+  confirm('Konto wirklich zurücksetzen?') && resetUser(customer.value).then(() => {
+    snackbar.value.text = `Bubble Konto ${customer.value.name} erfolgreich zurückgesetzt`
+    snackbar.value.color = 'success'
+    snackbar.value.show = true
+  })
+}
+
+const topUpCustomerCredit = () => {
+  topUp(customer.value.id, customerTopupAmount.value * 100,
+    customerTopupType.value, null,user.value.id).then(() => {
+      getUser(customer.value.id).then((dbUser) => {
+        snackbar.value.text = `EUR ${customerTopupAmount.value} erfolgreich aufgeladen!`
+        snackbar.value.color = 'success'
+        snackbar.value.show = true
+      })
+    })
+}
+
+
 
 </script>
+
 <style>
 .payments {
   grid-row: 4;

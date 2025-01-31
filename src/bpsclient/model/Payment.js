@@ -189,7 +189,13 @@ Payment['TypEnum'] = {
      * value: "paypal"
      * @const
      */
-    "paypal": "paypal"
+    "paypal": "paypal",
+
+    /**
+     * value: "cash"
+     * @const
+     */
+    "cash": "cash"
 };
 
 

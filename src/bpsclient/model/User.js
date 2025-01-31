@@ -192,7 +192,13 @@ User['TypEnum'] = {
      * value: "internal"
      * @const
      */
-    "internal": "internal"
+    "internal": "internal",
+
+    /**
+     * value: "anonymous"
+     * @const
+     */
+    "anonymous": "anonymous"
 };
 
 

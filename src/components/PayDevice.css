@@ -52,33 +52,45 @@
 .userName {
     padding-left: var(--user-padding-left);
     grid-area: userName;
-    margin:auto;
+    margin: auto;
     margin-left: 0;
 }
+
 .adminUser {
     padding-left: var(--user-padding-left);
     grid-row: 1 / span 2;
     grid-column: 1;
-    margin:auto;
+    margin: auto;
     margin-left: 0;
 }
+
+.anonym {
+    grid-row: 1 / span 2;
+    grid-column: 1 /span 3;
+    margin: auto;
+    text-align: center;
+}
+
 .text {
     grid-area: text;
     text-align: right;
-    margin:auto;
+    margin: auto;
     margin-right: .5rem;
 }
+
 .balance {
     grid-area: balance;
     text-align: right;
     padding-right: var(--user-padding-right);
     font-size: 2rem;
 }
+
 .admin-config {
     grid-row: 1 / span 2;
     grid-column: 2 / span 2;
     justify-self: right;
 }
+
 .card-id {
     padding-left: var(--user-padding-left);
     grid-area: card-id;
@@ -182,17 +194,40 @@
     grid-area: calcPrice;
     font-size: 2rem;
     margin: auto;
-    
+
 }
 
 .payPalButton {
+    padding-top: .6rem;
     grid-area: payPalButton;
     margin-top: auto;
 }
 
 .creditButton {
+    padding-top: .6rem;
     grid-area: creditButton;
     margin-top: auto;
+}
+
+.customer {
+    width: 100%;
+    border-radius: .4rem;
+}
+
+.customer.v-card-actions {
+    background: rgb(2, 16, 4) !important;
+}
+
+
+
+.v-btn.v-btn--density-default {
+    background: rgb(255 255 255 / 65%) !important;
+    color: black;
+}
+
+.v-btn--variant-elevated,
+.v-btn--variant-flat {
+    background: rgb(31 157 53) !important;
 }
 
 .error-dialog {

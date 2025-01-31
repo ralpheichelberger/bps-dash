@@ -25,10 +25,12 @@ class TopupCreditRequest {
      * @param cardId {String} The unique 9 characters card ID
      * @param amount {Number} The amount to be added to the credit in euro cents
      * @param billNr {String} The bill number associated with the top-up
+     * @param typ {module:model/TopupCreditRequest.TypEnum} 
+     * @param clerk {String} The card id of the clerk
      */
-    constructor(cardId, amount, billNr) { 
+    constructor(cardId, amount, billNr, typ, clerk) { 
         
-        TopupCreditRequest.initialize(this, cardId, amount, billNr);
+        TopupCreditRequest.initialize(this, cardId, amount, billNr, typ, clerk);
     }
 
     /**
@@ -36,10 +38,12 @@ class TopupCreditRequest {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, cardId, amount, billNr) { 
+    static initialize(obj, cardId, amount, billNr, typ, clerk) { 
         obj['card_id'] = cardId;
         obj['amount'] = amount;
         obj['bill_nr'] = billNr;
+        obj['typ'] = typ;
+        obj['clerk'] = clerk;
     }
 
     /**
@@ -62,8 +66,14 @@ class TopupCreditRequest {
             if (data.hasOwnProperty('bill_nr')) {
                 obj['bill_nr'] = ApiClient.convertToType(data['bill_nr'], 'String');
             }
+            if (data.hasOwnProperty('typ')) {
+                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
+            }
             if (data.hasOwnProperty('paypal_details')) {
                 obj['paypal_details'] = ApiClient.convertToType(data['paypal_details'], Object);
+            }
+            if (data.hasOwnProperty('clerk')) {
+                obj['clerk'] = ApiClient.convertToType(data['clerk'], 'String');
             }
         }
         return obj;
@@ -89,6 +99,14 @@ class TopupCreditRequest {
         if (data['bill_nr'] && !(typeof data['bill_nr'] === 'string' || data['bill_nr'] instanceof String)) {
             throw new Error("Expected the field `bill_nr` to be a primitive type in the JSON string but got " + data['bill_nr']);
         }
+        // ensure the json data is a string
+        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
+            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
+        }
+        // ensure the json data is a string
+        if (data['clerk'] && !(typeof data['clerk'] === 'string' || data['clerk'] instanceof String)) {
+            throw new Error("Expected the field `clerk` to be a primitive type in the JSON string but got " + data['clerk']);
+        }
 
         return true;
     }
@@ -96,7 +114,7 @@ class TopupCreditRequest {
 
 }
 
-TopupCreditRequest.RequiredProperties = ["card_id", "amount", "bill_nr"];
+TopupCreditRequest.RequiredProperties = ["card_id", "amount", "bill_nr", "typ", "clerk"];
 
 /**
  * The unique 9 characters card ID
@@ -117,13 +135,45 @@ TopupCreditRequest.prototype['amount'] = undefined;
 TopupCreditRequest.prototype['bill_nr'] = undefined;
 
 /**
+ * @member {module:model/TopupCreditRequest.TypEnum} typ
+ */
+TopupCreditRequest.prototype['typ'] = undefined;
+
+/**
  * details from the paypal transaction
  * @member {Object} paypal_details
  */
 TopupCreditRequest.prototype['paypal_details'] = undefined;
 
+/**
+ * The card id of the clerk
+ * @member {String} clerk
+ */
+TopupCreditRequest.prototype['clerk'] = undefined;
 
 
+
+
+
+/**
+ * Allowed values for the <code>typ</code> property.
+ * @enum {String}
+ * @readonly
+ */
+TopupCreditRequest['TypEnum'] = {
+
+    /**
+     * value: "cash"
+     * @const
+     */
+    "cash": "cash",
+
+    /**
+     * value: "paypal"
+     * @const
+     */
+    "paypal": "paypal"
+};
 
 
 

@@ -1,27 +1,33 @@
 <template> <!-- FIXME add AGBs -->
-  <div v-if="user" class="container bubble_style" :class="{ admin: admin }"
+  <div v-if="user || anonym" class="container bubble_style" :class="{ admin: admin }"
     :style="'height:' + windowInnerHeight + 'px'">
     <div class="user">
+      <!-- if anonym bubble card promotion -->
+      <div v-if="anonym" class="anonym">
+        <h2>Willkommen bei Bubble Point</h2>
+        Kaufen Sie gleich jetzt noch eine Bubble Card und
+        profitieren Sie von den günstigen Preisen und dem Komfort durch zahlen mit einem Klick!
+      </div>
       <div v-if="admin" class="admin-config">
         <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
           Config
         </v-btn>
       </div>
-      <div :class="{ userName: !admin, adminUser: admin }">
+      <div v-if="user" :class="{ userName: !admin, adminUser: admin }">
         {{ admin ? "Admin" : "Konto" }} <br />
         <p style="font-size:1.5rem"> {{ user.name }} </p>
         <p v-if="user.typ == 'admin'">Admin</p>
       </div>
-      <div v-if="!admin" class="text">
+      <div v-if="user && !admin" class="text">
         Guthaben EUR
       </div>
-      <div v-if="!admin" class="balance">
+      <div v-if="user && !admin" class="balance">
         {{ cent2euro(user.credit) }}
       </div>
-      <div v-if="!admin" class="card-id">
+      <div v-if="user && !admin" class="card-id">
         ID: {{ user.id }}
       </div>
-      <div v-if="!admin" class="topUpButton">
+      <div v-if="user && !admin" class="topUpButton">
         <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined">
           Aufladen
         </v-btn>
@@ -38,7 +44,7 @@
       Preis: EUR {{ cent2euro(deviceInfo.price) }} {{ deviceInfo.type == 'dryer' ? '/ ' + dryUnits + 'min' : '' }}
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
-      EUR {{ cent2euro(deviceInfo.price * dryTime / dryUnits) }}
+      EUR {{ paymentAmount }} für {{ dryTime }} min
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'washer'" class="selection">
       <div class="detergent">
@@ -66,12 +72,13 @@
 
 
     <div v-if="!payed && !admin && (choosen || (deviceInfo && deviceInfo.type == 'dryer'))" class="payPalButton">
-      <PayPalButton :amount="paymentAmount" :user-id="user.id" @transactionApproved="payDeviceAndAllowStart" />
+      <PayPalButton :amount="paymentAmount" :user-id="user ? user.id : 'anonym'"
+        @transactionApproved="payDeviceAndAllowStart" />
     </div>
     <div v-if="!choosen && deviceInfo && deviceInfo.type == 'washer'" class="payPalButton" style="text-align: center;">
       <h3>Bitte wählen Sie Waschmittel und Weichspüler</h3>
     </div>
-    <div v-if="!payed" class="creditButton">
+    <div v-if="!payed && user && (admin || user.credit >= parseInt(paymentAmount * 100))" class="creditButton">
       <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large;"
         @click="payDeviceAndAllowStart(admin ? 'admin' : 'credit')"
         :disabled="!choosen && (deviceInfo && deviceInfo.type == 'washer')">
@@ -109,7 +116,9 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-
+  <v-snackbar v-model="snackbar.show" :color="snackbar.color">
+    {{ snackbar.text }}
+  </v-snackbar>
 </template>
 
 <script setup>
@@ -118,22 +127,25 @@ import { useAPI } from "../composables/useAPI";
 import { useDevices } from "../composables/useDevices";
 import { usePayment } from "../composables/usePayment";
 import TopUp from "./TopUp.vue";
-import { useAuth } from "../composables/useAuth";
+import { useUser } from "../composables/useUser";
 
+const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
+
+const user = ref(null);
 const topUpDialog = ref(false);
 const errorDetail = ref("");
 const errorMessage = ref("");
 const payed = ref(false);
 const dryTime = ref(20);
 const dryUnits = 10;
-const { user, getUser, cent2euro } = useAPI();
-const { cardID } = useAuth();
+const { cent2euro } = useAPI();
+const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, payment } = usePayment();
 
 const errorDialog = ref(false);
 setTimeout(() => {
-  errorDialog.value = !user.value || !deviceInfo.value
+  errorDialog.value = (!user.value || !deviceInfo.value) && !anonym.value;
 }, 3000);
 const windowInnerHeight = ref(window.innerHeight);
 window.addEventListener('resize', updateListHeight);
@@ -141,15 +153,17 @@ function updateListHeight() {
   windowInnerHeight.value = window.innerHeight;
 }
 
-getUser(cardID.value).then((dbUser) => {
-  localStorage.setItem("user", JSON.stringify(dbUser))
+getUser().then((dbUser) => {
+  user.value = dbUser;
+  console.log("user", user.value);
 }).catch((error) => {
-  if (error.response.status == 401) {
-    errorDialog.value = true;
-    errorMessage.value = "Kundenkonto gesperrt.";
-    errorDetail.value = "Bitte scannen Sie eine andere Bubble Card oder wenden Sie sich an unseren Kundenservice!";
-  }
+  console.log(error);
 });
+
+const anonym = computed(() => {
+  return user ? !user.value : true;
+});
+
 const admin = computed(() => {
   if (user.value) {
     return user.value.typ == "admin";
@@ -164,7 +178,7 @@ const navigateToAdmin = () => {
 }
 const topUpCredit = (topAmount, details) => {
   topUp(user.value.id, topAmount, details).then(() => {
-    getUser(user.value.id)
+    reloadUser(user)
   })
   topUpDialog.value = false
 }
@@ -205,10 +219,15 @@ const deviceDisplayName = () => {
 // Computes the payment amount in euros for PayPal.
 const paymentAmount = computed(() => {
   if (deviceInfo.value) {
-    return cent2euro(deviceInfo.value.price).toString();
+    let price = deviceInfo.value.price;
+    if (deviceInfo.value.type == 'dryer') {
+      price = price * dryTime.value / dryUnits;
+    }
+    return cent2euro(price).toString();
   }
   return "0";
 });
+
 const detergent = ref(null);
 const softener = ref(null);
 
@@ -219,12 +238,15 @@ const payDeviceAndAllowStart = (typ, details) => {
     dryTime.value = 0;
   }
   const machine_id = parseInt(props.deviceId, 10);
-  payment(user.value.id, deviceInfo.value.name, deviceInfo.value.price, machine_id, dryTime.value, typ, details).then(() => {
-    getUser(cardID.value).then((dbUser) => {
-      localStorage.setItem("user", JSON.stringify(dbUser))
-      user.value = dbUser;
-    })
+  payment(user.value ? user.value.id : 'anonym', deviceInfo.value.name, deviceInfo.value.price, machine_id, dryTime.value, typ, details).then(() => {
+    if (user.value) {
+      reloadUser(user)
+    }
     payed.value = true;
+    // {{ deviceDisplayName() }} <br /> NR. {{ deviceNr() }}
+    snackbar.value.text = `Die Zahlung war erfolgreich! ${deviceDisplayName()} NR. ${deviceNr()} ist freigeschalten`
+    snackbar.value.color = 'success'
+    snackbar.value.show = true
   }).catch((error) => {
     errorMessage.value = "Die Zahlung konnte nicht abgeschlossen werden"
     errorDetail.value = error;

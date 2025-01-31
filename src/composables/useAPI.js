@@ -1,47 +1,11 @@
 import { ref } from "vue";
 import { useAuth } from "./useAuth.js";
 
-const { authenticateClient, api, cardID } = useAuth();
+const { api, upDateAuth } = useAuth();
 
 export function useAPI() {
-  const user = ref(null);
-  const customer = ref(null);
-  const getUser = async (card_id) => {
-    // Authenticate once
-    await authenticateClient(card_id);
-    return new Promise((resolve, reject) => {
-
-      api.getUser(cardID.value, (error, data) => {
-        if (error) {
-          console.error("Error fetching user", error);
-          if (error.status === 401) {
-            console.error("Unauthorized");
-            // remove user data from local storage
-            if (localStorage.getItem("user")) {
-              localStorage.removeItem("user");
-              getUser(card_id)
-            }
-          } else reject(new Error("Error fetching user: " + error));
-        } else {
-          // store user data in local storage
-          if (localStorage.getItem("user")) {
-            user.value = JSON.parse(localStorage.getItem("user"));
-            if (user.value.typ === "admin" && data.typ === "user") {
-              customer.value = data
-            }
-          } else {
-            user.value = data;
-            localStorage.setItem("user", JSON.stringify(data));
-          }
-          resolve(data);
-        }
-        reject(error);
-      });
-    });
-  };
 
   const getMarketing = async (code, uuid) => {
-    await authenticateClient();
     return new Promise((resolve, reject) => {
       api.getMarketing(code, uuid, (error, data) => {
         if (error) {
@@ -54,7 +18,6 @@ export function useAPI() {
   }
 
   const saveMarketing = async (marketing) => {
-    await authenticateClient();
     return new Promise((resolve, reject) => {
       api.newMarketing(marketing, (error, data) => {
         if (error) {
@@ -67,7 +30,6 @@ export function useAPI() {
   }
 
   const updateMarketing = async (marketing) => {
-    await authenticateClient();
     return new Promise((resolve, reject) => {
       api.updateMarketing(marketing, (error, data) => {
         if (error) {
@@ -82,8 +44,6 @@ export function useAPI() {
   const locations = ref(null);
 
   const getLocations = async () => {
-    // Authenticate once
-    await authenticateClient();
     return new Promise((resolve, reject) => {
       api.getLocations((error, data) => {
         if (error) {
@@ -100,9 +60,6 @@ export function useAPI() {
   const priceLines = ref(null);
 
   const getPriceLines = async () => {
-    // Authenticate once
-    await authenticateClient();
-
     api.getPriceLines((error, data) => {
       if (error) {
         console.error("Error fetching priceLines", error);
@@ -113,7 +70,6 @@ export function useAPI() {
   }
 
   const newPriceLine = async (priceLine) => {
-    await authenticateClient();
     return new Promise((resolve, reject) => {
       api.newPriceLine(priceLine, (error, data) => {
         if (error) {
@@ -128,7 +84,6 @@ export function useAPI() {
   const cent2euro = (val) => (val / 100).toFixed(2);
 
   const uploadModuleProgramm = async (moduleProgramm) => {
-    await authenticateClient();
     return new Promise((resolve, reject) => {
       api.moduleProgramm(moduleProgramm.typ, moduleProgramm.version, moduleProgramm.file, moduleProgramm.checksum, (error, data) => {
         if (error) {
@@ -143,13 +98,10 @@ export function useAPI() {
 
 
   return {
-    customer,
-    user,
     locations,
     priceLines,
     newPriceLine,
     getLocations,
-    getUser,
     getPriceLines,
     cent2euro,
     uploadModuleProgramm,

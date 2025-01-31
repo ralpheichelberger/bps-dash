@@ -5,33 +5,22 @@ import * as bps from "../bpsclient";
  * returns {init function, api bps.DefaultApi, cardID ref}
  */
 export function useAuth() {
-  const cardID = ref("");
-  const u = ref(localStorage.getItem("user") || ""); 
-  if (u.value) {
-    cardID.value = JSON.parse(u.value).id
-  }
-  // Create and configure the API client
   const client = new bps.ApiClient();
   const api = new bps.DefaultApi(client);
 
-
-  const authenticateClient = async (card_id) => {
-    // Set the card ID
-    if (card_id) {
-      cardID.value = card_id
-    }
-    var token=card_id
-    const userLocal=localStorage.getItem("user");
+  const updateAuth = (card_id) => {
+    const userLocal = JSON.parse(localStorage.getItem("user"));
+    let token = card_id ? card_id : import.meta.env.VITE_ACCESS_TOKEN
     if (userLocal) {
-      let data = JSON.parse(userLocal);
-      token = data.token;
+      token = userLocal.token;
     }
     client.authentications["BearerAuth"].accessToken = token
-  };
+  }
+
+  updateAuth();
 
   return {
-    authenticateClient,
     api,
-    cardID,
+    updateAuth,
   };
 }
