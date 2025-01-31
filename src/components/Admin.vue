@@ -44,7 +44,7 @@ import Locations from './Locations.vue'
 import PriceLines from './PriceLines.vue';
 import Devices from './Devices.vue'
 import moduleProgramm from './ModuleProgramm.vue';
-var deviceTypes = ref(['washer', 'dryer', 'pump']) // TODO: get from API
+var deviceTypes = ref(['washer', 'dryer', 'pump']) // HARDCODED get from API
 
 const tab = ref('devices')
 

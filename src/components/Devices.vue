@@ -88,11 +88,11 @@ const createNewDevice = () => {
     location: loc,
     module: {
       mac: "",
-      binaryType: "washer", // TODO: get from config
+      binaryType: "washer", // HARDCODED get from config
       lastSeen: 0,
       lastPing: 0,
       durations: {
-        impuls: 9000, // 15 min // TODO: get from config
+        impuls: 9000, // 15 min // HARDCODED get from config
         detergent: 100,
         softener: 100,
       },

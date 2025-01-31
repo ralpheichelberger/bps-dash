@@ -32,7 +32,8 @@ export function usePayment() {
             updateAuth(card_id);
         }
         if (dryTime){
-            amount=amount*(dryTime/10) // FIXME hardcoded time 10 minutes per price unit
+            // FIXME // HARDCODED hardcoded time 10 minutes per price unit
+            amount=amount*(dryTime/10) 
         }
         const paymentBody = {
             card_id: card_id,
