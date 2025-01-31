@@ -2,12 +2,13 @@
     font-family: "DreamingOutloud", Arial, sans-serif;
     color: black;
     height: 100vh;
-    background: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
+    
+    background: linear-gradient(155deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
+    /* background: linear-gradient(135deg,  #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD, #FF9A8B, #FF6A88); */
     justify-content: center;
     align-self: center;
-    font-size: large;
-    background-size: 400% 400%;
-    animation: gradient 10s ease infinite, 1.5s myFadeIn;
+    /* background-size: 400% 400%; */
+    /* animation: gradient 10s ease infinite, 1.5s myFadeIn; */
     position: relative;
     overflow: hidden; 
 }

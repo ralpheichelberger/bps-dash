@@ -1,32 +1,44 @@
 <template> <!-- FIXME add AGBs -->
-  <div v-if="user" class="container bubble_style" :class="{ admin: admin }">
+  <div v-if="user" class="container bubble_style" :class="{ admin: admin }"
+    :style="'height:' + windowInnerHeight + 'px'">
     <div class="user">
-      <div class="userName">
-        Konto {{ user.name }}
-        <h2 v-if="user.typ == 'admin'">Admin</h2>
+      <div v-if="admin" class="admin-config">
+        <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
+          Config
+        </v-btn>
+      </div>
+      <div :class="{ userName: !admin, adminUser: admin }">
+        {{ admin ? "Admin" : "Konto" }} <br />
+        <p style="font-size:1.5rem"> {{ user.name }} </p>
+        <p v-if="user.typ == 'admin'">Admin</p>
+      </div>
+      <div v-if="!admin" class="text">
+        Guthaben EUR
       </div>
       <div v-if="!admin" class="balance">
-        Guthaben EUR {{ cent2euro(user.credit) }}
+        {{ cent2euro(user.credit) }}
       </div>
       <div v-if="!admin" class="card-id">
         ID: {{ user.id }}
       </div>
       <div v-if="!admin" class="topUpButton">
-        <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
+        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined">
           Aufladen
         </v-btn>
       </div>
     </div>
-    <div v-if="admin" class="topUpButton">
-      <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
-        Config
-      </v-btn>
-    </div>
+
     <div v-if="deviceInfo" class="maschineName">
-      <h1>{{ deviceDisplayName() }}</h1>
+      {{ deviceDisplayName() }} <br /> NR. {{ deviceNr() }}
     </div>
     <div v-if="deviceInfo" class="shopAddress">
       {{ deviceInfo.location }}
+    </div>
+    <div v-if="deviceInfo" class="price">
+      Preis: EUR {{ cent2euro(deviceInfo.price) }} {{ deviceInfo.type == 'dryer' ? '/ ' + dryUnits + 'min' : '' }}
+    </div>
+    <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
+      EUR {{ cent2euro(deviceInfo.price * dryTime / dryUnits) }}
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'washer'" class="selection">
       <div class="detergent">
@@ -52,9 +64,7 @@
       </div>
     </div>
 
-    <div v-if="deviceInfo" class="price">
-      Preis: EUR {{ cent2euro(deviceInfo.price) }}
-    </div>
+
     <div v-if="!payed && !admin && (choosen || (deviceInfo && deviceInfo.type == 'dryer'))" class="payPalButton">
       <PayPalButton :amount="paymentAmount" :user-id="user.id" @transactionApproved="payDeviceAndAllowStart" />
     </div>
@@ -63,7 +73,8 @@
     </div>
     <div v-if="!payed" class="creditButton">
       <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large;"
-        @click="payDeviceAndAllowStart('credit')" :disabled="!choosen && (deviceInfo && deviceInfo.type == 'washer')">
+        @click="payDeviceAndAllowStart(admin ? 'admin' : 'credit')"
+        :disabled="!choosen && (deviceInfo && deviceInfo.type == 'washer')">
         {{ admin ? "Freischalten" : "Mit Guthaben zahlen" }}
       </v-btn>
     </div>
@@ -114,7 +125,7 @@ const errorDetail = ref("");
 const errorMessage = ref("");
 const payed = ref(false);
 const dryTime = ref(20);
-
+const dryUnits = 10;
 const { user, getUser, cent2euro } = useAPI();
 const { cardID } = useAuth();
 const { deviceInfo, getDeviceInfo } = useDevices();
@@ -124,8 +135,11 @@ const errorDialog = ref(false);
 setTimeout(() => {
   errorDialog.value = !user.value || !deviceInfo.value
 }, 3000);
-
-
+const windowInnerHeight = ref(window.innerHeight);
+window.addEventListener('resize', updateListHeight);
+function updateListHeight() {
+  windowInnerHeight.value = window.innerHeight;
+}
 
 getUser(cardID.value).then((dbUser) => {
   localStorage.setItem("user", JSON.stringify(dbUser))
@@ -166,6 +180,12 @@ const closeError = () => {
   window.location.href = "/";
 };
 
+const deviceNr = () => {
+  if (deviceInfo.value) {
+    return deviceInfo.value.name.split("/")[2];
+  }
+  return "?";
+};
 // Returns a label for the device depending on its name.
 const deviceDisplayName = () => {
   if (deviceInfo.value) {
@@ -173,9 +193,9 @@ const deviceDisplayName = () => {
     var t = sname[1].substring(0, 1).toUpperCase();
     switch (t) {
       case "W":
-        return "Waschmaschine Nr. " + sname[2]
+        return "Waschmaschine"
       case "D":
-        return "Trockner Nr. " + sname[2]
+        return "Trockner"
       default:
         return deviceInfo.value.name;
     }
@@ -217,185 +237,9 @@ const payDeviceAndAllowStart = (typ, details) => {
 </script>
 
 <style>
-.container {
-  height: 100vh;
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "userName balance"
-    "card-id topUpButton"
-    "maschineName maschineName"
-    "shopAddress shopAddress"
-    "price price"
-    "detergent softener"
-    "payPalButton payPalButton"
-    "creditButton creditButton";
-}
+@import './PayDevice.css';
 
-@keyframes myFadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-.userName {
-  padding-left: var(--user-padding-left);
-  grid-area: userName;
-}
-
-.balance {
-  grid-area: balance;
-  text-align: right;
-  padding-right: var(--user-padding-right);
-}
-
-.card-id {
-  padding-left: var(--user-padding-left);
-  grid-area: card-id;
-}
-
-.topUpButton {
-  grid-area: topUpButton;
-  text-align: right;
-  padding-right: var(--user-padding-right);
-
-}
-
-.maschineName {
-  grid-area: maschineName;
-  justify-items: center;
-}
-
-.shopAddress {
-  grid-area: shopAddress;
-  text-align: center;
-}
-
-.user {
-  grid-row: 1 span 2;
-  grid-column: span 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "userName balance"
-    "card-id topUpButton";
-  border: solid 1px black;
-  border-radius: .2rem;
-  background-color: rgb(32, 32, 32);
-  box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
-  padding: 1rem;
-  color: white;
-}
-
-.selection {
-  grid-row: 6;
-  grid-column: span 2;
-  display: grid;
-  grid-template-columns: 1fr .2fr 1fr;
-  grid-template-rows: 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "detergent . softener";
-  /* border: solid 1px rgb(106, 106, 106); */
-  border-radius: .2rem;
-  background-color: rgba(251, 250, 169, 0.179);
-  box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
-  padding: 1rem;
-}
-
-.detergent {
-  padding-left: 1rem;
-  ;
-  grid-area: detergent;
-  justify-items: center;
-}
-
-.dry-time-container {
-  padding: 1rem;
-  grid-row: 1;
-  grid-column: span 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 2fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "title title title"
-    "dry-time-minus dry-time dry-time-plus";
-}
-
-.dry-time-title {
-  grid-area: title;
-  text-align: center;
-}
-
-.dry-time-minus {
-  grid-area: dry-time-minus;
-  justify-self: center;
-}
-
-.dry-time {
-  grid-area: dry-time;
-  text-align: center;
-}
-
-.dry-time-plus {
-  grid-area: dry-time-plus;
-  justify-self: center;
-}
-
-.softener {
-  grid-area: softener;
-  justify-items: center;
-}
-
-.price {
-  grid-area: price;
-  font-size: xx-large;
-  text-align: center;
-}
-
-.payPalButton {
-  grid-area: payPalButton;
-  margin-top: auto;
-}
-
-.creditButton {
-  grid-area: creditButton;
-  margin-top: auto;
-}
-
-.error-dialog {
-  opacity: 0;
-  animation: fadeIn 3s ease-in-out forwards;
-  background-color: rgba(0, 0, 0, 0.762);
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  80% {
-    opacity: 0.0;
-  }
-
-  100% {
-    opacity: 1;
-  }
+:root {
+  --v-theme-surface: rgba(32, 193, 43, 0.6);
 }
 </style>

@@ -1,30 +1,34 @@
 <template> <!-- FIXME add AGBs -->
-  <div v-if="user" class="container bubble_style" :class="{ admin: admin }">
+  <div v-if="user" class="container bubble_style" :class="{ admin: admin }"
+    :style="'height:' + windowInnerHeight + 'px'">
     <div class="user">
-
-      <div class="userName">
-        Konto {{ user.name }}
-        <h2 v-if="user.typ == 'admin'">Admin</h2>
+      <div v-if="admin" class="admin-config">
+        <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
+          Config
+        </v-btn>
+      </div>
+      <div :class="{ userName: !admin, adminUser: admin }">
+        {{ admin ? "Admin" : "Konto" }} <br />
+        <p style="font-size:1.5rem"> {{ user.name }} </p>
+        <p v-if="user.typ == 'admin'">Admin</p>
+      </div>
+      <div v-if="!admin" class="text">
+        Guthaben EUR
       </div>
       <div v-if="!admin" class="balance">
-        Guthaben EUR {{ cent2euro(user.credit) }}
+        {{ cent2euro(user.credit) }}
       </div>
       <div v-if="!admin" class="card-id">
         ID: {{ user.id }}
       </div>
       <div v-if="!admin" class="topUpButton">
-        <v-btn @click="topUpDialog = true" size="x-large" elevation="5" variant="outlined">
+        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined">
           Aufladen
-        </v-btn>
-      </div>
-      <div v-if="admin" class="topUpButton">
-        <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
-          Config
         </v-btn>
       </div>
     </div>
     <div v-if="userPayments" class="payments">
-      <v-table :height="(windowInnerHeight-240)+'px'" width="100%" fixed-header>
+      <v-table :height="(windowInnerHeight - 180) + 'px'" width="100%" fixed-header>
         <thead>
           <tr>
             <th>Zeit</th>
@@ -169,5 +173,6 @@ const centToEuro = (cent) => {
 .payments {
   grid-row: 4;
   grid-column: span 2;
+  margin-top: 1rem;
 }
 </style>

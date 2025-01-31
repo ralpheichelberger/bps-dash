@@ -1,5 +1,4 @@
 <template>
-    <!DOCTYPE html>
     <html lang="en">
 
     <head>
@@ -35,13 +34,20 @@ body {
 }
 
 :root {
-    --background-gradient: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
     /* Pastel gradient */
-    --v-theme-on-surface-variant: #FF6A88;
+    --background-gradient: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
     --user-padding-left: 1rem;
     --user-padding-right: 1rem;
+    --card-background: rgba(32, 32, 32, 0.6);
 }
 
+.v-table {
+    background: var(--card-background) !important;
+    border-radius: .3rem !important;
+}
+.v-table.v-table--fixed-header > .v-table__wrapper > table > thead > tr > th{
+    background: var(--card-background) !important;
+}
 @font-face {
     font-family: "DreamingOutloud";
     src: url("@/assets/bubblekassa.otf") format("opentype");
@@ -69,8 +75,8 @@ span.action {
 }
 
 .admin {
-    background: rgb(2, 27, 36) !important;
-    color: snow !important;
+    background: rgb(136, 219, 245) !important;
+    color: rgb(155, 0, 0) !important;
 }
 
 /* Gradient Animation */
