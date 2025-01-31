@@ -16,5 +16,5 @@ self.addEventListener('push', (event) => {
         })
     );
 });
-// FIXME use User App and redirect "pay maschine"-URL to User App with machine ID / needs to be handled in User App
+// TODO use User App and redirect "pay maschine"-URL to User App with machine ID / needs to be handled in User App
   

@@ -17,8 +17,8 @@ const routes = [
     { path: '/B/:id', name: 'User', component: User, props: true },
     { path: '/P/:deviceId', name: 'PayDevice', component: PayDevice , props: true},
     { path: '/M/:code', name: 'Marketing', component: Marketing , props: true},
-    { path: '/admin', name: 'Admin', component: Admin }, // FIXME needs to be user in Users with type admin - PIN code?
-    // { path: '/t', name: 'AdminTree', component: AdminTree }, // FIXME needs to be user in Users with type admin - PIN code?
+    { path: '/admin', name: 'Admin', component: Admin }, // FIXME does not work anymore
+    // { path: '/t', name: 'AdminTree', component: AdminTree }, // TODO new admin
     { path: '/', name: 'Home', component: Home },
     { path: '/manual/all.png', name: 'Home2', component: Home2 },
     { path: '/:pathMatch(.*)*', redirect: '/' }

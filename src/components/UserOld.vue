@@ -1,4 +1,4 @@
-<template> <!-- FIXME add AGBs / DSGVO -->
+<template> <!-- TODO add AGBs / DSGVO -->
   <div class="container bubble_style" :class="{ admin: admin }">
     <template v-if="user">
       <div class="userName">

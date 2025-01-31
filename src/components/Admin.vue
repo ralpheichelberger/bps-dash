@@ -1,4 +1,4 @@
-<template> <!-- //FIXME change framework to vuestic? -->
+<template> 
     <v-sheet style="height: 100vh;">
         <v-card v-if="locations">
             <v-tabs v-model="tab" bg-color="primary">
@@ -44,7 +44,7 @@ import Locations from './Locations.vue'
 import PriceLines from './PriceLines.vue';
 import Devices from './Devices.vue'
 import moduleProgramm from './ModuleProgramm.vue';
-var deviceTypes = ref(['washer', 'dryer', 'pump']) // FIXME: get from API
+var deviceTypes = ref(['washer', 'dryer', 'pump']) // TODO: get from API
 
 const tab = ref('devices')
 

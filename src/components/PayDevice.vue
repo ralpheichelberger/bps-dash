@@ -1,4 +1,4 @@
-<template> <!-- FIXME add AGBs -->
+<template> <!-- TODO add AGBs -->
   <div v-if="user || anonym" class="container bubble_style" :class="{ admin: admin }"
     :style="'height:' + windowInnerHeight + 'px'">
     <div class="user">

@@ -8,8 +8,8 @@
         <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
           @update:modelValue="getDevices(loc)" </v-select>
           <v-btn @click="createNewDevice" elevation="5">Neu</v-btn>
-      </v-sheet><!-- // FIXME: show current shop address -->
-    </v-card-title> <!-- //FIXME: add search -->
+      </v-sheet>
+    </v-card-title>
     <v-card-text>
       <v-table>
         <thead>
@@ -88,11 +88,11 @@ const createNewDevice = () => {
     location: loc,
     module: {
       mac: "",
-      binaryType: "washer", // FIXME: get from config
+      binaryType: "washer", // TODO: get from config
       lastSeen: 0,
       lastPing: 0,
       durations: {
-        impuls: 9000, // 15 min FIXME: get from config
+        impuls: 9000, // 15 min // TODO: get from config
         detergent: 100,
         softener: 100,
       },
