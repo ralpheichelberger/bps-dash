@@ -15,11 +15,16 @@ const props = defineProps({
     onlyOff: {
         type: Boolean,
         default: false
+    },
+    fixed: {
+        type: Boolean,
+        default: false
     }
 });
 const emit = defineEmits(["update:modelValue"]);
 
 const toggleState = () => {
+    if (props.fixed) return;
     if (props.onlyOff) {
         emit("update:modelValue", false);
     } else {

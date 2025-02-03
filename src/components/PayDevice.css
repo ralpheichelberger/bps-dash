@@ -13,6 +13,7 @@
         "card-id topUpButton"
         "maschineName maschineName"
         "shopAddress shopAddress"
+        "state state"
         "price price"
         "detergent softener"
         "calcPrice calcPrice"
@@ -117,10 +118,23 @@
     text-align: center;
 }
 
-
-
+.state {
+    grid-area: state;
+    text-align: center;
+    font-size: 3rem;
+}
+.frei {
+    color: rgb(0, 0
+    , 160);
+}
+.besetzt {
+    color: rgb(160, 0, 0);
+}
+.bezahlt {
+    color: rgb(0, 160, 0);
+}
 .selection {
-    grid-row: 6;
+    grid-row: 7;
     grid-column: span 3;
     display: grid;
     grid-template-columns: 1fr .2fr 1fr;
@@ -135,19 +149,21 @@
     box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
     padding: 1rem;
     color: white;
-
+    max-height: 8rem;
 }
-
+.info {
+    font-size: 1.5rem;
+}
 .detergent {
     padding-left: 1rem;
-    ;
     grid-area: detergent;
     justify-items: center;
+    display: grid;
 }
 
 .dry-time-container {
     padding: .4rem;
-    grid-row: 6;
+    grid-row: 7;
     grid-column: span 3;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -182,6 +198,7 @@
 .softener {
     grid-area: softener;
     justify-items: center;
+    display: grid;
 }
 
 .price {
@@ -197,10 +214,45 @@
 
 }
 
+.payedInfo {
+    position:absolute;
+    grid-row: 9/11;
+    left: 50%; 
+    bottom: .6rem;
+    transform: translateX(-50%) scale(0);
+    color:rgb(246, 255, 175);
+    background-color: rgb(0, 85, 0);
+    font-size: 1.5rem;
+    border-radius: .3rem;
+    margin-top: .5rem;
+    width: 95%;
+    height: 90%;
+    box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
+    animation: bounceIn 0.5s ease-out forwards;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@keyframes bounceIn {
+    0% {
+      transform: translateX(-50%) scale(0);
+    }
+    20% {
+      transform: translateX(-50%) scale(1.2);
+    }
+    60% {
+      transform: translateX(-50%) scale(0.95);
+    }
+    100% {
+      transform: translateX(-50%) scale(1);
+    }
+  }
 .payPalButton {
     padding-top: .6rem;
     grid-area: payPalButton;
     margin-top: auto;
+    height: 62px;
 }
 
 .creditButton {

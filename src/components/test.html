@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="grid-container">
+        <button class="btn1">Button 1</button>
+        <button class="btn2">Button 2</button>
+        <div class="info-banner">All Done!</div>
+      </div>
+      
+
+</body>
+
+</html>
+
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .grid-container {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.btn1, .btn2 {
+  grid-row: 9 / 11;
+  background-color: lightblue;
+  border: 1px solid #000;
+  padding: 10px;
+}
+
+.btn1 {
+  grid-column: 1 / 2;
+}
+
+.btn2 {
+  grid-column: 2 / 3;
+}
+
+.info-banner {
+  position: absolute;
+  bottom: 10%; /* Adjust this to move it up or down */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  
+  padding: 0.5rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.9); 
+  border: 1px solid #000;
+  border-radius: 5px;
+  height: 3rem; /* As requested */
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  z-index: 2;              /* Ensure it covers the buttons */
+  pointer-events: auto;    /* Block clicks */
+}
+
+.btn1, .btn2 {
+  z-index: 1;              /* Buttons stay below banner */
+}
+</style>

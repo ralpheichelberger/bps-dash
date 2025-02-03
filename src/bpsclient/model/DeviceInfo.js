@@ -28,7 +28,7 @@ class DeviceInfo {
      * @param location {String} location of the device real address of the shop
      * @param type {module:model/DeviceType} 
      * @param price {Number} price of the device in euro cent
-     * @param state {String} state of the device if it is running or not
+     * @param state {module:model/DeviceInfo.StateEnum} state of the device if it is running or not
      * @param impulsDuration {Number} duration for the relay the device in 1/10 of seconds
      * @param detergent {Boolean} if detergent is available
      * @param softener {Boolean} if softener is available
@@ -151,7 +151,7 @@ DeviceInfo.prototype['price'] = undefined;
 
 /**
  * state of the device if it is running or not
- * @member {String} state
+ * @member {module:model/DeviceInfo.StateEnum} state
  */
 DeviceInfo.prototype['state'] = undefined;
 
@@ -175,6 +175,33 @@ DeviceInfo.prototype['softener'] = undefined;
 
 
 
+
+
+/**
+ * Allowed values for the <code>state</code> property.
+ * @enum {String}
+ * @readonly
+ */
+DeviceInfo['StateEnum'] = {
+
+    /**
+     * value: "free"
+     * @const
+     */
+    "free": "free",
+
+    /**
+     * value: "busy"
+     * @const
+     */
+    "busy": "busy",
+
+    /**
+     * value: "payed"
+     * @const
+     */
+    "payed": "payed"
+};
 
 
 

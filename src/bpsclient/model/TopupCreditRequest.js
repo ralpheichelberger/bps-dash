@@ -172,7 +172,13 @@ TopupCreditRequest['TypEnum'] = {
      * value: "paypal"
      * @const
      */
-    "paypal": "paypal"
+    "paypal": "paypal",
+
+    /**
+     * value: "admin"
+     * @const
+     */
+    "admin": "admin"
 };
 
 

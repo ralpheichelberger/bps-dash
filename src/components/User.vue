@@ -252,8 +252,8 @@ const resetCustomer = () => {
 }
 
 const topUpCustomerCredit = () => {
-  topUp(customer.value.id, customerTopupAmount.value * 100,
-    customerTopupType.value, null,user.value.id).then(() => {
+  topUp(customer.value.id, customerTopupAmount.value * 100, null,
+    customerTopupType.value, user.value.id).then(() => {
       getUser(customer.value.id).then((dbUser) => {
         snackbar.value.text = `EUR ${customerTopupAmount.value} erfolgreich aufgeladen!`
         snackbar.value.color = 'success'
