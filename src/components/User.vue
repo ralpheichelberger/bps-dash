@@ -157,7 +157,7 @@ const userPayments = ref([]);
 const customerTopupAmount = ref(0);
 const customerTopupType = ref("admin");
 
-const { customer, getUser, resetUser } = useUser();
+const { customer, getUser, resetUser, reloadUser } = useUser();
 const { cent2euro } = useAPI();
 const { topUp, payments } = usePayment();
 const props = defineProps(["id"]);
@@ -210,17 +210,15 @@ const navigateToAdmin = () => {
   window.location.href = "/admin";
 }
 const topUpCredit = (topAmount, details) => {
-  topUp(user.value.id, topAmount, 'topup', details).then(() => {
-    getUser(user.value.id).then((dbUser) => {
-      localStorage.setItem("user", JSON.stringify(dbUser))
-      user.value = dbUser
-      payments(user.value.id).then((data) => {
-        userPayments.value = data
-      }).catch((error) => {
-        console.log(error)
-      });
+  topUp(user.value.id, topAmount, details, 'topup').then(() => {
+    reloadUser(user);
+    payments(user.value.id).then((data) => {
+      userPayments.value = data
     }).catch((error) => {
       console.log(error)
+      if (error.response && error.response.status == 401) {
+        errorUnauthorized()
+      }
     });
   })
   topUpDialog.value = false
