@@ -5,8 +5,8 @@
     font-size: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
-    gap: 0px 0px;
+    /* grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 2fr; */
+    gap: .2rem .2rem;
     grid-auto-flow: row;
     grid-template-areas:
         "userName balance"
@@ -31,23 +31,24 @@
     }
 }
 
-.user {
-    grid-row: 1 span 2;
-    grid-column: span 2;
+.bcard {
     display: grid;
-    grid-template-columns: 1fr 1fr .6fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 0px 0px;
     grid-auto-flow: row;
-    grid-template-areas:
-        "userName text balance"
-        "card-id topUpButton topUpButton";
-    /* border: solid 1px black; */
+    gap: 0px 0px;
     border-radius: .3rem;
     background-color: rgba(32, 32, 32, 0.6);
     box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
-    padding: .4rem;
     color: white;
+}
+
+.user {
+    grid-row: 1 span 2;
+    grid-column: span 2;
+    grid-template-columns: 1fr 1fr .6fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "userName text balance"
+        "card-id topUpButton topUpButton";
 }
 
 .userName {
@@ -110,7 +111,7 @@
 .maschineName {
     grid-area: maschineName;
     text-align: center;
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 .shopAddress {
@@ -121,39 +122,35 @@
 .state {
     grid-area: state;
     text-align: center;
-    font-size: 3rem;
+    font-size: 2rem;
 }
+
 .frei {
-    color: rgb(0, 0
-    , 160);
+    color: rgb(0, 0, 160);
 }
+
 .besetzt {
     color: rgb(160, 0, 0);
 }
+
 .bezahlt {
     color: rgb(0, 160, 0);
 }
+
 .selection {
+    max-height: 8rem;
     grid-row: 7;
     grid-column: span 3;
-    display: grid;
     grid-template-columns: 1fr .2fr 1fr;
     grid-template-rows: 1fr;
-    gap: 0px 0px;
-    grid-auto-flow: row;
     grid-template-areas:
         "detergent . softener";
-    /* border: solid 1px rgb(106, 106, 106); */
-    border-radius: .3rem;
-    background-color: rgba(32, 32, 32, 0.6);
-    box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
-    padding: 1rem;
-    color: white;
-    max-height: 8rem;
 }
+
 .info {
     font-size: 1.5rem;
 }
+
 .detergent {
     padding-left: 1rem;
     grid-area: detergent;
@@ -162,14 +159,12 @@
 }
 
 .dry-time-container {
+    height: 5.4rem;
     padding: .4rem;
     grid-row: 7;
     grid-column: span 3;
-    display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 2fr;
-    gap: 0px 0px;
-    grid-auto-flow: row;
     grid-template-areas:
         "title title title"
         "dry-time-minus dry-time dry-time-plus";
@@ -215,12 +210,12 @@
 }
 
 .payedInfo {
-    position:absolute;
+    position: absolute;
     grid-row: 9/11;
-    left: 50%; 
+    left: 50%;
     bottom: .6rem;
     transform: translateX(-50%) scale(0);
-    color:rgb(246, 255, 175);
+    color: rgb(246, 255, 175);
     background-color: rgb(0, 85, 0);
     font-size: 1.5rem;
     border-radius: .3rem;
@@ -234,29 +229,32 @@
     align-items: center;
     justify-content: center;
 }
+
 @keyframes bounceIn {
     0% {
-      transform: translateX(-50%) scale(0);
+        transform: translateX(-50%) scale(0);
     }
+
     20% {
-      transform: translateX(-50%) scale(1.2);
+        transform: translateX(-50%) scale(1.2);
     }
+
     60% {
-      transform: translateX(-50%) scale(0.95);
+        transform: translateX(-50%) scale(0.95);
     }
+
     100% {
-      transform: translateX(-50%) scale(1);
+        transform: translateX(-50%) scale(1);
     }
-  }
+}
+
 .payPalButton {
-    padding-top: .6rem;
     grid-area: payPalButton;
     margin-top: auto;
     height: 62px;
 }
 
 .creditButton {
-    padding-top: .6rem;
     grid-area: creditButton;
     margin-top: auto;
 }

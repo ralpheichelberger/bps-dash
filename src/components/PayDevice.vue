@@ -1,12 +1,8 @@
 <template>
   <!-- TODO add AGBs -->
-  <div
-    v-if="user || anonym"
-    class="container bubble_style"
-    :class="{ admin: admin }"
-    :style="'height:' + windowInnerHeight + 'px'"
-  >
-    <div class="user">
+  <div v-if="user || anonym" class="container bubble_style" :class="{ admin: admin }"
+    :style="'height:' + windowInnerHeight + 'px'">
+    <div class="bcard user">
       <!-- if anonym bubble card promotion -->
       <div v-if="anonym" class="anonym">
         <h2>Willkommen bei Bubble Point</h2>
@@ -36,8 +32,7 @@
     </div>
 
     <div v-if="deviceInfo" class="maschineName">
-      {{ deviceDisplayName() }} <br />
-      NR. {{ deviceNr() }}
+      {{ deviceDisplayName() }} NR. {{ deviceNr() }}
     </div>
     <div v-if="deviceInfo" class="shopAddress">
       {{ deviceInfo.location }}
@@ -52,7 +47,7 @@
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
       EUR {{ paymentAmount }} für {{ dryTime }} min
     </div>
-    <div v-if="deviceInfo && deviceInfo.type == 'washer'" class="selection">
+    <div v-if="deviceInfo && deviceInfo.type == 'washer'" class="bcard selection">
       <div class="detergent">
         <label>Waschmittel</label>
         <TriState v-model="detergent" :onlyOff="!deviceInfo.detergent" :fixed="payed" />
@@ -63,8 +58,7 @@
         <TriState v-model="softener" :onlyOff="!deviceInfo.softener" :fixed="payed" />
       </div>
     </div>
-    <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="selection">
-      <div class="dry-time-container">
+    <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="bcard dry-time-container">
         <h4 class="dry-time-title">Trockenzeit Minuten</h4>
         <v-btn class="dry-time-minus" @click="dryTime = Math.max(10, dryTime - 10)" icon>
           <v-icon>mdi-minus</v-icon>
@@ -73,41 +67,20 @@
         <v-btn class="dry-time-plus" @click="dryTime = Math.min(60, dryTime + 10)" icon>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
-      </div>
     </div>
 
-    <div
-      v-if="!payed && !admin && (choosen || (deviceInfo && deviceInfo.type == 'dryer'))"
-      class="payPalButton"
-    >
-      <PayPalButton
-        :amount="paymentAmount"
-        :user-id="user ? user.id : 'anonym'"
-        @transactionApproved="payDeviceAndAllowStart"
-      />
+    <div v-if="payPalButtonVisible" class="payPalButton">
+      <PayPalButton :amount="paymentAmount" :user-id="user ? user.id : 'anonym'"
+        @transactionApproved="payDeviceAndAllowStart" />
     </div>
-    <div
-      v-if="!admin && (!choosen && deviceInfo && deviceInfo.type == 'washer')"
-      class="payPalButton"
-      style="text-align: center"
-    >
+    <div v-if="!payPalButtonVisible" class="payPalButton" style="text-align: center">
       <v-btn disabled="" height="45" width="100%" style="background: #777 !important">
         <img src="@/assets/paypal.png" height="18px" />
       </v-btn>
     </div>
     <div v-if="user" class="creditButton">
-      <v-btn
-        elevation="10"
-        height="6rem"
-        width="100%"
-        style="font-size: x-large"
-        @click="payDeviceAndAllowStart(admin ? 'admin' : 'credit')"
-        :disabled="
-          payed ||
-          (!choosen && deviceInfo && deviceInfo.type == 'washer') ||
-          (!admin && user.credit < parseInt(paymentAmount * 100))
-        "
-      >
+      <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large"
+        @click="payDeviceAndAllowStart(admin ? 'admin' : 'credit')" :disabled="payWithCreditDisabled">
         {{ admin ? "Freischalten" : "Mit Guthaben zahlen" }}
       </v-btn>
     </div>
@@ -117,12 +90,7 @@
     </div>
   </div>
   <v-dialog v-if="user" v-model="topUpDialog">
-    <TopUp
-      :visible="topUpDialog"
-      :user-id="user.id"
-      @close="topUpDialog = false"
-      @top-up="topUpCredit"
-    />
+    <TopUp :visible="topUpDialog" :user-id="user.id" @close="topUpDialog = false" @top-up="topUpCredit" />
   </v-dialog>
 
   <v-dialog v-model="errorDialog" class="ma-3" elevation="10">
@@ -133,22 +101,14 @@
         <br />Bitte wenden Sie sich an unseren Kundenservice!
         <br />
         <v-expansion-panels>
-          <v-expansion-panel
-            style="font-family: 'Courier New', Courier, monospace; font-size: small"
-            title="Details"
-            :text="errorDetail"
-          >
+          <v-expansion-panel style="font-family: 'Courier New', Courier, monospace; font-size: small" title="Details"
+            :text="errorDetail">
           </v-expansion-panel>
         </v-expansion-panels>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          variant="outlined"
-          elevation="5"
-          style="font-size: 1.5rem"
-          @click="closeError"
-        >
+        <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem" @click="closeError">
           Schließen
         </v-btn>
       </v-card-actions>
@@ -158,23 +118,23 @@
     {{ snackbar.text }}
   </v-snackbar>
   <v-dialog v-model="infoModal" class="bubble_style">
-  <v-card>
-  <v-card-title>Waschmittel und Weichspüler</v-card-title>
-  <v-card-text>
-    <p>
-      Waschmittel und Weichspüler (falls verfügbar) werden automatisch in die Maschine dosiert.
-      <br />
-      Wenn kein Waschmittel oder Weichspüler verfügbar ist, kann man diese jeweils nur abwählen.
-    </p>
-    <br />
-    <p>
-      Sowohl Waschmittel als auch Weichspüler sind im Preis der Maschine enthalten.
-    </p>
-  </v-card-text>
-  <v-card-actions>
-    <v-btn @click="infoModal = false">Schließen</v-btn>
-  </v-card-actions>
-  </v-card>
+    <v-card>
+      <v-card-title>Waschmittel und Weichspüler</v-card-title>
+      <v-card-text>
+        <p>
+          Waschmittel und Weichspüler (falls verfügbar) werden automatisch in die Maschine dosiert.
+          <br />
+          Wenn kein Waschmittel oder Weichspüler verfügbar ist, kann man diese jeweils nur abwählen.
+        </p>
+        <br />
+        <p>
+          Sowohl Waschmittel als auch Weichspüler sind im Preis der Maschine enthalten.
+        </p>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn @click="infoModal = false">Schließen</v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
 </template>
 
@@ -200,6 +160,28 @@ const { cent2euro } = useAPI();
 const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, payment } = usePayment();
+const payPalButtonVisible = computed(() => {
+  if (!deviceInfo.value) {
+    return false;
+  }
+  return (choosen.value || deviceInfo.value.type=="dryer") && !payed.value && deviceInfo.value.state == "free";
+});
+const payWithCreditDisabled = computed(() => {
+  // is true if:
+  // payed
+  // washer and not choosen or free
+  // not admin and not enough credit
+  if (!deviceInfo.value) {
+    return true;
+  }
+  let result=(
+    payed.value ||
+    (deviceInfo.value.type == "washer" &&
+      (!choosen.value || deviceInfo.value.state != "free")) ||
+    (!admin.value && user.value.credit < deviceInfo.value.price)
+  );
+  return result;
+});
 const deviceState = computed(() => {
   if (deviceInfo.value) {
     switch (deviceInfo.value.state) {
@@ -220,7 +202,8 @@ setTimeout(() => {
 const windowInnerHeight = ref(window.innerHeight);
 window.addEventListener("resize", updateListHeight);
 function updateListHeight() {
-  windowInnerHeight.value = window.innerHeight;
+  if (window.innerHeight > 650)
+    windowInnerHeight.value = window.innerHeight;
 }
 
 getUser()
