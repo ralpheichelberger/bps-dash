@@ -25,7 +25,8 @@
       </div>
       <div v-if="user && !admin" class="card-id">ID: {{ user.id }}</div>
       <div v-if="user && !admin" class="topUpButton">
-        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined">
+        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined" @mousedown="startPress"
+          @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
           Aufladen
         </v-btn>
       </div>
@@ -59,14 +60,14 @@
       </div>
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="bcard dry-time-container">
-        <h4 class="dry-time-title">Trockenzeit Minuten</h4>
-        <v-btn class="dry-time-minus" @click="dryTime = Math.max(10, dryTime - 10)" icon>
-          <v-icon>mdi-minus</v-icon>
-        </v-btn>
-        <h1 class="dry-time">{{ dryTime }}</h1>
-        <v-btn class="dry-time-plus" @click="dryTime = Math.min(60, dryTime + 10)" icon>
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+      <h4 class="dry-time-title">Trockenzeit Minuten</h4>
+      <v-btn class="dry-time-minus" @click="dryTime = Math.max(10, dryTime - 10)" icon>
+        <v-icon>mdi-minus</v-icon>
+      </v-btn>
+      <h1 class="dry-time">{{ dryTime }}</h1>
+      <v-btn class="dry-time-plus" @click="dryTime = Math.min(60, dryTime + 10)" icon>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
     </div>
 
     <div v-if="payPalButtonVisible" class="payPalButton">
@@ -145,8 +146,9 @@ import { useDevices } from "../composables/useDevices";
 import { usePayment } from "../composables/usePayment";
 import TopUp from "./TopUp.vue";
 import { useUser } from "../composables/useUser";
-import { de } from "vuetify/locale";
+import { useLongPress } from "../composables/useLongPress";
 
+const { startPress, cancelPress } = useLongPress();
 const snackbar = ref({ color: "success", text: "gespeichert", show: false });
 const infoModal = ref(false);
 const user = ref(null);
@@ -164,7 +166,7 @@ const payPalButtonVisible = computed(() => {
   if (!deviceInfo.value) {
     return false;
   }
-  return (choosen.value || deviceInfo.value.type=="dryer") && !payed.value && deviceInfo.value.state == "free";
+  return (choosen.value || deviceInfo.value.type == "dryer") && !payed.value && deviceInfo.value.state == "free";
 });
 const payWithCreditDisabled = computed(() => {
   // is true if:
@@ -174,7 +176,7 @@ const payWithCreditDisabled = computed(() => {
   if (!deviceInfo.value) {
     return true;
   }
-  let result=(
+  let result = (
     payed.value ||
     (deviceInfo.value.type == "washer" &&
       (!choosen.value || deviceInfo.value.state != "free")) ||

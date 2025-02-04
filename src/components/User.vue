@@ -4,12 +4,12 @@
     :style="'height:' + windowInnerHeight + 'px'">
     <div class="bcard user">
       <div v-if="admin" class="adminConfig">
-        <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined">
+        <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined" @mousedown="startPress"
+          @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
           Config
         </v-btn>
       </div>
-      <div :class="{ userName: !admin, adminUser: admin }" @mousedown="startPress" @mouseup="cancelPress"
-        @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
+      <div :class="{ userName: !admin, adminUser: admin }">
         Konto <br />
         <p style="font-size: 1.5rem">{{ user.name }}</p>
         <p v-if="user.typ == 'admin'">Admin</p>
@@ -20,7 +20,8 @@
       </div>
       <div v-if="!admin" class="card-id">ID: {{ user.id }}</div>
       <div v-if="!admin" class="topUpButton">
-        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined">
+        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined" @mousedown="startPress"
+          @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
           Aufladen
         </v-btn>
       </div>
@@ -141,9 +142,11 @@ import { useAPI } from "../composables/useAPI";
 import { useUser } from "../composables/useUser";
 import TopUp from "./TopUp.vue";
 import { usePayment } from "../composables/usePayment";
+import { useLongPress } from "../composables/useLongPress";
 
 const snackbar = ref({ color: "success", text: "gespeichert", show: false });
 
+const { startPress, cancelPress } = useLongPress();
 const user = ref(null);
 const topUpDialog = ref(false);
 const customerDialog = computed(() => (customer.value ? true : false));
@@ -167,27 +170,8 @@ window.addEventListener('beforeunload', () => {
   // This prevents the page from being cached in bfcache
 });
 
-const pressTimer = ref(null);
 
-const startPress = () => {
-  pressTimer.value = setTimeout(() => {
-    onLongPress();
-  }, 5000); // Long press after 1 second
-};
 
-const cancelPress = () => {
-  clearTimeout(pressTimer.value);
-  pressTimer.value = null;
-};
-
-const onLongPress = () => {
-  // ask with simple confirm dialog if logout is wanted and set the user in local storage to null
-  if (confirm("Konto wirklich abmelden?")) {
-    localStorage.removeItem("user");
-    window.location.reload();
-    window.location.href = "/";
-  }
-};
 
 
 setTimeout(() => {
