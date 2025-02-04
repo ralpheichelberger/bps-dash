@@ -66,6 +66,13 @@
     margin-left: 0;
 }
 
+.adminConfig {
+    grid-row: 1 / span 2;
+    grid-column: 3;
+    margin: auto;
+    margin-right: .5rem;
+}
+
 .anonym {
     grid-row: 1 / span 2;
     grid-column: 1 /span 3;

@@ -1,0 +1,9 @@
+.payments {
+    grid-row: 4;
+    grid-column: span 2;
+    margin-top: 1rem;
+}
+
+.customerActive {
+    color: green;
+}

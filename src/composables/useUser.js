@@ -66,7 +66,17 @@ export function useUser() {
     });
   }
 
-
+  const updateUser = (u) => {
+    return new Promise((resolve, reject) => {
+      api.updateUser(u, (error, data) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
 
 
   return {
@@ -74,5 +84,6 @@ export function useUser() {
     getUser,
     resetUser,
     reloadUser,
+    updateUser,
   };
 }
