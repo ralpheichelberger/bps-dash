@@ -35,6 +35,7 @@ import PriceLine from './model/PriceLine';
 import Pump from './model/Pump';
 import PumpRelay from './model/PumpRelay';
 import PumpRelayStatus from './model/PumpRelayStatus';
+import Selection from './model/Selection';
 import Status from './model/Status';
 import TopupCreditRequest from './model/TopupCreditRequest';
 import TypDeviceLocations from './model/TypDeviceLocations';
@@ -214,6 +215,12 @@ export {
      * @property {module:model/PumpRelayStatus}
      */
     PumpRelayStatus,
+
+    /**
+     * The Selection model constructor.
+     * @property {module:model/Selection}
+     */
+    Selection,
 
     /**
      * The Status model constructor.

@@ -20,13 +20,14 @@
         <p v-if="user.typ == 'admin'">Admin</p>
       </div>
       <div v-if="user && !admin" class="text">Guthaben EUR</div>
-      <div v-if="user && !admin" class="balance">
+      <div v-if="user && !admin" :class="['balance', { 'glowing-text': triggerGlow }]" ref="balanceRef">
         {{ cent2euro(user.credit) }}
       </div>
       <div v-if="user && !admin" class="card-id">ID: {{ user.id }}</div>
       <div v-if="user && !admin" class="topUpButton">
-        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined" @mousedown="startPress"
-          @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
+        <v-btn @click="topUpDialog = true"
+          size="large" elevation="5" variant="outlined" @mousedown="startPress" @mouseup="cancelPress"
+          @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
           Aufladen
         </v-btn>
       </div>
@@ -140,7 +141,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, nextTick } from "vue";
 import { useAPI } from "../composables/useAPI";
 import { useDevices } from "../composables/useDevices";
 import { usePayment } from "../composables/usePayment";
@@ -162,6 +163,9 @@ const { cent2euro } = useAPI();
 const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, payment } = usePayment();
+const insufficentCredit = computed(() => {
+  return user.value && user.value.credit-53400< paymentAmount.value*100;
+});
 const payPalButtonVisible = computed(() => {
   if (!deviceInfo.value) {
     return false;
@@ -236,9 +240,27 @@ const choosen = computed(() => {
 const navigateToAdmin = () => {
   window.location.href = "/admin";
 };
+
+const triggerGlow = ref(false);
+const balanceRef = ref(null);
+const glow = () => {
+  triggerGlow.value = false;
+  nextTick(() => {
+    void balanceRef.value.offsetWidth; // Force reflow to restart animation
+    triggerGlow.value = true;
+  });
+  setTimeout(() => {
+    triggerGlow.value = false;
+  }, 3000); // Match with animation duration
+};
+
 const topUpCredit = (topAmount, details) => {
   topUp(user.value.id, topAmount, details, "paypal").then(() => {
-    reloadUser(user);
+    // wait for the transaction to be processed
+    setTimeout(reloadUser(user).then((u) => {
+      user.value = u;
+      setTimeout(glow(), 300)
+    }), 1000);
   });
   topUpDialog.value = false;
 };
@@ -305,7 +327,11 @@ const payDeviceAndAllowStart = (details, typ) => {
     machine_id,
     dryTime.value,
     details,
-    typ
+    typ,
+    {
+      detergent: deviceInfo.value.detergent,
+      softener: deviceInfo.value.softener,
+    }
   )
     .then(() => {
       if (user.value) {

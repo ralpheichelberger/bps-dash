@@ -94,6 +94,32 @@
     font-size: 2rem;
 }
 
+.glowing-text {
+    animation: glowing 3s infinite;
+}
+
+@keyframes glowing {
+    0% {
+        text-shadow: none;
+        color: #fff;
+        /* Normal text color */
+    }
+
+    30% {
+        text-shadow: 0 0 10px #98cdff, 0 0 20px #fff, 0 0 30px rgb(248, 255, 154), 0 0 40px rgb(255, 201, 119), 0 0 50px rgb(255, 128, 69), 0 0 60px rgb(253, 39, 39);
+        color: #fff;
+        /* Bright glowing text color */
+    }
+
+    100% {
+        text-shadow: none;
+        color: #fff;
+        /* Back to normal */
+    }
+}
+
+
+
 .admin-config {
     grid-row: 1 / span 2;
     grid-column: 2 / span 2;

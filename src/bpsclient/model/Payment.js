@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import Selection from './Selection';
 
 /**
  * The Payment model module.
@@ -29,10 +30,11 @@ class Payment {
      * @param machineId {Number} 
      * @param cardId {String} 
      * @param amount {Number} amount in cent; negative deducts from credit; positive adds to credit
+     * @param selection {module:model/Selection} 
      */
-    constructor(timestamp, typ, billNr, machineName, machineId, cardId, amount) { 
+    constructor(timestamp, typ, billNr, machineName, machineId, cardId, amount, selection) { 
         
-        Payment.initialize(this, timestamp, typ, billNr, machineName, machineId, cardId, amount);
+        Payment.initialize(this, timestamp, typ, billNr, machineName, machineId, cardId, amount, selection);
     }
 
     /**
@@ -40,7 +42,7 @@ class Payment {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, timestamp, typ, billNr, machineName, machineId, cardId, amount) { 
+    static initialize(obj, timestamp, typ, billNr, machineName, machineId, cardId, amount, selection) { 
         obj['timestamp'] = timestamp;
         obj['typ'] = typ;
         obj['bill_nr'] = billNr;
@@ -48,6 +50,7 @@ class Payment {
         obj['machine_id'] = machineId;
         obj['card_id'] = cardId;
         obj['amount'] = amount;
+        obj['selection'] = selection;
     }
 
     /**
@@ -85,6 +88,9 @@ class Payment {
             if (data.hasOwnProperty('paypal_details')) {
                 obj['paypal_details'] = ApiClient.convertToType(data['paypal_details'], Object);
             }
+            if (data.hasOwnProperty('selection')) {
+                obj['selection'] = Selection.constructFromObject(data['selection']);
+            }
         }
         return obj;
     }
@@ -117,6 +123,10 @@ class Payment {
         if (data['card_id'] && !(typeof data['card_id'] === 'string' || data['card_id'] instanceof String)) {
             throw new Error("Expected the field `card_id` to be a primitive type in the JSON string but got " + data['card_id']);
         }
+        // validate the optional field `selection`
+        if (data['selection']) { // data not null
+          Selection.validateJSON(data['selection']);
+        }
 
         return true;
     }
@@ -124,7 +134,7 @@ class Payment {
 
 }
 
-Payment.RequiredProperties = ["timestamp", "typ", "bill_nr", "machine_name", "machine_id", "card_id", "amount"];
+Payment.RequiredProperties = ["timestamp", "typ", "bill_nr", "machine_name", "machine_id", "card_id", "amount", "selection"];
 
 /**
  * @member {Number} timestamp
@@ -167,6 +177,11 @@ Payment.prototype['amount'] = undefined;
  * @member {Object} paypal_details
  */
 Payment.prototype['paypal_details'] = undefined;
+
+/**
+ * @member {module:model/Selection} selection
+ */
+Payment.prototype['selection'] = undefined;
 
 
 

@@ -15,7 +15,7 @@
         <p v-if="user.typ == 'admin'">Admin</p>
       </div>
       <div v-if="!admin" class="text">Guthaben EUR</div>
-      <div v-if="!admin" class="balance">
+      <div v-if="!admin" :class="['balance', { 'glowing-text': triggerGlow }]" ref="balanceRef">
         {{ cent2euro(user.credit) }}
       </div>
       <div v-if="!admin" class="card-id">ID: {{ user.id }}</div>
@@ -137,7 +137,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed ,nextTick} from "vue";
 import { useAPI } from "../composables/useAPI";
 import { useUser } from "../composables/useUser";
 import TopUp from "./TopUp.vue";
@@ -169,10 +169,6 @@ function updateListHeight() {
 window.addEventListener('beforeunload', () => {
   // This prevents the page from being cached in bfcache
 });
-
-
-
-
 
 setTimeout(() => {
   errorDialog.value = !user.value;
@@ -221,9 +217,28 @@ const admin = computed(() => {
 const navigateToAdmin = () => {
   window.location.href = "/admin";
 };
+
+const triggerGlow = ref(false);
+const balanceRef = ref(null);
+
+const glow = () => {
+  triggerGlow.value = false;
+  nextTick(() => {
+    void balanceRef.value.offsetWidth; // Force reflow to restart animation
+    triggerGlow.value = true;
+  });
+  setTimeout(() => {
+    triggerGlow.value = false;
+  }, 3000); // Match with animation duration
+};
+
 const topUpCredit = (topAmount, details) => {
   topUp(user.value.id, topAmount, details, "topup").then(() => {
-    reloadUser(user);
+    // wait for the transaction to be processed
+    setTimeout(reloadUser(user).then((u) => {
+      user.value = u;
+      setTimeout(glow(),300)
+    }), 1000);
     payments(user.value.id)
       .then((data) => {
         userPayments.value = data;
@@ -279,6 +294,7 @@ const topUpCustomerCredit = () => {
     });
   });
 };
+
 </script>
 
 <style>
