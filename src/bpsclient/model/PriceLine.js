@@ -57,6 +57,9 @@ class PriceLine {
             if (data.hasOwnProperty('price')) {
                 obj['price'] = ApiClient.convertToType(data['price'], 'Number');
             }
+            if (data.hasOwnProperty('dryer_units')) {
+                obj['dryer_units'] = ApiClient.convertToType(data['dryer_units'], 'Number');
+            }
         }
         return obj;
     }
@@ -96,6 +99,12 @@ PriceLine.prototype['id'] = undefined;
  * @member {Number} price
  */
 PriceLine.prototype['price'] = undefined;
+
+/**
+ * number of dryer units
+ * @member {Number} dryer_units
+ */
+PriceLine.prototype['dryer_units'] = undefined;
 
 
 

@@ -85,6 +85,9 @@ class Payment {
             if (data.hasOwnProperty('amount')) {
                 obj['amount'] = ApiClient.convertToType(data['amount'], 'Number');
             }
+            if (data.hasOwnProperty('dryer_impulses')) {
+                obj['dryer_impulses'] = ApiClient.convertToType(data['dryer_impulses'], 'Number');
+            }
             if (data.hasOwnProperty('paypal_details')) {
                 obj['paypal_details'] = ApiClient.convertToType(data['paypal_details'], Object);
             }
@@ -171,6 +174,12 @@ Payment.prototype['card_id'] = undefined;
  * @member {Number} amount
  */
 Payment.prototype['amount'] = undefined;
+
+/**
+ * number of impulses for the dryer
+ * @member {Number} dryer_impulses
+ */
+Payment.prototype['dryer_impulses'] = undefined;
 
 /**
  * details from the paypal transaction

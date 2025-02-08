@@ -44,7 +44,7 @@
     </div>
     <div v-if="deviceInfo" class="price">
       Preis: EUR {{ cent2euro(deviceInfo.price) }}
-      {{ deviceInfo.type == "dryer" ? "/ " + dryUnits + "min" : "" }}
+      {{ deviceInfo.type == "dryer" ? "/ " + deviceInfo.dryer_units + " min" : "" }}
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
       EUR {{ paymentAmount }} für {{ dryTime }} min
@@ -62,11 +62,11 @@
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="bcard dry-time-container">
       <h4 class="dry-time-title">Trockenzeit Minuten</h4>
-      <v-btn class="dry-time-minus" @click="dryTime = Math.max(10, dryTime - 10)" icon>
+      <v-btn class="dry-time-minus" @click="dryTime = Math.max(10, dryTime - deviceInfo.dryer_units)" icon>
         <v-icon>mdi-minus</v-icon>
       </v-btn>
       <h1 class="dry-time">{{ dryTime }}</h1>
-      <v-btn class="dry-time-plus" @click="dryTime = Math.min(60, dryTime + 10)" icon>
+      <v-btn class="dry-time-plus" @click="dryTime = Math.min(60, dryTime + deviceInfo.dryer_units)" icon>
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
@@ -148,6 +148,7 @@ import { usePayment } from "../composables/usePayment";
 import TopUp from "./TopUp.vue";
 import { useUser } from "../composables/useUser";
 import { useLongPress } from "../composables/useLongPress";
+import { de } from "vuetify/locale";
 
 const { startPress, cancelPress } = useLongPress();
 const snackbar = ref({ color: "success", text: "gespeichert", show: false });
@@ -157,8 +158,7 @@ const topUpDialog = ref(false);
 const errorDetail = ref("");
 const errorMessage = ref("");
 const payed = ref(false);
-const dryTime = ref(20);
-const dryUnits = 10;
+const dryTime = ref(30); // HARDCODED 
 const { cent2euro } = useAPI();
 const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
@@ -303,7 +303,7 @@ const paymentAmount = computed(() => {
   if (deviceInfo.value) {
     let price = deviceInfo.value.price;
     if (deviceInfo.value.type == "dryer") {
-      price = (price * dryTime.value) / dryUnits;
+      price = (price * dryTime.value) / deviceInfo.value.dryer_units;
     }
     return cent2euro(price).toString();
   }
@@ -326,6 +326,7 @@ const payDeviceAndAllowStart = (details, typ) => {
     deviceInfo.value.price,
     machine_id,
     dryTime.value,
+    deviceInfo.value.dryer_units ? deviceInfo.value.dryer_units : 1,
     details,
     typ,
     {

@@ -25,7 +25,7 @@ export function usePayment() {
         })
     };
 
-    const payment = async (card_id, name, amount, id, dryTime, typ, details, selection) => {
+    const payment = async (card_id, name, amount, id, dryTime, dryerUnits, typ, details, selection) => {
         if (card_id=='anonym'){
             updateAuth(null);
         } else {
@@ -44,6 +44,7 @@ export function usePayment() {
             typ: typ,
             paypal_details: details,
             selection: selection,
+            dryer_impulses: dryTime/dryerUnits,
         };
         return new Promise((resolve, reject) => {
             api.payment(paymentBody, (error, data) => {

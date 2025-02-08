@@ -77,6 +77,9 @@ class DeviceInfo {
             if (data.hasOwnProperty('price')) {
                 obj['price'] = ApiClient.convertToType(data['price'], 'Number');
             }
+            if (data.hasOwnProperty('dryer_units')) {
+                obj['dryer_units'] = ApiClient.convertToType(data['dryer_units'], 'Number');
+            }
             if (data.hasOwnProperty('state')) {
                 obj['state'] = ApiClient.convertToType(data['state'], 'String');
             }
@@ -148,6 +151,12 @@ DeviceInfo.prototype['type'] = undefined;
  * @member {Number} price
  */
 DeviceInfo.prototype['price'] = undefined;
+
+/**
+ * number of dryer units
+ * @member {Number} dryer_units
+ */
+DeviceInfo.prototype['dryer_units'] = undefined;
 
 /**
  * state of the device if it is running or not

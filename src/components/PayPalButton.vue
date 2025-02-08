@@ -36,7 +36,7 @@ loadScript({
                     {
                         user_id: props.userId,
                         amount: {
-                            currency: "EUR",
+                            currency_code: "EUR",
                             value: props.amount,
                         },
                     },
