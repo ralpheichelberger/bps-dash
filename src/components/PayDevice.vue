@@ -25,9 +25,8 @@
       </div>
       <div v-if="user && !admin" class="card-id">ID: {{ user.id }}</div>
       <div v-if="user && !admin" class="topUpButton">
-        <v-btn @click="topUpDialog = true"
-          size="large" elevation="5" variant="outlined" @mousedown="startPress" @mouseup="cancelPress"
-          @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
+        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined" @mousedown="startPress"
+          @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
           Aufladen
         </v-btn>
       </div>
@@ -90,6 +89,8 @@
       <v-icon icon="mdi-checkbox-marked-circle" end size="3rem"></v-icon>
       Maschine ist {{ admin ? "freigeschalten" : "bezahlt" }}
     </div>
+    <div class="footer-version">{{ APP_VERSION }}</div>
+
   </div>
   <v-dialog v-if="user" v-model="topUpDialog">
     <TopUp :visible="topUpDialog" :user-id="user.id" @close="topUpDialog = false" @top-up="topUpCredit" />
@@ -148,8 +149,8 @@ import { usePayment } from "../composables/usePayment";
 import TopUp from "./TopUp.vue";
 import { useUser } from "../composables/useUser";
 import { useLongPress } from "../composables/useLongPress";
-import { de } from "vuetify/locale";
 
+const APP_VERSION = window.APP_VERSION ? window.APP_VERSION : "0.0.0";
 const { startPress, cancelPress } = useLongPress();
 const snackbar = ref({ color: "success", text: "gespeichert", show: false });
 const infoModal = ref(false);
@@ -164,7 +165,7 @@ const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, payment } = usePayment();
 const insufficentCredit = computed(() => {
-  return user.value && user.value.credit-53400< paymentAmount.value*100;
+  return user.value && user.value.credit - 53400 < paymentAmount.value * 100;
 });
 const payPalButtonVisible = computed(() => {
   if (!deviceInfo.value) {
@@ -172,6 +173,7 @@ const payPalButtonVisible = computed(() => {
   }
   return (choosen.value || deviceInfo.value.type == "dryer") && !payed.value && deviceInfo.value.state == "free";
 });
+
 const payWithCreditDisabled = computed(() => {
   // is true if:
   // payed

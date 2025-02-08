@@ -31,6 +31,13 @@
     }
 }
 
+.footer-version {
+    position: absolute;
+    font-size: .5rem;
+    bottom: -0.2rem;
+right:.5rem;
+}
+
 .bcard {
     display: grid;
     grid-auto-flow: row;

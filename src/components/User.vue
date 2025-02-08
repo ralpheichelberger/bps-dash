@@ -48,6 +48,7 @@
         </tbody>
       </v-table>
     </div>
+    <div class="footer-version">{{ APP_VERSION }}</div>
   </div>
   <v-dialog v-if="user" v-model="topUpDialog">
     <TopUp :visible="topUpDialog" :user-id="user.id" @close="topUpDialog = false" @top-up="topUpCredit" />
@@ -145,6 +146,7 @@ import { usePayment } from "../composables/usePayment";
 import { useLongPress } from "../composables/useLongPress";
 
 const snackbar = ref({ color: "success", text: "gespeichert", show: false });
+const APP_VERSION = window.APP_VERSION ? window.APP_VERSION : "0.0.0";
 
 const { startPress, cancelPress } = useLongPress();
 const user = ref(null);
