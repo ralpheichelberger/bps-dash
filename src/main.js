@@ -47,3 +47,4 @@ app.mount('#app');
 // }
 
 
+window.APP_VERSION = '0.9.0_250215T1658';

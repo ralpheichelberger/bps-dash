@@ -20,6 +20,7 @@ const payPalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID
 
 loadScript({
     clientId: payPalClientId,
+    currency: "EUR",
 }).then((paypal) => {
     paypal.Buttons({
         createOrder: (data, actions) => {
@@ -29,8 +30,8 @@ loadScript({
                         user_id: props.userId,
                         amount: {
                             value: props.amount,
+                            currency_code: "EUR", // FIXME: does this work?
                         },
-                        currency_code: "EUR",
                     },
                 ],
             });

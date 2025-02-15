@@ -20,6 +20,7 @@ const payPalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID
 
 loadScript({
     clientId: payPalClientId,
+    currency: "EUR",
 }).then((paypal) => {
     paypal.Buttons({
         style: {
@@ -29,7 +30,7 @@ loadScript({
             label: 'paypal',
             tagline: false,
         },
-        
+
         createOrder: (data, actions) => {
             return actions.order.create({
                 purchase_units: [
@@ -37,15 +38,15 @@ loadScript({
                         user_id: props.userId,
                         amount: {
                             value: props.amount,
+                            currency_code: "EUR", // FIXME: does this work?
                         },
-                        currency_code: "EUR",
                     },
                 ],
             });
         },
         onApprove: (data, actions) => {
             return actions.order.capture().then((details) => {
-                emit("transactionApproved",'paypal', details);
+                emit("transactionApproved", 'paypal', details);
             });
         },
         onCancel: (data) => {
