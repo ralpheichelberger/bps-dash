@@ -23,7 +23,7 @@ class DeviceUpdateStatusRequest {
     /**
      * Constructs a new <code>DeviceUpdateStatusRequest</code>.
      * @alias module:model/DeviceUpdateStatusRequest
-     * @param id {String} The name of the device
+     * @param id {Number} The name of the device
      * @param status {module:model/WasherStatus} 
      */
     constructor(id, status) { 
@@ -53,7 +53,7 @@ class DeviceUpdateStatusRequest {
             obj = obj || new DeviceUpdateStatusRequest();
 
             if (data.hasOwnProperty('id')) {
-                obj['id'] = ApiClient.convertToType(data['id'], 'String');
+                obj['id'] = ApiClient.convertToType(data['id'], 'Number');
             }
             if (data.hasOwnProperty('status')) {
                 obj['status'] = WasherStatus.constructFromObject(data['status']);
@@ -74,10 +74,6 @@ class DeviceUpdateStatusRequest {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
-            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
-        }
         // validate the optional field `status`
         if (data['status']) { // data not null
           WasherStatus.validateJSON(data['status']);
@@ -93,7 +89,7 @@ DeviceUpdateStatusRequest.RequiredProperties = ["id", "status"];
 
 /**
  * The name of the device
- * @member {String} id
+ * @member {Number} id
  */
 DeviceUpdateStatusRequest.prototype['id'] = undefined;
 

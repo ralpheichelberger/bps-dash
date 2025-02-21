@@ -479,7 +479,7 @@ export default class DefaultApi {
 
     /**
      * Returns a device by the ID
-     * @param {String} id The ID of the device
+     * @param {Number} id The ID of the device
      * @param {module:api/DefaultApi~getDeviceByIdCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Device}
      */

@@ -321,7 +321,7 @@ const payDeviceAndAllowStart = (details, typ) => {
   if (deviceInfo.value.type == "washer") {
     dryTime.value = 0;
   }
-  const machine_id = parseInt(props.deviceId, 10);
+  const machine_id = props.deviceId
   payment(
     user.value ? user.value.id : "anonym",
     deviceInfo.value.name,

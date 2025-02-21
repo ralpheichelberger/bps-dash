@@ -26,7 +26,7 @@ class Device {
     /**
      * Constructs a new <code>Device</code>.
      * @alias module:model/Device
-     * @param id {String} 
+     * @param id {Number} 
      * @param nr {Number} 
      * @param typ {module:model/DeviceType} 
      * @param location {String} 
@@ -70,7 +70,7 @@ class Device {
             obj = obj || new Device();
 
             if (data.hasOwnProperty('id')) {
-                obj['id'] = ApiClient.convertToType(data['id'], 'String');
+                obj['id'] = ApiClient.convertToType(data['id'], 'Number');
             }
             if (data.hasOwnProperty('nr')) {
                 obj['nr'] = ApiClient.convertToType(data['nr'], 'Number');
@@ -113,10 +113,6 @@ class Device {
             }
         }
         // ensure the json data is a string
-        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
-            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
-        }
-        // ensure the json data is a string
         if (data['location'] && !(typeof data['location'] === 'string' || data['location'] instanceof String)) {
             throw new Error("Expected the field `location` to be a primitive type in the JSON string but got " + data['location']);
         }
@@ -150,7 +146,7 @@ class Device {
 Device.RequiredProperties = ["id", "nr", "typ", "location", "priceLine", "module", "detergent", "softener", "status"];
 
 /**
- * @member {String} id
+ * @member {Number} id
  */
 Device.prototype['id'] = undefined;
 

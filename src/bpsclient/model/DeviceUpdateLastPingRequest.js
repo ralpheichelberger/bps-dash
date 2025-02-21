@@ -22,7 +22,7 @@ class DeviceUpdateLastPingRequest {
     /**
      * Constructs a new <code>DeviceUpdateLastPingRequest</code>.
      * @alias module:model/DeviceUpdateLastPingRequest
-     * @param id {String} The ID of the device
+     * @param id {Number} The ID of the device
      */
     constructor(id) { 
         
@@ -50,7 +50,7 @@ class DeviceUpdateLastPingRequest {
             obj = obj || new DeviceUpdateLastPingRequest();
 
             if (data.hasOwnProperty('id')) {
-                obj['id'] = ApiClient.convertToType(data['id'], 'String');
+                obj['id'] = ApiClient.convertToType(data['id'], 'Number');
             }
         }
         return obj;
@@ -68,10 +68,6 @@ class DeviceUpdateLastPingRequest {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
-            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
-        }
 
         return true;
     }
@@ -83,7 +79,7 @@ DeviceUpdateLastPingRequest.RequiredProperties = ["id"];
 
 /**
  * The ID of the device
- * @member {String} id
+ * @member {Number} id
  */
 DeviceUpdateLastPingRequest.prototype['id'] = undefined;
 

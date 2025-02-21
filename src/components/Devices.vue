@@ -15,31 +15,22 @@
         <thead>
           <tr>
             <th class="text-left">
-              ID
+              Maschinenbez.
             </th>
             <th class="text-left">
-              Name
-            </th>
-
-           <th class="text-left">
               Preiskat.
             </th>
             <th class="text-left">
-              Modul MAC
-            </th>
-            <th class="text-left">
-              Status
+              ID
             </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in devices" :key="item.id"
             @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
-            <td>{{ item.id }}</td>
             <td>{{ deviceName(item) }}</td>
             <td>{{ item.priceLine }}</td>
-            <td>{{ item.module.mac }}</td>
-            <td>todo</td>
+            <td>{{ item.id }}</td>
           </tr>
         </tbody>
       </v-table>
@@ -72,7 +63,7 @@ var device = ref()
 const deviceEdit = ref(false)
 const updateDevice = ref(false)
 const locationItems = ref([])
-const deviceName = (item) => { return item?.location +" / "+ item?.typ.charAt(0).toUpperCase() + " / "+ item?.nr }
+const deviceName = (item) => { return item?.location + " / " + item?.typ.charAt(0).toUpperCase() + " / " + item?.nr }
 const createNewDevice = () => {
   device.value = {
     typ: "washer",
@@ -135,8 +126,9 @@ if (props.newDevice) {
 }
 
 const delDevice = (device) => {
-  deleteDevice({ location: device.location, typ: device.typ, nr: device.nr })
-
+  if (confirm("Delete device " + device.nr + " at location " + device.location + "?")) {
+    deleteDevice({ location: device.location, typ: device.typ, nr: device.nr })
+  }
   deviceEdit.value = false
 }
 
