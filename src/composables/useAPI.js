@@ -81,6 +81,32 @@ export function useAPI() {
     });
   }
 
+  const updatePriceLine = async (priceLine) => {
+    return new Promise((resolve, reject) => {
+      api.updatePriceLine(priceLine, (error, data) => {
+        if (error) {
+          reject(new Error("Error updating priceLine: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+  const deletePriceLine = async (priceLine) => {
+    return new Promise((resolve, reject) => {
+      api.deletePriceLine(priceLine.id, (error, data) => {
+        if (error) {
+          reject(new Error("Error deleting priceLine: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+
+
   const cent2euro = (val) => (val / 100).toFixed(2);
 
   const uploadModuleProgramm = async (moduleProgramm) => {
@@ -103,6 +129,8 @@ export function useAPI() {
     newPriceLine,
     getLocations,
     getPriceLines,
+    updatePriceLine,
+    deletePriceLine,
     cent2euro,
     uploadModuleProgramm,
     saveMarketing,

@@ -20,13 +20,8 @@
             <th class="text-left">
               Name
             </th>
-            <th class="text-left">
-              Typ
-            </th>
-            <th class="text-left">
-              Nr
-            </th>
-            <th class="text-left">
+
+           <th class="text-left">
               Preiskat.
             </th>
             <th class="text-left">
@@ -42,8 +37,6 @@
             @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
             <td>{{ item.id }}</td>
             <td>{{ deviceName(item) }}</td>
-            <td>{{ item.type }}</td>
-            <td>{{ item.nr }}</td>
             <td>{{ item.priceLine }}</td>
             <td>{{ item.module.mac }}</td>
             <td>todo</td>
@@ -79,7 +72,7 @@ var device = ref()
 const deviceEdit = ref(false)
 const updateDevice = ref(false)
 const locationItems = ref([])
-const deviceName = (item) => { return item?.location +"/"+ item?.typ.charAt(0).toUpperCase() + item?.nr }
+const deviceName = (item) => { return item?.location +" / "+ item?.typ.charAt(0).toUpperCase() + " / "+ item?.nr }
 const createNewDevice = () => {
   device.value = {
     typ: "washer",

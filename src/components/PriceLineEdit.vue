@@ -6,7 +6,7 @@
             <v-btn icon="mdi-close" @click="emit('close')"></v-btn>
             <v-spacer></v-spacer>
             <!-- We emit a "delete" event if you want to handle deletion outside -->
-            <v-btn text color="error" @click="emit('delete-price-line')" disabled >
+            <v-btn text color="error" @click="deletePriceLine" >
                 Delete
             </v-btn>
             <v-btn color="primary" text @click="saveChanges">
@@ -24,18 +24,18 @@
             <v-text-field id="priceLine-id" v-model="priceLine.id" label="ID" :disabled="update" required />
             <v-text-field id="priceLine-price" v-model.number="priceLine.price" label="Price in Euro Cent" type="number"
                 required />
+            <v-text-field id="priceLine-duration_detergent" label="Duration Detergent" v-model.number="priceLine.duration_detergent"
+                type="number" />
+            <v-text-field id="priceLine-duration_softener" label="Duration Softener" v-model.number="priceLine.duration_softener" type="number" />
+            <v-text-field id="priceLine-dryerunits" label="Dryer Units" v-model.number="priceLine.dryerunits" type="number" />
         </v-card-text>
     </v-card>
 
-    <!-- Snackbar for feedback -->
-    <v-snackbar v-model="snackbar.show" :color="snackbar.color">
-        {{ snackbar.text }}
-    </v-snackbar>
+
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import * as bps from '../bpsclient' // or wherever your generated client is located
 
 // Props from the parent
 const props = defineProps({
@@ -50,48 +50,15 @@ const props = defineProps({
 })
 
 // Emitted events
-const emit = defineEmits(['close', 'delete-price-line', 'reload'])
+const emit = defineEmits(['close', 'delete','save'])
 
-// Simple snackbar state to display feedback
-const snackbar = ref({
-    show: false,
-    text: '',
-    color: 'success',
-})
-
-// Save or update PriceLine
 const saveChanges = () => {
-    const api = new bps.DefaultApi(new bps.ApiClient())
-
-    if (props.update) {
-        // UPDATE
-        api.updatePriceLine(props.priceLine, (error, data, response) => {
-            if (error) {
-                snackbar.value.text = response?.body?.message || 'An error occurred while updating the PriceLine'
-                snackbar.value.color = 'error'
-            } else {
-                snackbar.value.text = `PriceLine '${props.priceLine.id}' updated successfully`
-                snackbar.value.color = 'success'
-            }
-            snackbar.value.show = true
-            emit('reload') // Let the parent know to reload data
-        })
-    } else {
-        api.newPriceLine(props.priceLine).then((result) => {
-            snackbar.value.text = `PriceLine '${props.priceLine.id}' created successfully`
-            snackbar.value.color = 'success'
-
-        }).catch((err) => {
-
-            snackbar.value.text = response?.body?.message || 'An error occurred while creating the PriceLine'
-            snackbar.value.color = 'error'
-        })
-        snackbar.value.show = true
-        emit('reload') // Let the parent know to reload data
-    }
+    emit('save')
+    emit('close')
+}
+const deletePriceLine = () => {
+    emit('delete')
+    emit('close')
 }
 </script>
 
-<style scoped>
-/* Simple styling as needed, or remove entirely */
-</style>

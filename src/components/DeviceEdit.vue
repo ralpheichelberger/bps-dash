@@ -47,7 +47,6 @@
 			</v-row>
 			<v-card v-if="device.typ == 'washer'"> <!-- only show if device is a washer -->
 				<v-card-title>Detergent</v-card-title>
-
 				<v-row dense>
 					<v-col cols="12">
 						<v-select id="detergentname" v-model.number="device.detergent.id" :disabled="disabled"

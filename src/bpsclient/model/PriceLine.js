@@ -57,8 +57,14 @@ class PriceLine {
             if (data.hasOwnProperty('price')) {
                 obj['price'] = ApiClient.convertToType(data['price'], 'Number');
             }
-            if (data.hasOwnProperty('dryer_units')) {
-                obj['dryer_units'] = ApiClient.convertToType(data['dryer_units'], 'Number');
+            if (data.hasOwnProperty('dryerunits')) {
+                obj['dryerunits'] = ApiClient.convertToType(data['dryerunits'], 'Number');
+            }
+            if (data.hasOwnProperty('durationdetergent')) {
+                obj['durationdetergent'] = ApiClient.convertToType(data['durationdetergent'], 'Number');
+            }
+            if (data.hasOwnProperty('durationsoftener')) {
+                obj['durationsoftener'] = ApiClient.convertToType(data['durationsoftener'], 'Number');
             }
         }
         return obj;
@@ -102,9 +108,21 @@ PriceLine.prototype['price'] = undefined;
 
 /**
  * number of dryer units
- * @member {Number} dryer_units
+ * @member {Number} dryerunits
  */
-PriceLine.prototype['dryer_units'] = undefined;
+PriceLine.prototype['dryerunits'] = undefined;
+
+/**
+ * duration in 1/10 seconds of pump running
+ * @member {Number} durationdetergent
+ */
+PriceLine.prototype['durationdetergent'] = undefined;
+
+/**
+ * duration in 1/10 seconds of pump running
+ * @member {Number} durationsoftener
+ */
+PriceLine.prototype['durationsoftener'] = undefined;
 
 
 

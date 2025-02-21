@@ -16,6 +16,7 @@ import ApiClient from "../ApiClient";
 import CreditJournal from '../model/CreditJournal';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
+import DeviceRawLog from '../model/DeviceRawLog';
 import DeviceType from '../model/DeviceType';
 import DeviceUpdateLastPingRequest from '../model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from '../model/DeviceUpdatePumpCountsRequest';
@@ -151,6 +152,48 @@ export default class DefaultApi {
       let returnType = Status;
       return this.apiClient.callApi(
         '/device', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the deletePriceLine operation.
+     * @callback module:api/DefaultApi~deletePriceLineCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Deletes a price line
+     * @param {String} id the unique price line ID
+     * @param {module:api/DefaultApi~deletePriceLineCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deletePriceLine(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling deletePriceLine");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/price_line', 'DELETE',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -380,6 +423,47 @@ export default class DefaultApi {
       let returnType = Device;
       return this.apiClient.callApi(
         '/device', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getDeviceAndLogNewState operation.
+     * @callback module:api/DefaultApi~getDeviceAndLogNewStateCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Device} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a device and logs the new state
+     * @param {module:model/DeviceRawLog} deviceRawLog 
+     * @param {module:api/DefaultApi~getDeviceAndLogNewStateCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Device}
+     */
+    getDeviceAndLogNewState(deviceRawLog, callback) {
+      let postBody = deviceRawLog;
+      // verify the required parameter 'deviceRawLog' is set
+      if (deviceRawLog === undefined || deviceRawLog === null) {
+        throw new Error("Missing the required parameter 'deviceRawLog' when calling getDeviceAndLogNewState");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Device;
+      return this.apiClient.callApi(
+        '/device_get_and_log', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -1592,6 +1676,47 @@ export default class DefaultApi {
       let returnType = File;
       return this.apiClient.callApi(
         '/update_module_binary', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the updatePriceLine operation.
+     * @callback module:api/DefaultApi~updatePriceLineCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/PriceLine} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates an existing price line
+     * @param {module:model/PriceLine} priceLine The updated price line object
+     * @param {module:api/DefaultApi~updatePriceLineCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/PriceLine}
+     */
+    updatePriceLine(priceLine, callback) {
+      let postBody = priceLine;
+      // verify the required parameter 'priceLine' is set
+      if (priceLine === undefined || priceLine === null) {
+        throw new Error("Missing the required parameter 'priceLine' when calling updatePriceLine");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = PriceLine;
+      return this.apiClient.callApi(
+        '/price_line', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

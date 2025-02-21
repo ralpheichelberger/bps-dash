@@ -16,6 +16,7 @@ import ApiClient from './ApiClient';
 import CreditJournal from './model/CreditJournal';
 import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
+import DeviceRawLog from './model/DeviceRawLog';
 import DeviceType from './model/DeviceType';
 import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest';
@@ -101,6 +102,12 @@ export {
      * @property {module:model/DeviceInfo}
      */
     DeviceInfo,
+
+    /**
+     * The DeviceRawLog model constructor.
+     * @property {module:model/DeviceRawLog}
+     */
+    DeviceRawLog,
 
     /**
      * The DeviceType model constructor.
