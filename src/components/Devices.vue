@@ -6,12 +6,12 @@
           <v-icon @click="getDevices(loc)" class="btn btn-primary">mdi-reload</v-icon>
         </v-app-bar-title>
         <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
-          @update:modelValue="getDevices(loc)" </v-select>
+          @update:modelValue="getDevices(loc,from_time)" </v-select>
           <v-btn @click="createNewDevice" elevation="5">Neu</v-btn>
       </v-sheet>
     </v-card-title>
     <v-card-text>
-      <v-table>
+      <v-table density="compact">
         <thead>
           <tr>
             <th class="text-left">
@@ -26,12 +26,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in devices" :key="item.id"
-            @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
-            <td>{{ deviceName(item) }}</td>
-            <td>{{ item.priceLine }}</td>
-            <td>{{ item.id }}</td>
-          </tr>
+          <template v-for="item in devices" :key="item.id">
+            <tr @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
+              <td>{{ deviceName(item) }}</td>
+              <td>{{ item.priceLine }}</td>
+              <td>{{ item.id }}</td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <state-bar :state-data="item.deviceStates"></state-bar>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </v-table>
     </v-card-text>
@@ -39,7 +45,7 @@
     <v-container v-if="props.locations">
       <v-dialog id="washer-edit-dialog" v-model="deviceEdit" max-width="800px">
         <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" :newDevice="newDevice"
-          @close="deviceEdit = false" :update="updateDevice" @reload="getDevices(loc)"
+          @close="deviceEdit = false" :update="updateDevice" @reload="getDevices(loc,from_time)"
           @delete-device="delDevice(device)" />
       </v-dialog>
     </v-container>
@@ -51,6 +57,7 @@ import { ref, watch, watchEffect } from 'vue'
 import DeviceEdit from './DeviceEdit.vue'
 import { useDevices } from '@/composables/useDevices';
 import { Module } from "../bpsclient";
+import StateBar from './StateBar.vue';
 
 const { devices, getDevices, deleteDevice } = useDevices()
 const loc = ref(null)
@@ -63,6 +70,7 @@ var device = ref()
 const deviceEdit = ref(false)
 const updateDevice = ref(false)
 const locationItems = ref([])
+const from_time = ref(Math.floor(Date.now() / 1000) - 12 * 60 * 60) // current unix time - 12h
 const deviceName = (item) => { return item?.location + " / " + item?.typ.charAt(0).toUpperCase() + " / " + item?.nr }
 const createNewDevice = () => {
   device.value = {

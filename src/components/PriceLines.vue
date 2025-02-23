@@ -33,6 +33,9 @@
                         @click="priceLine = Object.assign({}, item); priceLineEdit = true; update = true">
                         <td>{{ item.id }}</td>
                         <td class="text-right">{{ cent2euro(item.price) }}</td>
+                        <td class="text-right">{{ item.duration_detergent }}</td>
+                        <td class="text-right">{{ item.duration_softener }}</td>
+                        <td class="text-right">{{ item.dryerunits }}</td>
                     </tr>
                 </tbody>
             </v-table>
