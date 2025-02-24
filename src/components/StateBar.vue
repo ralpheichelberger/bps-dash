@@ -6,61 +6,93 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 const props = defineProps({
   stateData: {
     type: Array,
     required: true
+  },
+  startTime: {
+    type: Number,
+    required: true
   }
 });
 
-// Convert time string to seconds for duration calculation
-const timeToSeconds = (time) => {
-  const [h, m, s] = time.split(':').map(Number);
-  return h * 3600 + m * 60 + s;
-};
+const stateSegments = ref([]);
+const loading = ref(true);
 
 // Define state colors based on provided logic
 const stateClasses = {
-  '0000': 'idle', // Idle (gray)
-  '1000': 'payed', // Payed (green)
-  '1100': 'running', // Running (orange)
-  '0100': 'running', // Running (orange)
-  '0101': 'softener', // Warning (yellow)
-  '0110': 'detergent', // Running (blue)
-  '0010': 'error', // Error (red)
-  '0001': 'error', // Error (red)
-  '0011': 'error', // Error (red)
-  '0111': 'error' // Error (red)
+  '0000': 'idle',
+  '1000': 'payed',
+  '1100': 'running',
+  '0100': 'running',
+  '0101': 'softener',
+  '0110': 'detergent',
+  '0010': 'error',
+  '0001': 'error',
+  '0011': 'error',
+  '0111': 'error',
+  'Offl': 'offline',
+  'Conn': 'connected'
 };
 
-// Compute state segments with duration-based width
-const stateSegments = computed(() => {
-  if (!props.stateData || props.stateData.length < 2) return [];
-  const segments = [];
-  for (let i = 0; i < props.stateData.length - 1; i++) {
-    const startTime = timeToSeconds(props.stateData[i + 1].time);
-    const endTime = timeToSeconds(props.stateData[i].time);
-    const duration = endTime - startTime;
-    const totalDuration = timeToSeconds(props.stateData[0].time) - timeToSeconds(props.stateData[props.stateData.length - 1].time);
-    const percentage = (duration / totalDuration) * 100;
+const loadStateSegments = async () => {
+  loading.value = true;
+  try {
+    if (!props.stateData || props.stateData.length < 1) {
+      stateSegments.value = [];
+      return;
+    }
+    const dl = props.stateData.length - 1
 
+    const now = Math.floor(Date.now() / 1000);
+    const totalDuration = now - props.startTime;
+    const segments = [];
+    const startTime = props.stateData[0].timestamp
+    const duration = startTime - props.startTime
+    const percentage = (duration / totalDuration) * 100;
+    let state = props.stateData[dl]?.message?.substring(0, 4) || "";
+    let startTimeString = new Date(props.startTime * 1000).toISOString().substr(11, 5);
+
+    let endTimeString = new Date(props.stateData[dl].timestamp * 1000).toISOString().substr(11, 5);
     segments.push({
-      stateClass: stateClasses[props.stateData[i].state] || 'unknown',
+      stateClass: stateClasses[state] || 'unknown',
       percentage: percentage.toFixed(2),
-      timeRange: `${props.stateData[i + 1].time} - ${props.stateData[i].time}`
+      timeRange: `${startTimeString} - ${endTimeString}`
     });
+    for (let i = dl; i > 0; i--) {
+      const endTime = i === 0 ? now : props.stateData[i - 1].timestamp;
+      const startTime = props.stateData[i].timestamp;
+      const duration = endTime - startTime;
+      const percentage = (duration / totalDuration) * 100;
+      const state = props.stateData[i]?.message?.substring(0, 4) || "";
+      const startTimeString = new Date(startTime * 1000).toISOString().substr(11, 5);
+      const endTimeString = new Date(endTime * 1000).toISOString().substr(11, 5);
+
+      segments.push({
+        stateClass: stateClasses[state] || 'unknown',
+        percentage: percentage.toFixed(2),
+        timeRange: `${startTimeString} - ${endTimeString}`
+      });
+    }
+    stateSegments.value = segments;
+  } catch (error) {
+    console.error("Error loading state segments:", error);
+  } finally {
+    loading.value = false;
   }
-  return segments;
-});
+};
+
+onMounted(loadStateSegments);
 </script>
 
 <style scoped>
 .state-bar {
   display: flex;
   width: 100%;
-  height: 5px;
+  height: 8px;
   border: 1px solid black;
   overflow: hidden;
 }
@@ -74,11 +106,11 @@ const stateSegments = computed(() => {
 }
 
 .running {
-  background-color: rgb(255, 145, 222);
+  background-color: rgb(60, 255, 0);
 }
 
 .detergent {
-  background-color: rgb(0, 217, 255);
+  background-color: rgb(60, 200, 100);
 }
 
 .error {
@@ -86,10 +118,18 @@ const stateSegments = computed(() => {
 }
 
 .softener {
-  background-color: rgb(255, 243, 132);
+  background-color: rgb(90, 200, 0);
 }
 
 .unknown {
   background-color: black;
+}
+
+.connected {
+  background-color: white;
+}
+
+.offline {
+  background-color: rgb(255, 0, 0);
 }
 </style>

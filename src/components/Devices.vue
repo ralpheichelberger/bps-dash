@@ -3,7 +3,7 @@
     <v-card-title :elevation="2">
       <v-sheet class="d-flex justify-space-between">
         <v-app-bar-title>Geräte
-          <v-icon @click="getDevices(loc)" class="btn btn-primary">mdi-reload</v-icon>
+          <v-icon @click="getDevices(loc,from_time)" class="btn btn-primary">mdi-reload</v-icon>
         </v-app-bar-title>
         <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
           @update:modelValue="getDevices(loc,from_time)" </v-select>
@@ -34,7 +34,7 @@
             </tr>
             <tr>
               <td colspan="3">
-                <state-bar :state-data="item.deviceStates"></state-bar>
+                <state-bar :state-data="item.logs" :startTime="from_time"></state-bar>
               </td>
             </tr>
           </template>

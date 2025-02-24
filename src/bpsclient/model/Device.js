@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import DeviceRawLog from './DeviceRawLog';
 import DeviceType from './DeviceType';
 import Module from './Module';
 import Pump from './Pump';
@@ -96,6 +97,9 @@ class Device {
             if (data.hasOwnProperty('status')) {
                 obj['status'] = WasherStatus.constructFromObject(data['status']);
             }
+            if (data.hasOwnProperty('logs')) {
+                obj['logs'] = ApiClient.convertToType(data['logs'], [DeviceRawLog]);
+            }
         }
         return obj;
     }
@@ -135,6 +139,16 @@ class Device {
         // validate the optional field `status`
         if (data['status']) { // data not null
           WasherStatus.validateJSON(data['status']);
+        }
+        if (data['logs']) { // data not null
+            // ensure the json data is an array
+            if (!Array.isArray(data['logs'])) {
+                throw new Error("Expected the field `logs` to be an array in the JSON data but got " + data['logs']);
+            }
+            // validate the optional field `logs` (array)
+            for (const item of data['logs']) {
+                DeviceRawLog.validateJSON(item);
+            };
         }
 
         return true;
@@ -189,6 +203,11 @@ Device.prototype['softener'] = undefined;
  * @member {module:model/WasherStatus} status
  */
 Device.prototype['status'] = undefined;
+
+/**
+ * @member {Array.<module:model/DeviceRawLog>} logs
+ */
+Device.prototype['logs'] = undefined;
 
 
 

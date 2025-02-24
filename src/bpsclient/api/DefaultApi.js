@@ -608,6 +608,54 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getDeviceRawLog operation.
+     * @callback module:api/DefaultApi~getDeviceRawLogCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/DeviceRawLog>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a raw log of a device
+     * @param {Number} id The ID of the device
+     * @param {Number} from UTC timestamp start from
+     * @param {module:api/DefaultApi~getDeviceRawLogCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<module:model/DeviceRawLog>}
+     */
+    getDeviceRawLog(id, from, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getDeviceRawLog");
+      }
+      // verify the required parameter 'from' is set
+      if (from === undefined || from === null) {
+        throw new Error("Missing the required parameter 'from' when calling getDeviceRawLog");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id,
+        'from': from
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [DeviceRawLog];
+      return this.apiClient.callApi(
+        '/device_raw_log', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getDevices operation.
      * @callback module:api/DefaultApi~getDevicesCallback
      * @param {String} error Error message, if any.
@@ -619,6 +667,7 @@ export default class DefaultApi {
      * Returns list of device
      * @param {Object} opts Optional parameters
      * @param {String} [location] The shop location ID as a filter - if not given or empty devices of all shops are returned
+     * @param {Number} [from] UTC timestamp start from - if this parameter is given a list of device states from this time is added to each device
      * @param {module:api/DefaultApi~getDevicesCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Array.<module:model/Device>}
      */
@@ -629,7 +678,8 @@ export default class DefaultApi {
       let pathParams = {
       };
       let queryParams = {
-        'location': opts['location']
+        'location': opts['location'],
+        'from': opts['from']
       };
       let headerParams = {
       };
