@@ -45,7 +45,7 @@ const loadStateSegments = async () => {
       stateSegments.value = [];
       return;
     }
-    const dl = props.stateData.length - 1
+    const dl = props.stateData.length > 100 ? 100 : props.stateData.length - 1;
 
     const now = Math.floor(Date.now() / 1000);
     const totalDuration = now - props.startTime;

@@ -3,10 +3,10 @@
     <v-card-title :elevation="2">
       <v-sheet class="d-flex justify-space-between">
         <v-app-bar-title>Geräte
-          <v-icon @click="getDevices(loc,from_time)" class="btn btn-primary">mdi-reload</v-icon>
+          <v-icon @click="reload" class="btn btn-primary">mdi-reload</v-icon>
         </v-app-bar-title>
         <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
-          @update:modelValue="getDevices(loc,from_time)" </v-select>
+          @update:modelValue="reload" </v-select>
           <v-btn @click="createNewDevice" elevation="5">Neu</v-btn>
       </v-sheet>
     </v-card-title>
@@ -14,13 +14,13 @@
       <v-table density="compact">
         <thead>
           <tr>
-            <th class="text-left">
-              Maschinenbez.
+            <th class="text-left" >
+              Maschinen
             </th>
-            <th class="text-left">
-              Preiskat.
+            <th class="text-left"@click="sort('priceLine')">
+              Preiskategorie
             </th>
-            <th class="text-left">
+            <th class="text-left" @click="sort('id')">
               ID
             </th>
           </tr>
@@ -32,11 +32,11 @@
               <td>{{ item.priceLine }}</td>
               <td>{{ item.id }}</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td colspan="3">
                 <state-bar :state-data="item.logs" :startTime="from_time"></state-bar>
               </td>
-            </tr>
+            </tr> -->
           </template>
         </tbody>
       </v-table>
@@ -44,8 +44,8 @@
 
     <v-container v-if="props.locations">
       <v-dialog id="washer-edit-dialog" v-model="deviceEdit" max-width="800px">
-        <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" :newDevice="newDevice"
-          @close="deviceEdit = false" :update="updateDevice" @reload="getDevices(loc,from_time)"
+        <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" 
+          @close="deviceEdit = false" :update="updateDevice" @reload="reload"
           @delete-device="delDevice(device)" />
       </v-dialog>
     </v-container>
@@ -57,7 +57,7 @@ import { ref, watch, watchEffect } from 'vue'
 import DeviceEdit from './DeviceEdit.vue'
 import { useDevices } from '@/composables/useDevices';
 import { Module } from "../bpsclient";
-import StateBar from './StateBar.vue';
+// import StateBar from './StateBar.vue';
 
 const { devices, getDevices, deleteDevice } = useDevices()
 const loc = ref(null)
@@ -74,8 +74,9 @@ const from_time = ref(Math.floor(Date.now() / 1000) - 12 * 60 * 60) // current u
 const deviceName = (item) => { return item?.location + " / " + item?.typ.charAt(0).toUpperCase() + " / " + item?.nr }
 const createNewDevice = () => {
   device.value = {
+    id:0,
     typ: "washer",
-    nr: "",
+    nr: 0,
     price_line: "washer_small",
     location: loc,
     module: {
@@ -113,6 +114,7 @@ const createNewDevice = () => {
   deviceEdit.value = true;
   updateDevice.value = false;
 };
+
 watchEffect(() => {
   if (props.locations) {
     locationItems.value = props.locations.map((item) => {
@@ -140,6 +142,28 @@ const delDevice = (device) => {
   deviceEdit.value = false
 }
 
+const reload = () => {
+  getDevices(loc.value, from_time.value)
+  lastSort.value = ''
+}
 
+const lastSort = ref('')
+const sort = (key) => {
+  if (lastSort.value === key) {
+    devices.value.reverse()
+    lastSort.value = ''
+  } else {
+    devices.value = devices.value.sort((a, b) => {
+      if (a[key] < b[key]) {
+        return -1
+      }
+      if (a[key] > b[key]) {
+        return 1
+      }
+      return 0
+    })
+  }
+  lastSort.value = key
+}
 
 </script>

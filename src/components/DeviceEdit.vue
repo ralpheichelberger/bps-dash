@@ -22,7 +22,7 @@
 						:items="locationItems" @update:modelValue="fetchLocationDevices"></v-select>
 				</v-col>
 				<v-col cols="12">
-					<v-text-field id="device-id" type="number" v-model="device.id" :disabled="disabled" label="Device ID" required>
+					<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="!update" label="Device ID" required>
 					</v-text-field>
 				</v-col>
 				<v-col cols="12">
@@ -112,7 +112,7 @@ const update_pump_relays = () => {
 		props.device.softener.nr = props.device.nr
 	}
 }
-const emit = defineEmits(['reload', 'close'])
+const emit = defineEmits(['reload', 'close','delete-device'])
 
 const locationItems = ref([])
 props.locations.forEach(element => {

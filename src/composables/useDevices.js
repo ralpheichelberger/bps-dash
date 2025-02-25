@@ -111,7 +111,7 @@ export function useDevices() {
         return new Promise((resolve, reject) => {
             api.updateDevice(device, (error, data, response) => {
                 if (error) {
-                    reject(new Error("Error updating device: " + error));
+                    reject(new Error("Error updating device: " + error.response?.body?.message));
                 } else {
                     resolve(data);
                 }
@@ -123,7 +123,7 @@ export function useDevices() {
         return new Promise((resolve, reject) => {
             api.newDevice(device, (error, data, response) => {
                 if (error) {
-                    reject(new Error("Error creating device: " + error));
+                    reject(new Error("Error creating device: " + error.response?.body?.message));
                 } else {
                     resolve(data);
                 }

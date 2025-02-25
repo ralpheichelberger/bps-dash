@@ -69,16 +69,17 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
-
-    <div v-if="payPalButtonVisible" class="payPalButton">
-      <PayPalButton :amount="paymentAmount" :user-id="user ? user.id : 'anonym'"
-        @transactionApproved="payDeviceAndAllowStart" />
-    </div>
-    <div v-if="!payPalButtonVisible" class="payPalButton" style="text-align: center">
-      <v-btn disabled="" height="45" width="100%" style="background: #777 !important">
-        <img src="@/assets/paypal.png" height="18px" />
-      </v-btn>
-    </div>
+    <template v-if="!admin">
+      <div v-if="payPalButtonVisible" class="payPalButton">
+        <PayPalButton :amount="paymentAmount" :user-id="user ? user.id : 'anonym'"
+          @transactionApproved="payDeviceAndAllowStart" />
+      </div>
+      <div v-if="!payPalButtonVisible" class="payPalButton" style="text-align: center">
+        <v-btn disabled="" height="45" width="100%" style="background: #777 !important">
+          <img src="@/assets/paypal.png" height="18px" />
+        </v-btn>
+      </div>
+    </template>
     <div v-if="user" class="creditButton">
       <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large"
         @click="payDeviceAndAllowStart(admin ? 'admin' : 'credit')" :disabled="payWithCreditDisabled">
