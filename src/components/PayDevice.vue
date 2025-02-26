@@ -333,8 +333,8 @@ const payDeviceAndAllowStart = (details, typ) => {
     details,
     typ,
     {
-      detergent: deviceInfo.value.detergent,
-      softener: deviceInfo.value.softener,
+      detergent: detergent.value,
+      softener: softener.value,
     }
   )
     .then(() => {
