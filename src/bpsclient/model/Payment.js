@@ -24,17 +24,17 @@ class Payment {
      * Constructs a new <code>Payment</code>.
      * @alias module:model/Payment
      * @param timestamp {Number} 
-     * @param typ {module:model/Payment.TypEnum} 
      * @param billNr {String} 
      * @param machineName {String} 
      * @param machineId {Number} 
      * @param cardId {String} 
      * @param amount {Number} amount in cent; negative deducts from credit; positive adds to credit
+     * @param source {module:model/Payment.SourceEnum} source of the payment
      * @param selection {module:model/Selection} 
      */
-    constructor(timestamp, typ, billNr, machineName, machineId, cardId, amount, selection) { 
+    constructor(timestamp, billNr, machineName, machineId, cardId, amount, source, selection) { 
         
-        Payment.initialize(this, timestamp, typ, billNr, machineName, machineId, cardId, amount, selection);
+        Payment.initialize(this, timestamp, billNr, machineName, machineId, cardId, amount, source, selection);
     }
 
     /**
@@ -42,14 +42,14 @@ class Payment {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, timestamp, typ, billNr, machineName, machineId, cardId, amount, selection) { 
+    static initialize(obj, timestamp, billNr, machineName, machineId, cardId, amount, source, selection) { 
         obj['timestamp'] = timestamp;
-        obj['typ'] = typ;
         obj['bill_nr'] = billNr;
         obj['machine_name'] = machineName;
         obj['machine_id'] = machineId;
         obj['card_id'] = cardId;
         obj['amount'] = amount;
+        obj['source'] = source;
         obj['selection'] = selection;
     }
 
@@ -66,9 +66,6 @@ class Payment {
 
             if (data.hasOwnProperty('timestamp')) {
                 obj['timestamp'] = ApiClient.convertToType(data['timestamp'], 'Number');
-            }
-            if (data.hasOwnProperty('typ')) {
-                obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
             }
             if (data.hasOwnProperty('bill_nr')) {
                 obj['bill_nr'] = ApiClient.convertToType(data['bill_nr'], 'String');
@@ -88,8 +85,14 @@ class Payment {
             if (data.hasOwnProperty('dryer_impulses')) {
                 obj['dryer_impulses'] = ApiClient.convertToType(data['dryer_impulses'], 'Number');
             }
-            if (data.hasOwnProperty('paypal_details')) {
-                obj['paypal_details'] = ApiClient.convertToType(data['paypal_details'], Object);
+            if (data.hasOwnProperty('dryer_units')) {
+                obj['dryer_units'] = ApiClient.convertToType(data['dryer_units'], 'Number');
+            }
+            if (data.hasOwnProperty('details')) {
+                obj['details'] = ApiClient.convertToType(data['details'], Object);
+            }
+            if (data.hasOwnProperty('source')) {
+                obj['source'] = ApiClient.convertToType(data['source'], 'String');
             }
             if (data.hasOwnProperty('selection')) {
                 obj['selection'] = Selection.constructFromObject(data['selection']);
@@ -111,10 +114,6 @@ class Payment {
             }
         }
         // ensure the json data is a string
-        if (data['typ'] && !(typeof data['typ'] === 'string' || data['typ'] instanceof String)) {
-            throw new Error("Expected the field `typ` to be a primitive type in the JSON string but got " + data['typ']);
-        }
-        // ensure the json data is a string
         if (data['bill_nr'] && !(typeof data['bill_nr'] === 'string' || data['bill_nr'] instanceof String)) {
             throw new Error("Expected the field `bill_nr` to be a primitive type in the JSON string but got " + data['bill_nr']);
         }
@@ -125,6 +124,10 @@ class Payment {
         // ensure the json data is a string
         if (data['card_id'] && !(typeof data['card_id'] === 'string' || data['card_id'] instanceof String)) {
             throw new Error("Expected the field `card_id` to be a primitive type in the JSON string but got " + data['card_id']);
+        }
+        // ensure the json data is a string
+        if (data['source'] && !(typeof data['source'] === 'string' || data['source'] instanceof String)) {
+            throw new Error("Expected the field `source` to be a primitive type in the JSON string but got " + data['source']);
         }
         // validate the optional field `selection`
         if (data['selection']) { // data not null
@@ -137,17 +140,12 @@ class Payment {
 
 }
 
-Payment.RequiredProperties = ["timestamp", "typ", "bill_nr", "machine_name", "machine_id", "card_id", "amount", "selection"];
+Payment.RequiredProperties = ["timestamp", "bill_nr", "machine_name", "machine_id", "card_id", "amount", "source", "selection"];
 
 /**
  * @member {Number} timestamp
  */
 Payment.prototype['timestamp'] = undefined;
-
-/**
- * @member {module:model/Payment.TypEnum} typ
- */
-Payment.prototype['typ'] = undefined;
 
 /**
  * @member {String} bill_nr
@@ -182,10 +180,22 @@ Payment.prototype['amount'] = undefined;
 Payment.prototype['dryer_impulses'] = undefined;
 
 /**
- * details from the paypal transaction
- * @member {Object} paypal_details
+ * number of dryer units
+ * @member {Number} dryer_units
  */
-Payment.prototype['paypal_details'] = undefined;
+Payment.prototype['dryer_units'] = undefined;
+
+/**
+ * details from the paypal transaction
+ * @member {Object} details
+ */
+Payment.prototype['details'] = undefined;
+
+/**
+ * source of the payment
+ * @member {module:model/Payment.SourceEnum} source
+ */
+Payment.prototype['source'] = undefined;
 
 /**
  * @member {module:model/Selection} selection
@@ -197,17 +207,11 @@ Payment.prototype['selection'] = undefined;
 
 
 /**
- * Allowed values for the <code>typ</code> property.
+ * Allowed values for the <code>source</code> property.
  * @enum {String}
  * @readonly
  */
-Payment['TypEnum'] = {
-
-    /**
-     * value: "credit"
-     * @const
-     */
-    "credit": "credit",
+Payment['SourceEnum'] = {
 
     /**
      * value: "paypal"
@@ -222,10 +226,16 @@ Payment['TypEnum'] = {
     "cash": "cash",
 
     /**
-     * value: "topup"
+     * value: "admin"
      * @const
      */
-    "topup": "topup"
+    "admin": "admin",
+
+    /**
+     * value: "credit"
+     * @const
+     */
+    "credit": "credit"
 };
 
 

@@ -317,36 +317,38 @@ const detergent = ref(null);
 const softener = ref(null);
 
 // Handles payment logic and allows the device to start.
-const payDeviceAndAllowStart = (details, typ) => {
+const payDeviceAndAllowStart = (source, details) => {
   // FIXME send selected detergent and softener to the server
   if (deviceInfo.value.type == "washer") {
     dryTime.value = 0;
   }
   const machine_id = Number(props.deviceId)
-  payment(
-    user.value ? user.value.id : "anonym",
-    deviceInfo.value.name,
-    deviceInfo.value.price,
-    machine_id,
-    dryTime.value,
-    deviceInfo.value.dryer_units ? deviceInfo.value.dryer_units : 1,
-    details,
-    typ,
-    {
-      detergent: detergent.value,
-      softener: softener.value,
+  const impulses = deviceInfo.value.type == "dryer" ? dryTime.value / deviceInfo.value.dryer_units : null;
+  const amount = Math.floor(Number(paymentAmount.value)*100);
+
+  
+  const paymentVariables = {
+    card_id: user.value ? user.value.id : "anonym",
+    machine_name: deviceInfo.value.name,
+    amount: amount,
+    machine_id: machine_id,
+    dry_time: dryTime.value,
+    dryer_impulses: impulses,
+    source: source,
+    details: details,
+    detergent: detergent.value,
+    softener: softener.value,
+  };
+  payment(paymentVariables).then(() => {
+    if (user.value) {
+      reloadUser(user);
     }
-  )
-    .then(() => {
-      if (user.value) {
-        reloadUser(user);
-      }
-      payed.value = true;
-      // {{ deviceDisplayName() }} <br /> NR. {{ deviceNr() }}
-      // snackbar.value.text = `Die Zahlung war erfolgreich! ${deviceDisplayName()} NR. ${deviceNr()} ist freigeschalten`
-      // snackbar.value.color = 'success'
-      // snackbar.value.show = true
-    })
+    payed.value = true;
+    // {{ deviceDisplayName() }} <br /> NR. {{ deviceNr() }}
+    // snackbar.value.text = `Die Zahlung war erfolgreich! ${deviceDisplayName()} NR. ${deviceNr()} ist freigeschalten`
+    // snackbar.value.color = 'success'
+    // snackbar.value.show = true
+  })
     .catch((error) => {
       errorMessage.value = "Die Zahlung konnte nicht abgeschlossen werden";
       errorDetail.value = error;

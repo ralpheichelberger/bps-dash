@@ -69,8 +69,8 @@ class TopupCreditRequest {
             if (data.hasOwnProperty('typ')) {
                 obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
             }
-            if (data.hasOwnProperty('paypal_details')) {
-                obj['paypal_details'] = ApiClient.convertToType(data['paypal_details'], Object);
+            if (data.hasOwnProperty('details')) {
+                obj['details'] = ApiClient.convertToType(data['details'], Object);
             }
             if (data.hasOwnProperty('clerk')) {
                 obj['clerk'] = ApiClient.convertToType(data['clerk'], 'String');
@@ -140,10 +140,10 @@ TopupCreditRequest.prototype['bill_nr'] = undefined;
 TopupCreditRequest.prototype['typ'] = undefined;
 
 /**
- * details from the paypal transaction
- * @member {Object} paypal_details
+ * details of transaction
+ * @member {Object} details
  */
-TopupCreditRequest.prototype['paypal_details'] = undefined;
+TopupCreditRequest.prototype['details'] = undefined;
 
 /**
  * The card id of the clerk
