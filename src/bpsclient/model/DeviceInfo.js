@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import DeviceState from './DeviceState';
 import DeviceType from './DeviceType';
 
 /**
@@ -28,7 +29,7 @@ class DeviceInfo {
      * @param location {String} location of the device real address of the shop
      * @param type {module:model/DeviceType} 
      * @param price {Number} price of the device in euro cent
-     * @param state {module:model/DeviceInfo.StateEnum} state of the device if it is running or not
+     * @param state {module:model/DeviceState} 
      * @param impulsDuration {Number} duration for the relay the device in 1/10 of seconds
      * @param detergent {Boolean} if detergent is available
      * @param softener {Boolean} if softener is available
@@ -81,7 +82,7 @@ class DeviceInfo {
                 obj['dryer_units'] = ApiClient.convertToType(data['dryer_units'], 'Number');
             }
             if (data.hasOwnProperty('state')) {
-                obj['state'] = ApiClient.convertToType(data['state'], 'String');
+                obj['state'] = DeviceState.constructFromObject(data['state']);
             }
             if (data.hasOwnProperty('impuls_duration')) {
                 obj['impuls_duration'] = ApiClient.convertToType(data['impuls_duration'], 'Number');
@@ -115,10 +116,6 @@ class DeviceInfo {
         // ensure the json data is a string
         if (data['location'] && !(typeof data['location'] === 'string' || data['location'] instanceof String)) {
             throw new Error("Expected the field `location` to be a primitive type in the JSON string but got " + data['location']);
-        }
-        // ensure the json data is a string
-        if (data['state'] && !(typeof data['state'] === 'string' || data['state'] instanceof String)) {
-            throw new Error("Expected the field `state` to be a primitive type in the JSON string but got " + data['state']);
         }
 
         return true;
@@ -159,8 +156,7 @@ DeviceInfo.prototype['price'] = undefined;
 DeviceInfo.prototype['dryer_units'] = undefined;
 
 /**
- * state of the device if it is running or not
- * @member {module:model/DeviceInfo.StateEnum} state
+ * @member {module:model/DeviceState} state
  */
 DeviceInfo.prototype['state'] = undefined;
 
@@ -184,33 +180,6 @@ DeviceInfo.prototype['softener'] = undefined;
 
 
 
-
-
-/**
- * Allowed values for the <code>state</code> property.
- * @enum {String}
- * @readonly
- */
-DeviceInfo['StateEnum'] = {
-
-    /**
-     * value: "free"
-     * @const
-     */
-    "free": "free",
-
-    /**
-     * value: "busy"
-     * @const
-     */
-    "busy": "busy",
-
-    /**
-     * value: "payed"
-     * @const
-     */
-    "payed": "payed"
-};
 
 
 

@@ -200,6 +200,8 @@ const deviceState = computed(() => {
         return "bezahlt";
       case "busy":
         return "besetzt";
+      case "outoforder":
+        return "Defekt";
     }
   }
   return null;

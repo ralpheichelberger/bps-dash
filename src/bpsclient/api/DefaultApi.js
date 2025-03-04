@@ -608,6 +608,48 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getDeviceLastState operation.
+     * @callback module:api/DefaultApi~getDeviceLastStateCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/DeviceRawLog} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns the last state of a device
+     * @param {Number} id The ID of the device
+     * @param {module:api/DefaultApi~getDeviceLastStateCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/DeviceRawLog}
+     */
+    getDeviceLastState(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getDeviceLastState");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = DeviceRawLog;
+      return this.apiClient.callApi(
+        '/device_last_state', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getDeviceRawLog operation.
      * @callback module:api/DefaultApi~getDeviceRawLogCallback
      * @param {String} error Error message, if any.

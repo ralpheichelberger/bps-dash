@@ -17,6 +17,7 @@ import CreditJournal from './model/CreditJournal';
 import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
 import DeviceRawLog from './model/DeviceRawLog';
+import DeviceState from './model/DeviceState';
 import DeviceType from './model/DeviceType';
 import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest';
@@ -108,6 +109,12 @@ export {
      * @property {module:model/DeviceRawLog}
      */
     DeviceRawLog,
+
+    /**
+     * The DeviceState model constructor.
+     * @property {module:model/DeviceState}
+     */
+    DeviceState,
 
     /**
      * The DeviceType model constructor.
