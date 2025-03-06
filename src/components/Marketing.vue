@@ -1,7 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useAPI } from "../composables/useAPI.js"
-import { usePayment } from "../composables/usePayment.js";
 import { v4 as uuidv4 } from 'uuid';
 
 const { saveMarketing, getMarketing, updateMarketing } = useAPI()

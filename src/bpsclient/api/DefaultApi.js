@@ -21,6 +21,7 @@ import DeviceType from '../model/DeviceType';
 import DeviceUpdateLastPingRequest from '../model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from '../model/DeviceUpdatePumpCountsRequest';
 import DeviceUpdateStatusRequest from '../model/DeviceUpdateStatusRequest';
+import Discount from '../model/Discount';
 import GetUserByTokenRequest from '../model/GetUserByTokenRequest';
 import Location from '../model/Location';
 import MailTo200Response from '../model/MailTo200Response';
@@ -152,6 +153,48 @@ export default class DefaultApi {
       let returnType = Status;
       return this.apiClient.callApi(
         '/device', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the deleteDiscount operation.
+     * @callback module:api/DefaultApi~deleteDiscountCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Deletes a discount
+     * @param {String} id the unique discount ID
+     * @param {module:api/DefaultApi~deleteDiscountCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deleteDiscount(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling deleteDiscount");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/discount', 'DELETE',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -317,6 +360,42 @@ export default class DefaultApi {
       let returnType = Status;
       return this.apiClient.callApi(
         '/device_update_status', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the discounts operation.
+     * @callback module:api/DefaultApi~discountsCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/Discount>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns list of discounts
+     * @param {module:api/DefaultApi~discountsCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<module:model/Discount>}
+     */
+    discounts(callback) {
+      let postBody = null;
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [Discount];
+      return this.apiClient.callApi(
+        '/discounts', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -734,6 +813,48 @@ export default class DefaultApi {
       let returnType = [Device];
       return this.apiClient.callApi(
         '/devices', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getDiscount operation.
+     * @callback module:api/DefaultApi~getDiscountCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Discount} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a discount
+     * @param {String} id the unique discount ID
+     * @param {module:api/DefaultApi~getDiscountCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Discount}
+     */
+    getDiscount(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getDiscount");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Discount;
+      return this.apiClient.callApi(
+        '/discount', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -1379,6 +1500,47 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the newDiscount operation.
+     * @callback module:api/DefaultApi~newDiscountCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * creates a new discount
+     * @param {module:model/Discount} discount The discount object to be created
+     * @param {module:api/DefaultApi~newDiscountCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    newDiscount(discount, callback) {
+      let postBody = discount;
+      // verify the required parameter 'discount' is set
+      if (discount === undefined || discount === null) {
+        throw new Error("Missing the required parameter 'discount' when calling newDiscount");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/discount', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the newLocation operation.
      * @callback module:api/DefaultApi~newLocationCallback
      * @param {String} error Error message, if any.
@@ -1691,6 +1853,47 @@ export default class DefaultApi {
       let returnType = Device;
       return this.apiClient.callApi(
         '/device', 'PUT',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the updateDiscount operation.
+     * @callback module:api/DefaultApi~updateDiscountCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Discount} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates an existing discount
+     * @param {module:model/Discount} discount The updated discount object
+     * @param {module:api/DefaultApi~updateDiscountCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Discount}
+     */
+    updateDiscount(discount, callback) {
+      let postBody = discount;
+      // verify the required parameter 'discount' is set
+      if (discount === undefined || discount === null) {
+        throw new Error("Missing the required parameter 'discount' when calling updateDiscount");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Discount;
+      return this.apiClient.callApi(
+        '/discount', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

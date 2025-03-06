@@ -4,6 +4,7 @@
             <v-tabs v-model="tab" bg-color="primary">
                 <v-tab value="devices">Geräte</v-tab>
                 <v-tab value="prices">Preise</v-tab>
+                <v-tab value="discounts">Rabatte</v-tab>
                 <v-tab value="locations">Shops</v-tab>
                 <v-tab value="programm">Modul Progamme</v-tab>
             </v-tabs>
@@ -15,6 +16,10 @@
 
                     <v-tabs-window-item value="prices">
                         <PriceLines></PriceLines>
+                    </v-tabs-window-item>
+
+                    <v-tabs-window-item value="discounts">
+                        <Discounts></Discounts>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="locations">
@@ -42,6 +47,7 @@ import { useAPI } from '@/composables/useAPI';
 const { locations, getLocations } = useAPI()
 import Locations from './Locations.vue'
 import PriceLines from './PriceLines.vue';
+import Discounts from './Discounts.vue';
 import Devices from './Devices.vue'
 import moduleProgramm from './ModuleProgramm.vue';
 var deviceTypes = ref(['washer', 'dryer', 'pump']) // HARDCODED get from API

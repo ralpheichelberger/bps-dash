@@ -22,6 +22,7 @@ import DeviceType from './model/DeviceType';
 import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest';
 import DeviceUpdateStatusRequest from './model/DeviceUpdateStatusRequest';
+import Discount from './model/Discount';
 import GetUserByTokenRequest from './model/GetUserByTokenRequest';
 import Location from './model/Location';
 import LocationTypDevices from './model/LocationTypDevices';
@@ -139,6 +140,12 @@ export {
      * @property {module:model/DeviceUpdateStatusRequest}
      */
     DeviceUpdateStatusRequest,
+
+    /**
+     * The Discount model constructor.
+     * @property {module:model/Discount}
+     */
+    Discount,
 
     /**
      * The GetUserByTokenRequest model constructor.
