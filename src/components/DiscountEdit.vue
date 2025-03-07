@@ -3,7 +3,7 @@
         <v-card-actions>
             <v-btn icon="mdi-close" @click="emit('close')"></v-btn>
             <v-spacer></v-spacer>
-            <v-btn text color="error" @click="deleteItem" >
+            <v-btn text color="error" @click="deleteItem">
                 Delete
             </v-btn>
             <v-btn color="primary" text @click="saveChanges">
@@ -19,8 +19,11 @@
         <!-- Fields -->
         <v-card-text>
             <v-text-field id="discount-id" v-model="discount.id" label="ID" :disabled="update" required />
-            <v-text-field id="discount-price" v-model.number="discount.percentage" label="Price in Euro Cent" type="number"
+            <v-text-field id="discount-price" v-model.number="discount.percentage" label="Prozent" type="number"
                 required />
+            <v-text-field id="discount-name" v-model="discount.name" label="Rabattname" required />
+            <v-textarea id="discount-userinfo" label="Kundeninformation" auto-grow v-model="discount.userinfo" />
+            <v-text-field id="discount-info" v-model="discount.valid" label="Info" />
         </v-card-text>
     </v-card>
 
@@ -40,7 +43,7 @@ const props = defineProps({
 })
 
 // Emitted events
-const emit = defineEmits(['close', 'delete','save'])
+const emit = defineEmits(['close', 'delete', 'save'])
 
 const saveChanges = () => {
     emit('save')
@@ -51,4 +54,3 @@ const deleteItem = () => {
     emit('close')
 }
 </script>
-

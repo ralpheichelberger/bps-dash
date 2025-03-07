@@ -38,7 +38,7 @@ body {
     --background-gradient: linear-gradient(135deg, #FF9A8B, #FF6A88, #FF99AC, #FFD6A5, #C1F7D5, #A2E3F7, #A1C4FD);
     --user-padding-left: 1rem;
     --user-padding-right: 1rem;
-    --card-background: rgba(32, 32, 32, 0.6);
+    --card-background: rgba(32, 32, 32, 0.74);
 }
 
 .v-table {

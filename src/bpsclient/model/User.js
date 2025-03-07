@@ -28,10 +28,11 @@ class User {
      * @param active {Boolean} 
      * @param credit {Number} credit amout in euro cent
      * @param prefs {Object} preferences of the user
+     * @param discounts {Array.<String>} list of discount IDs
      */
-    constructor(typ, id, name, active, credit, prefs) { 
+    constructor(typ, id, name, active, credit, prefs, discounts) { 
         
-        User.initialize(this, typ, id, name, active, credit, prefs);
+        User.initialize(this, typ, id, name, active, credit, prefs, discounts);
     }
 
     /**
@@ -39,13 +40,14 @@ class User {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, typ, id, name, active, credit, prefs) { 
+    static initialize(obj, typ, id, name, active, credit, prefs, discounts) { 
         obj['typ'] = typ;
         obj['id'] = id;
         obj['name'] = name;
         obj['active'] = active;
         obj['credit'] = credit;
         obj['prefs'] = prefs;
+        obj['discounts'] = discounts;
     }
 
     /**
@@ -80,6 +82,9 @@ class User {
             if (data.hasOwnProperty('prefs')) {
                 obj['prefs'] = ApiClient.convertToType(data['prefs'], Object);
             }
+            if (data.hasOwnProperty('discounts')) {
+                obj['discounts'] = ApiClient.convertToType(data['discounts'], ['String']);
+            }
         }
         return obj;
     }
@@ -112,6 +117,10 @@ class User {
         if (data['token'] && !(typeof data['token'] === 'string' || data['token'] instanceof String)) {
             throw new Error("Expected the field `token` to be a primitive type in the JSON string but got " + data['token']);
         }
+        // ensure the json data is an array
+        if (!Array.isArray(data['discounts'])) {
+            throw new Error("Expected the field `discounts` to be an array in the JSON data but got " + data['discounts']);
+        }
 
         return true;
     }
@@ -119,7 +128,7 @@ class User {
 
 }
 
-User.RequiredProperties = ["typ", "id", "name", "active", "credit", "prefs"];
+User.RequiredProperties = ["typ", "id", "name", "active", "credit", "prefs", "discounts"];
 
 /**
  * @member {module:model/User.TypEnum} typ
@@ -158,6 +167,12 @@ User.prototype['token'] = undefined;
  * @member {Object} prefs
  */
 User.prototype['prefs'] = undefined;
+
+/**
+ * list of discount IDs
+ * @member {Array.<String>} discounts
+ */
+User.prototype['discounts'] = undefined;
 
 
 

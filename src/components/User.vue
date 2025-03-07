@@ -56,6 +56,8 @@
   <v-dialog v-if="customer" v-model="customerDialog">
     <v-card class="bubble_style customer pa-4" elevation="4">
       <v-card-title class="headline">Customer Details
+        <v-btn style="float:right" icon="mdi-close" @click="customer = null"></v-btn>
+
         <v-card-subtitle>ID: {{ customer.id }} </v-card-subtitle>
       </v-card-title>
       <!-- <v-card-text> -->
@@ -71,17 +73,43 @@
             <td>{{ cent2euro(customer.credit) }}</td>
           </tr>
           <tr>
+            <td><strong>Rabatte</strong></td>
+            <td>{{ discountArray }}</td>
+          </tr>
+          <tr>
             <td><strong>Type:</strong></td>
             <td>{{ customer.typ }}</td>
           </tr>
           <tr>
             <td><strong>Active:</strong></td>
-            <td><v-switch v-model="customer.active" :color="'green'" @update:modelValue="saveCustomer">
-              </v-switch></td>
+            <td>
+              <v-switch v-model="customer.active" :color="'green'" @update:modelValue="saveCustomer"></v-switch>
+            </td>
           </tr>
+
         </tbody>
       </v-table>
       <v-divider></v-divider>
+      <v-dialog v-model="discountsDialog" class="ma-3" elevation="10">
+        <!--list of all discounts with a check box right if  the customer has it attached-->
+        <v-table>
+          <thead>
+            <tr>
+              <th>Discounts</th>
+              <th class="text-right">Percentage</th>
+              <th>Attached</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="discount in discounts" :key="discount">
+              <td>{{ discount.name }}</td>
+              <td class="text-right">{{ discount.percentage }}</td>
+              <td><v-checkbox v-model="customer.discounts" :value="discount.id" @update:modelValue="saveCustomer">
+                </v-checkbox></td>
+            </tr>
+          </tbody>
+        </v-table>
+      </v-dialog>
       <v-row>
         <v-col>
           <v-text-field v-model.number="customerTopupAmount">EUR</v-text-field>
@@ -100,13 +128,10 @@
         <!-- <v-btn elevation="4" color="#505" dark @click="toggleActiveCustomer">{{ customer.active ? 'deactivate' :
           'activate' }} </v-btn> -->
         <v-spacer></v-spacer>
-
+        <v-btn elevation="4" color="#050" dark @click="openRabatte">Discounts</v-btn>
         <v-btn elevation="4" color="#050" dark @click="topUpCustomerCredit" :disabled="customerTopupAmount == 0 ||
-          (customerTopupType == 'cash' && customerTopupAmount < 0)
-          ">
-          Aufladen
+          (customerTopupType == 'cash' && customerTopupAmount < 0)"> Aufladen
         </v-btn>
-        <v-btn elevation="4" color="#050" dark @click="customer = null">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -138,12 +163,13 @@
 </template>
 
 <script setup>
-import { ref, computed ,nextTick} from "vue";
+import { ref, computed, nextTick } from "vue";
 import { useAPI } from "../composables/useAPI";
 import { useUser } from "../composables/useUser";
 import TopUp from "./TopUp.vue";
 import { usePayment } from "../composables/usePayment";
 import { useLongPress } from "../composables/useLongPress";
+import { useDiscount } from "../composables/useDiscount";
 
 const snackbar = ref({ color: "success", text: "gespeichert", show: false });
 const APP_VERSION = window.APP_VERSION ? window.APP_VERSION : "0.0.0";
@@ -151,6 +177,7 @@ const APP_VERSION = window.APP_VERSION ? window.APP_VERSION : "0.0.0";
 const { startPress, cancelPress } = useLongPress();
 const user = ref(null);
 const topUpDialog = ref(false);
+const discountsDialog = ref(false);
 const customerDialog = computed(() => (customer.value ? true : false));
 const errorDetail = ref("");
 const errorMessage = ref("");
@@ -159,6 +186,7 @@ const customerTopupAmount = ref(0);
 const customerTopupType = ref("admin");
 
 const { customer, getUser, resetUser, reloadUser, updateUser } = useUser();
+const { discounts, getDiscounts } = useDiscount();
 const { cent2euro } = useAPI();
 const { topUp, payments } = usePayment();
 const props = defineProps(["id"]);
@@ -171,6 +199,17 @@ function updateListHeight() {
 window.addEventListener('beforeunload', () => {
   // This prevents the page from being cached in bfcache
 });
+
+const discountArray = computed(() => {
+  if (customer.value && customer.value.discounts) {
+    return customer.value.discounts.join(", ")
+  }
+  return "keine";
+});
+
+const openRabatte = () => {
+  discountsDialog.value = true;
+};
 
 setTimeout(() => {
   errorDialog.value = !user.value;
@@ -200,7 +239,7 @@ getUser(props.id)
       errorUnauthorized();
     }
   });
-
+getDiscounts();
 const errorUnauthorized = () => {
   localStorage.removeItem("user");
   errorDialog.value = true;
@@ -239,7 +278,7 @@ const topUpCredit = (topAmount, details) => {
     // wait for the transaction to be processed
     setTimeout(reloadUser(user).then((u) => {
       user.value = u;
-      setTimeout(glow(),300)
+      setTimeout(glow(), 300)
     }), 1000);
     payments(user.value.id)
       .then((data) => {

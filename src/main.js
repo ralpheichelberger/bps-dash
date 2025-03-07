@@ -14,7 +14,7 @@ import Home2 from './Home2.vue';
 
 
 const routes = [
-    { path: '/B/:id', name: 'User', component: User, props: true },
+    { path: '/B/:id?', name: 'User', component: User, props: true },
     { path: '/P/:deviceId', name: 'PayDevice', component: PayDevice , props: true},
     { path: '/M/:code', name: 'Marketing', component: Marketing , props: true},
     { path: '/admin', name: 'Admin', component: Admin }, // FIXME does not work anymore
@@ -47,4 +47,4 @@ app.mount('#app');
 // }
 
 
-window.APP_VERSION = '0.9.0_250305T1920';
+window.APP_VERSION = '0.9.0_250307T1834';

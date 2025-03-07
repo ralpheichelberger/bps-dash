@@ -24,10 +24,13 @@ class Discount {
      * @alias module:model/Discount
      * @param id {String} 
      * @param percentage {Number} percentage of the discount
+     * @param name {String} name of the discount
+     * @param userinfo {String} information about the discount for the user
+     * @param info {String} internal information about the discount
      */
-    constructor(id, percentage) { 
+    constructor(id, percentage, name, userinfo, info) { 
         
-        Discount.initialize(this, id, percentage);
+        Discount.initialize(this, id, percentage, name, userinfo, info);
     }
 
     /**
@@ -35,9 +38,12 @@ class Discount {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, id, percentage) { 
+    static initialize(obj, id, percentage, name, userinfo, info) { 
         obj['id'] = id;
         obj['percentage'] = percentage;
+        obj['name'] = name;
+        obj['userinfo'] = userinfo;
+        obj['info'] = info;
     }
 
     /**
@@ -56,6 +62,15 @@ class Discount {
             }
             if (data.hasOwnProperty('percentage')) {
                 obj['percentage'] = ApiClient.convertToType(data['percentage'], 'Number');
+            }
+            if (data.hasOwnProperty('name')) {
+                obj['name'] = ApiClient.convertToType(data['name'], 'String');
+            }
+            if (data.hasOwnProperty('userinfo')) {
+                obj['userinfo'] = ApiClient.convertToType(data['userinfo'], 'String');
+            }
+            if (data.hasOwnProperty('info')) {
+                obj['info'] = ApiClient.convertToType(data['info'], 'String');
             }
         }
         return obj;
@@ -77,6 +92,18 @@ class Discount {
         if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
             throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
         }
+        // ensure the json data is a string
+        if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
+            throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
+        }
+        // ensure the json data is a string
+        if (data['userinfo'] && !(typeof data['userinfo'] === 'string' || data['userinfo'] instanceof String)) {
+            throw new Error("Expected the field `userinfo` to be a primitive type in the JSON string but got " + data['userinfo']);
+        }
+        // ensure the json data is a string
+        if (data['info'] && !(typeof data['info'] === 'string' || data['info'] instanceof String)) {
+            throw new Error("Expected the field `info` to be a primitive type in the JSON string but got " + data['info']);
+        }
 
         return true;
     }
@@ -84,7 +111,7 @@ class Discount {
 
 }
 
-Discount.RequiredProperties = ["id", "percentage"];
+Discount.RequiredProperties = ["id", "percentage", "name", "userinfo", "info"];
 
 /**
  * @member {String} id
@@ -96,6 +123,24 @@ Discount.prototype['id'] = undefined;
  * @member {Number} percentage
  */
 Discount.prototype['percentage'] = undefined;
+
+/**
+ * name of the discount
+ * @member {String} name
+ */
+Discount.prototype['name'] = undefined;
+
+/**
+ * information about the discount for the user
+ * @member {String} userinfo
+ */
+Discount.prototype['userinfo'] = undefined;
+
+/**
+ * internal information about the discount
+ * @member {String} info
+ */
+Discount.prototype['info'] = undefined;
 
 
 

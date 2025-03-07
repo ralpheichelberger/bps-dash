@@ -17,6 +17,9 @@
                         <th class="text-right">
                             Prozent
                         </th>
+                        <th class="text-left">
+                            Rabattname
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +27,7 @@
                         @click="discount = Object.assign({}, item); discountEdit = true; update = true">
                         <td>{{ item.id }}</td>
                         <td class="text-right">{{ item.percentage }}</td>
+                        <td class="text-left">{{ item.name }}</td>
                     </tr>
                 </tbody>
             </v-table>
@@ -41,7 +45,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useDiscount } from '../composables/useDiscount';
-const { discounts, getDiscounts, updateDiscount, deleteDiscount, newDiscount} = useDiscount()
+const { discounts, getDiscounts, updateDiscount, deleteDiscount, newDiscount } = useDiscount()
 const discount = ref(null)
 const discountEdit = ref(false)
 const update = ref(false)

@@ -9,6 +9,10 @@ export function useUser() {
   const getUser = async (card_id) => {
     return new Promise((resolve, reject) => {
       user.value = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+      if (user.value && !card_id) {
+        resolve(user.value);
+        return
+      }
       if (!user.value && card_id) {
         updateAuth(card_id)
         api.getUser(card_id, (error, data) => {
