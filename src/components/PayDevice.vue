@@ -42,7 +42,10 @@
       {{ deviceState.toUpperCase() }}
     </div>
     <div v-if="deviceInfo" class="price">
-      Preis: EUR {{ cent2euro(deviceInfo.price) }}
+      Preis: EUR
+      {{ cent2euro(deviceInfo.userprice) }} <br/>
+      <span style="text-decoration: line-through; font-size: smaller; ">Normalpreis: {{ cent2euro(deviceInfo.price) }}
+      <v-icon icon="mdi-information" @click="showDiscounts"></v-icon></span>
       {{ deviceInfo.type == "dryer" ? "/ " + deviceInfo.dryer_units + " min" : "" }}
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
@@ -121,7 +124,7 @@
   <v-snackbar v-model="snackbar.show" :color="snackbar.color">
     {{ snackbar.text }}
   </v-snackbar>
-  <v-dialog v-model="infoModal" class="bubble_style">
+  <v-dialog v-model="infoModal" >
     <v-card>
       <v-card-title>Waschmittel und Weichspüler</v-card-title>
       <v-card-text>
@@ -140,6 +143,23 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-dialog v-model="discountModal" >
+    <v-card>
+      <v-card-title>Rabatte</v-card-title>
+      <v-card-text>
+        <!-- list user.discounts name and percentage-->
+        <v-list>
+          <v-list-item v-for="discount in deviceInfo.discounts" :key="discount.id">
+            <v-list-item-title> {{ discount.percentage }}% {{ discount.name }} </v-list-item-title>
+            {{ discount.userinfo }}
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn @click="discountModal = false">Schließen</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -155,6 +175,7 @@ const APP_VERSION = window.APP_VERSION ? window.APP_VERSION : "0.0.0";
 const { startPress, cancelPress } = useLongPress();
 const snackbar = ref({ color: "success", text: "gespeichert", show: false });
 const infoModal = ref(false);
+const discountModal = ref(false);
 const user = ref(null);
 const topUpDialog = ref(false);
 const errorDetail = ref("");
@@ -165,9 +186,7 @@ const { cent2euro } = useAPI();
 const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, payment } = usePayment();
-const insufficentCredit = computed(() => {
-  return user.value && user.value.credit - 53400 < paymentAmount.value * 100;
-});
+
 const payPalButtonVisible = computed(() => {
   if (!deviceInfo.value) {
     return false;
@@ -178,7 +197,7 @@ const payPalButtonVisible = computed(() => {
 const payWithCreditDisabled = computed(() => {
   // is true if:
   // payed
-  // washer and not choosen or free
+  // washer status and not choosen or free
   // not admin and not enough credit
   if (!deviceInfo.value) {
     return true;
@@ -187,10 +206,11 @@ const payWithCreditDisabled = computed(() => {
     payed.value ||
     (deviceInfo.value.type == "washer" &&
       (!choosen.value || deviceInfo.value.state != "free")) ||
-    (!admin.value && user.value.credit < deviceInfo.value.price)
+    (!admin.value && user.value.credit < paymentAmount.value)
   );
   return result;
 });
+
 const deviceState = computed(() => {
   if (deviceInfo.value) {
     switch (deviceInfo.value.state) {
@@ -228,6 +248,9 @@ getUser()
   });
 const showInfo = () => {
   infoModal.value = true;
+};
+const showDiscounts = () => {
+  discountModal.value = true;
 };
 const anonym = computed(() => {
   return user ? !user.value : true;
@@ -306,7 +329,7 @@ const deviceDisplayName = () => {
 // Computes the payment amount in euros for PayPal.
 const paymentAmount = computed(() => {
   if (deviceInfo.value) {
-    let price = deviceInfo.value.price;
+    let price = deviceInfo.value.userprice;
     if (deviceInfo.value.type == "dryer") {
       price = (price * dryTime.value) / deviceInfo.value.dryer_units;
     }

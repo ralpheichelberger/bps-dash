@@ -14,6 +14,7 @@
 import ApiClient from '../ApiClient';
 import DeviceState from './DeviceState';
 import DeviceType from './DeviceType';
+import Discount from './Discount';
 
 /**
  * The DeviceInfo model module.
@@ -29,14 +30,16 @@ class DeviceInfo {
      * @param location {String} location of the device real address of the shop
      * @param type {module:model/DeviceType} 
      * @param price {Number} price of the device in euro cent
+     * @param discounts {Array.<module:model/Discount>} list of discount IDs
+     * @param userprice {Number} the price of the device for the user after discounts, in euro cents
      * @param state {module:model/DeviceState} 
      * @param impulsDuration {Number} duration for the relay the device in 1/10 of seconds
      * @param detergent {Boolean} if detergent is available
      * @param softener {Boolean} if softener is available
      */
-    constructor(name, location, type, price, state, impulsDuration, detergent, softener) { 
+    constructor(name, location, type, price, discounts, userprice, state, impulsDuration, detergent, softener) { 
         
-        DeviceInfo.initialize(this, name, location, type, price, state, impulsDuration, detergent, softener);
+        DeviceInfo.initialize(this, name, location, type, price, discounts, userprice, state, impulsDuration, detergent, softener);
     }
 
     /**
@@ -44,11 +47,13 @@ class DeviceInfo {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, name, location, type, price, state, impulsDuration, detergent, softener) { 
+    static initialize(obj, name, location, type, price, discounts, userprice, state, impulsDuration, detergent, softener) { 
         obj['name'] = name;
         obj['location'] = location;
         obj['type'] = type;
         obj['price'] = price;
+        obj['discounts'] = discounts;
+        obj['userprice'] = userprice;
         obj['state'] = state;
         obj['impuls_duration'] = impulsDuration;
         obj['detergent'] = detergent;
@@ -77,6 +82,12 @@ class DeviceInfo {
             }
             if (data.hasOwnProperty('price')) {
                 obj['price'] = ApiClient.convertToType(data['price'], 'Number');
+            }
+            if (data.hasOwnProperty('discounts')) {
+                obj['discounts'] = ApiClient.convertToType(data['discounts'], [Discount]);
+            }
+            if (data.hasOwnProperty('userprice')) {
+                obj['userprice'] = ApiClient.convertToType(data['userprice'], 'Number');
             }
             if (data.hasOwnProperty('dryer_units')) {
                 obj['dryer_units'] = ApiClient.convertToType(data['dryer_units'], 'Number');
@@ -117,6 +128,16 @@ class DeviceInfo {
         if (data['location'] && !(typeof data['location'] === 'string' || data['location'] instanceof String)) {
             throw new Error("Expected the field `location` to be a primitive type in the JSON string but got " + data['location']);
         }
+        if (data['discounts']) { // data not null
+            // ensure the json data is an array
+            if (!Array.isArray(data['discounts'])) {
+                throw new Error("Expected the field `discounts` to be an array in the JSON data but got " + data['discounts']);
+            }
+            // validate the optional field `discounts` (array)
+            for (const item of data['discounts']) {
+                Discount.validateJSON(item);
+            };
+        }
 
         return true;
     }
@@ -124,7 +145,7 @@ class DeviceInfo {
 
 }
 
-DeviceInfo.RequiredProperties = ["name", "location", "type", "price", "state", "impuls_duration", "detergent", "softener"];
+DeviceInfo.RequiredProperties = ["name", "location", "type", "price", "discounts", "userprice", "state", "impuls_duration", "detergent", "softener"];
 
 /**
  * name of the device used in MQTT communication
@@ -148,6 +169,18 @@ DeviceInfo.prototype['type'] = undefined;
  * @member {Number} price
  */
 DeviceInfo.prototype['price'] = undefined;
+
+/**
+ * list of discount IDs
+ * @member {Array.<module:model/Discount>} discounts
+ */
+DeviceInfo.prototype['discounts'] = undefined;
+
+/**
+ * the price of the device for the user after discounts, in euro cents
+ * @member {Number} userprice
+ */
+DeviceInfo.prototype['userprice'] = undefined;
 
 /**
  * number of dryer units
