@@ -43,10 +43,11 @@
     </div>
     <div v-if="deviceInfo" class="price">
       Preis: EUR
-      {{ cent2euro(deviceInfo.userprice) }} <br/>
-      <span style="text-decoration: line-through; font-size: smaller; ">Normalpreis: {{ cent2euro(deviceInfo.price) }}
-      <v-icon icon="mdi-information" @click="showDiscounts"></v-icon></span>
+      {{ cent2euro(deviceInfo.userprice) }} 
       {{ deviceInfo.type == "dryer" ? "/ " + deviceInfo.dryer_units + " min" : "" }}
+      <br />
+      <span v-if="user" style="text-decoration: line-through; font-size: smaller; ">Normalpreis: {{ cent2euro(deviceInfo.price) }}
+        <v-icon icon="mdi-information" @click="showDiscounts"></v-icon></span>
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
       EUR {{ paymentAmount }} für {{ dryTime }} min
@@ -124,7 +125,7 @@
   <v-snackbar v-model="snackbar.show" :color="snackbar.color">
     {{ snackbar.text }}
   </v-snackbar>
-  <v-dialog v-model="infoModal" >
+  <v-dialog v-model="infoModal">
     <v-card>
       <v-card-title>Waschmittel und Weichspüler</v-card-title>
       <v-card-text>
@@ -143,7 +144,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-dialog v-model="discountModal" >
+  <v-dialog v-model="discountModal">
     <v-card>
       <v-card-title>Rabatte</v-card-title>
       <v-card-text>
@@ -240,7 +241,7 @@ function updateListHeight() {
 getUser()
   .then((dbUser) => {
     user.value = dbUser;
-    console.log("user", user.value);
+    // console.log("user", user.value);
     reloadUser(user);
   })
   .catch((error) => {
@@ -349,9 +350,9 @@ const payDeviceAndAllowStart = (source, details) => {
   }
   const machine_id = Number(props.deviceId)
   const impulses = deviceInfo.value.type == "dryer" ? dryTime.value / deviceInfo.value.dryer_units : null;
-  const amount = Math.floor(Number(paymentAmount.value)*100);
+  const amount = Math.floor(Number(paymentAmount.value) * 100);
 
-  
+
   const paymentVariables = {
     card_id: user.value ? user.value.id : "anonym",
     machine_name: deviceInfo.value.name,
