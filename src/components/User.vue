@@ -65,7 +65,7 @@
         <tbody>
           <tr>
             <td><strong>Name:</strong></td>
-            <td><v-text-field v-model="customer.name" density="compact" @update:modelValue="saveCustomer">
+            <td><v-text-field v-model="customer.name" density="compact" @blur="saveCustomer">
               </v-text-field></td>
           </tr>
           <tr>
@@ -222,16 +222,17 @@ getUser(props.id)
     localStorage.setItem("user", JSON.stringify(dbUser));
     user.value = dbUser;
     if (user.value) {
+      if (user.value.typ=='admin') getDiscounts();
       payments(user.value.id)
-        .then((data) => {
-          userPayments.value = data;
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error.response && error.response.status == 401) {
-            errorUnauthorized();
-          }
-        });
+      .then((data) => {
+        userPayments.value = data;
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response && error.response.status == 401) {
+          errorUnauthorized();
+        }
+      });
     }
   })
   .catch((error) => {
@@ -239,8 +240,7 @@ getUser(props.id)
       errorUnauthorized();
     }
   });
-getDiscounts();
-const errorUnauthorized = () => {
+  const errorUnauthorized = () => {
   localStorage.removeItem("user");
   errorDialog.value = true;
   errorMessage.value = "Kundenkonto gesperrt.";
