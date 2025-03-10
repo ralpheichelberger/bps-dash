@@ -32,7 +32,7 @@
                 </v-tabs-window>
             </v-card-text>
         </v-card>
-        <v-empty-state v-else headline="Whoops, 401" title="Unauthorized"
+        <v-empty-state v-if="errorDialog" headline="Whoops, 401" title="Unauthorized"
             text="You have no clearance to access this page">
             <v-btn elevation="10" height="6rem" width="100%" style="font-size: x-large;"
                 @click="handleOkClick">Hompage</v-btn>
@@ -51,9 +51,11 @@ import Discounts from './Discounts.vue';
 import Devices from './Devices.vue'
 import moduleProgramm from './ModuleProgramm.vue';
 var deviceTypes = ref(['washer', 'dryer', 'pump']) // HARDCODED get from API
-
+const errorDialog = ref(false)
 const tab = ref('devices')
-
+setTimeout(() => {
+  errorDialog.value = !locations.value;
+}, 3000);
 const handleOkClick = () => {
     window.location.href = "/";
 }

@@ -9,7 +9,9 @@
 
     <body>
         <v-app>
-                <router-view />
+            <div v-if="isStaging" class="watermark">STAGING</div>
+            <div v-if="isLocal" class="watermark">LOCAL</div>
+            <router-view />
         </v-app>
     </body>
 
@@ -17,12 +19,11 @@
 
 </template>
 
-<script>
-export default {
-    name: 'App',
-};
-
+<script setup>
+const isStaging = import.meta.env.VITE_APP_ENV === 'staging';
+const isLocal = import.meta.env.VITE_APP_ENV === 'local';
 </script>
+
 <style>
 @import '@/assets/bubble.css';
 body {
@@ -78,8 +79,19 @@ span.action {
     background: rgb(136, 219, 245) !important;
     color: rgb(155, 0, 0) !important;
 }
-
-/* Gradient Animation */
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem;
+  font-weight: bold;
+  color: rgba(1, 0, 88, 0.2);
+  transform: translate(-50%, -50%) rotate(-60deg);
+  pointer-events: none;
+  z-index: 9999;
+}
+/* Gradient Animation
 @keyframes gradient {
     0% {
         background-position: 0% 50%;
@@ -102,5 +114,5 @@ span.action {
     100% {
         opacity: 1;
     }
-}
+} */
 </style>

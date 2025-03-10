@@ -50,6 +50,9 @@ const saveChanges = () => {
     emit('close')
 }
 const deleteItem = () => {
+    if (!confirm('Are you sure you want to delete this item?')) {
+        return
+    }
     emit('delete')
     emit('close')
 }

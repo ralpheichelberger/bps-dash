@@ -57,6 +57,9 @@ const saveChanges = () => {
     emit('close')
 }
 const deletePriceLine = () => {
+    if (!confirm('Are you sure you want to delete this item?')) {
+        return
+    }
     emit('delete')
     emit('close')
 }

@@ -1,8 +1,10 @@
 <template>
     <v-layout>
-        <v-container class="position-relative">
-            <v-fab  v-if="userexists" icon="mdi-account-circle" location="top right" size="" class="floating-button" absolute
-                @click="navigateToUser"></v-fab>
+        <v-container>
+            <v-btn  v-if="userexists" size="" class="floating-button"             
+                @click="navigateToUser">
+                <img src="@/assets/user.png" width="70px"/>
+                </v-btn>
             <img src="@/assets/Web.png" class="responsive-image">
         </v-container>
     </v-layout>
@@ -20,16 +22,14 @@ const navigateToUser = () => {
     padding: 0;
 }
 
-.position-relative {
-    position: relative;
-}
-
 .floating-button {
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
     z-index: 10;
     font-size: 3rem;
+    background: var(--background-gradient) !important;
+
 }
 
 .responsive-image {
