@@ -344,7 +344,6 @@ const softener = ref(null);
 
 // Handles payment logic and allows the device to start.
 const payDeviceAndAllowStart = (source, details) => {
-  // FIXME send selected detergent and softener to the server
   if (deviceInfo.value.type == "washer") {
     dryTime.value = 0;
   }

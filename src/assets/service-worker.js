@@ -16,5 +16,4 @@ self.addEventListener('push', (event) => {
         })
     );
 });
-// TODO use User App and redirect "pay maschine"-URL to User App with machine ID / needs to be handled in User App
   

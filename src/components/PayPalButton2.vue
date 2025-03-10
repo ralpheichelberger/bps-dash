@@ -30,7 +30,7 @@ loadScript({
                         user_id: props.userId,
                         amount: {
                             value: props.amount,
-                            currency_code: "EUR", // FIXME: does this work?
+                            currency_code: "EUR",
                         },
                     },
                 ],
