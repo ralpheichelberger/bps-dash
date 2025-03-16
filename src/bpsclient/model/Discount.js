@@ -66,6 +66,9 @@ class Discount {
             if (data.hasOwnProperty('name')) {
                 obj['name'] = ApiClient.convertToType(data['name'], 'String');
             }
+            if (data.hasOwnProperty('code')) {
+                obj['code'] = ApiClient.convertToType(data['code'], 'String');
+            }
             if (data.hasOwnProperty('userinfo')) {
                 obj['userinfo'] = ApiClient.convertToType(data['userinfo'], 'String');
             }
@@ -95,6 +98,10 @@ class Discount {
         // ensure the json data is a string
         if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
             throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
+        }
+        // ensure the json data is a string
+        if (data['code'] && !(typeof data['code'] === 'string' || data['code'] instanceof String)) {
+            throw new Error("Expected the field `code` to be a primitive type in the JSON string but got " + data['code']);
         }
         // ensure the json data is a string
         if (data['userinfo'] && !(typeof data['userinfo'] === 'string' || data['userinfo'] instanceof String)) {
@@ -129,6 +136,12 @@ Discount.prototype['percentage'] = undefined;
  * @member {String} name
  */
 Discount.prototype['name'] = undefined;
+
+/**
+ * applies for marketing code
+ * @member {String} code
+ */
+Discount.prototype['code'] = undefined;
 
 /**
  * information about the discount for the user

@@ -25,10 +25,11 @@ class Marketing {
      * @param code {String} code of the marketing action
      * @param uuid {String} uuid of the user
      * @param cnt {Number} count of calling the same code
+     * @param eligible {Number} count of eligible usage of the code
      */
-    constructor(code, uuid, cnt) { 
+    constructor(code, uuid, cnt, eligible) { 
         
-        Marketing.initialize(this, code, uuid, cnt);
+        Marketing.initialize(this, code, uuid, cnt, eligible);
     }
 
     /**
@@ -36,10 +37,11 @@ class Marketing {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, code, uuid, cnt) { 
+    static initialize(obj, code, uuid, cnt, eligible) { 
         obj['code'] = code;
         obj['uuid'] = uuid;
         obj['cnt'] = cnt;
+        obj['eligible'] = eligible;
     }
 
     /**
@@ -61,6 +63,9 @@ class Marketing {
             }
             if (data.hasOwnProperty('cnt')) {
                 obj['cnt'] = ApiClient.convertToType(data['cnt'], 'Number');
+            }
+            if (data.hasOwnProperty('eligible')) {
+                obj['eligible'] = ApiClient.convertToType(data['eligible'], 'Number');
             }
         }
         return obj;
@@ -93,7 +98,7 @@ class Marketing {
 
 }
 
-Marketing.RequiredProperties = ["code", "uuid", "cnt"];
+Marketing.RequiredProperties = ["code", "uuid", "cnt", "eligible"];
 
 /**
  * code of the marketing action
@@ -112,6 +117,12 @@ Marketing.prototype['uuid'] = undefined;
  * @member {Number} cnt
  */
 Marketing.prototype['cnt'] = undefined;
+
+/**
+ * count of eligible usage of the code
+ * @member {Number} eligible
+ */
+Marketing.prototype['eligible'] = undefined;
 
 
 

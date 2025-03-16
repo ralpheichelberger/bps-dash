@@ -645,10 +645,13 @@ export default class DefaultApi {
      * @param {String} location The shop location ID
      * @param {module:model/DeviceType} typ The type of the device
      * @param {Number} nr The number of the device
+     * @param {Object} opts Optional parameters
+     * @param {String} [marketingCode] The marketing code
      * @param {module:api/DefaultApi~getDeviceInfoCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/DeviceInfo}
      */
-    getDeviceInfo(location, typ, nr, callback) {
+    getDeviceInfo(location, typ, nr, opts, callback) {
+      opts = opts || {};
       let postBody = null;
       // verify the required parameter 'location' is set
       if (location === undefined || location === null) {
@@ -668,7 +671,8 @@ export default class DefaultApi {
       let queryParams = {
         'location': location,
         'typ': typ,
-        'nr': nr
+        'nr': nr,
+        'marketing_code': opts['marketingCode']
       };
       let headerParams = {
       };
@@ -861,6 +865,48 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getDiscountByCode operation.
+     * @callback module:api/DefaultApi~getDiscountByCodeCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Discount} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a discount applied for marketing code
+     * @param {String} code The code of the discount
+     * @param {module:api/DefaultApi~getDiscountByCodeCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Discount}
+     */
+    getDiscountByCode(code, callback) {
+      let postBody = null;
+      // verify the required parameter 'code' is set
+      if (code === undefined || code === null) {
+        throw new Error("Missing the required parameter 'code' when calling getDiscountByCode");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'code': code
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Discount;
+      return this.apiClient.callApi(
+        '/discount_by_code', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getLocation operation.
      * @callback module:api/DefaultApi~getLocationCallback
      * @param {String} error Error message, if any.
@@ -1018,6 +1064,48 @@ export default class DefaultApi {
       let returnType = Marketing;
       return this.apiClient.callApi(
         '/marketing', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getMarketings operation.
+     * @callback module:api/DefaultApi~getMarketingsCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/Marketing>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * get all marketings for a user
+     * @param {String} uuid The user UUID
+     * @param {module:api/DefaultApi~getMarketingsCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<module:model/Marketing>}
+     */
+    getMarketings(uuid, callback) {
+      let postBody = null;
+      // verify the required parameter 'uuid' is set
+      if (uuid === undefined || uuid === null) {
+        throw new Error("Missing the required parameter 'uuid' when calling getMarketings");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'uuid': uuid
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [Marketing];
+      return this.apiClient.callApi(
+        '/marketings', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

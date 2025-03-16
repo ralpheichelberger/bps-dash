@@ -79,6 +79,9 @@ class Payment {
             if (data.hasOwnProperty('card_id')) {
                 obj['card_id'] = ApiClient.convertToType(data['card_id'], 'String');
             }
+            if (data.hasOwnProperty('marketing_code')) {
+                obj['marketing_code'] = ApiClient.convertToType(data['marketing_code'], 'String');
+            }
             if (data.hasOwnProperty('amount')) {
                 obj['amount'] = ApiClient.convertToType(data['amount'], 'Number');
             }
@@ -126,6 +129,10 @@ class Payment {
             throw new Error("Expected the field `card_id` to be a primitive type in the JSON string but got " + data['card_id']);
         }
         // ensure the json data is a string
+        if (data['marketing_code'] && !(typeof data['marketing_code'] === 'string' || data['marketing_code'] instanceof String)) {
+            throw new Error("Expected the field `marketing_code` to be a primitive type in the JSON string but got " + data['marketing_code']);
+        }
+        // ensure the json data is a string
         if (data['source'] && !(typeof data['source'] === 'string' || data['source'] instanceof String)) {
             throw new Error("Expected the field `source` to be a primitive type in the JSON string but got " + data['source']);
         }
@@ -166,6 +173,12 @@ Payment.prototype['machine_id'] = undefined;
  * @member {String} card_id
  */
 Payment.prototype['card_id'] = undefined;
+
+/**
+ * marketing code to apply for discount
+ * @member {String} marketing_code
+ */
+Payment.prototype['marketing_code'] = undefined;
 
 /**
  * amount in cent; negative deducts from credit; positive adds to credit

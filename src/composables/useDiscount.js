@@ -1,10 +1,11 @@
+import { get } from "superagent";
 import { useAuth } from "./useAuth.js";
 import { ref } from "vue";
 const { api, upDateAuth } = useAuth();
 
 export function useDiscount() {
 
-const discounts = ref(null);
+  const discounts = ref(null);
 
   const getDiscounts = async () => {
     return new Promise((resolve, reject) => {
@@ -52,9 +53,9 @@ const discounts = ref(null);
       });
     });
   }
-  const getDiscount = async (code) => {
+  const getDiscount = async (id) => {
     return new Promise((resolve, reject) => {
-      api.getDiscount(code, (error, data) => {
+      api.getDiscount(id, (error, data) => {
         if (error) {
           reject(new Error("Error fetching discount: " + error));
         } else {
@@ -64,13 +65,51 @@ const discounts = ref(null);
     });
   }
 
+  const getDiscountByCode = async (code) => {
+    return new Promise((resolve, reject) => {
+      api.getDiscountByCode(code, (error, data) => {
+        if (error) {
+          reject(new Error("Error fetching discount: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+  const getMarketings = async (uuid) => {
+    return new Promise((resolve, reject) => {
+      api.getMarketings(uuid, (error, data) => {
+        if (error) {
+          reject(new Error("Error fetching marketing code: " + error));
+        } else {
+          resolve(data)
+        }
+      });
+    });
+  }
+
+  const updateMarketing = async (marketing) => {
+    return new Promise((resolve, reject) => {
+      api.updateMarketing(marketing, (error, data) => {
+        if (error) {
+          reject(new Error("Error updating marketing code: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
 
   return {
     discounts,
     getDiscounts,
+    getDiscount,
+    getDiscountByCode,
     newDiscount,
     updateDiscount,
     deleteDiscount,
-    getDiscount,
+    getMarketings,
+    updateMarketing,
   };
 }

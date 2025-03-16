@@ -20,6 +20,9 @@
                         <th class="text-left">
                             Rabattname
                         </th>
+                        <th class="text-left">
+                            Marketing Code
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +31,7 @@
                         <td>{{ item.id }}</td>
                         <td class="text-right">{{ item.percentage }}</td>
                         <td class="text-left">{{ item.name }}</td>
+                        <td class="text-left">{{ item.code }}</td>
                     </tr>
                 </tbody>
             </v-table>

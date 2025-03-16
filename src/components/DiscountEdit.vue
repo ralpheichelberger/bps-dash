@@ -22,8 +22,9 @@
             <v-text-field id="discount-price" v-model.number="discount.percentage" label="Prozent" type="number"
                 required />
             <v-text-field id="discount-name" v-model="discount.name" label="Rabattname" required />
+            <v-text-field id="discount-code" v-model="discount.code" label="Marketing Code" />
             <v-textarea id="discount-userinfo" label="Kundeninformation" auto-grow v-model="discount.userinfo" />
-            <v-text-field id="discount-info" v-model="discount.valid" label="Info" />
+            <v-text-field id="discount-info" v-model="discount.info" label="Info" />
         </v-card-text>
     </v-card>
 

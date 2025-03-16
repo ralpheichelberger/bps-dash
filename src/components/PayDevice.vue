@@ -43,10 +43,11 @@
     </div>
     <div v-if="deviceInfo" class="price">
       Preis: EUR
-      {{ cent2euro(deviceInfo.userprice) }} 
+      {{ cent2euro(deviceInfo.userprice) }}
       {{ deviceInfo.type == "dryer" ? "/ " + deviceInfo.dryer_units + " min" : "" }}
       <br />
-      <span v-if="user" style="text-decoration: line-through; font-size: smaller; ">Normalpreis: {{ cent2euro(deviceInfo.price) }}
+      <span v-if="deviceInfo.price>deviceInfo.userprice" style="text-decoration: line-through; font-size: smaller; ">Normalpreis: {{
+        cent2euro(deviceInfo.price) }}
         <v-icon icon="mdi-information" @click="showDiscounts"></v-icon></span>
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
@@ -171,6 +172,7 @@ import { usePayment } from "../composables/usePayment";
 import TopUp from "./TopUp.vue";
 import { useUser } from "../composables/useUser";
 import { useLongPress } from "../composables/useLongPress";
+import { useDiscount } from "../composables/useDiscount";
 
 const APP_VERSION = window.APP_VERSION ? window.APP_VERSION : "0.0.0";
 const { startPress, cancelPress } = useLongPress();
@@ -178,6 +180,7 @@ const snackbar = ref({ color: "success", text: "gespeichert", show: false });
 const infoModal = ref(false);
 const discountModal = ref(false);
 const user = ref(null);
+const marketing = ref(null);
 const topUpDialog = ref(false);
 const errorDetail = ref("");
 const errorMessage = ref("");
@@ -187,6 +190,7 @@ const { cent2euro } = useAPI();
 const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, payment } = usePayment();
+const { getMarketings, updateMarketing } = useDiscount();
 
 const payPalButtonVisible = computed(() => {
   if (!deviceInfo.value) {
@@ -237,6 +241,31 @@ function updateListHeight() {
   if (window.innerHeight > 650)
     windowInnerHeight.value = window.innerHeight;
 }
+
+const uuid = localStorage.getItem('uuid');
+const props = defineProps(["deviceId"]);
+async function initialize() {
+  if (uuid) {
+    try {
+      const marketings = await getMarketings(uuid);
+      const eligibleMarketing = marketings.find(element => element.eligible > 0);
+      if (eligibleMarketing) {
+        marketing.value = eligibleMarketing;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  try {
+    await getDeviceInfo(props.deviceId,marketing.value ? marketing.value.code : null);
+  } catch (error) {
+    errorMessage.value = "Dieses Gerät ist leider nicht registriert";
+    errorDetail.value = error;
+  }
+}
+
+initialize();
 
 getUser()
   .then((dbUser) => {
@@ -293,11 +322,8 @@ const topUpCredit = (topAmount, details) => {
   });
   topUpDialog.value = false;
 };
-const props = defineProps(["deviceId"]);
-getDeviceInfo(props.deviceId).catch((error) => {
-  errorMessage.value = "Dieses Gerät ist leider nicht registriert";
-  errorDetail.value = error;
-});
+
+
 
 // Closes error dialog and redirects back to the homepage.
 const closeError = () => {
@@ -363,12 +389,17 @@ const payDeviceAndAllowStart = (source, details) => {
     details: details,
     detergent: detergent.value,
     softener: softener.value,
+    marketing_code: marketing.value ? marketing.value.code : null,
   };
   payment(paymentVariables).then(() => {
     if (user.value) {
       reloadUser(user);
     }
     payed.value = true;
+    if (marketing.value) {
+      marketing.value.eligible--;
+      updateMarketing(marketing.value);
+    }
     // {{ deviceDisplayName() }} <br /> NR. {{ deviceNr() }}
     // snackbar.value.text = `Die Zahlung war erfolgreich! ${deviceDisplayName()} NR. ${deviceNr()} ist freigeschalten`
     // snackbar.value.color = 'success'

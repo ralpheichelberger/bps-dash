@@ -12,6 +12,31 @@
     position: relative;
     overflow: hidden; 
 }
+
+
+.bcard {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 0px 0px;
+    border-radius: .3rem;
+    background-color: rgba(32, 32, 32, 0.6);
+    box-shadow: 0px 5px 10px 3px rgba(72, 72, 72, 0.5);
+    color: white;
+}
+
+.user {
+    grid-row: 1 span 2;
+    grid-column: span 2;
+    grid-template-columns: 1fr 1fr .6fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "userName text balance"
+        "card-id topUpButton topUpButton";
+}
+
+
+
+
 /* 
 .bubble {
     position: absolute;

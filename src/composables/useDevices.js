@@ -32,7 +32,7 @@ export function useDevices() {
     }
 
     const deviceInfo = ref(null);
-    const getDeviceInfo = async (deviceId) => {
+    const getDeviceInfo = async (deviceId,code) => {
         if (!deviceId) {
             throw new Error("No deviceId set");
         }
@@ -45,7 +45,7 @@ export function useDevices() {
                     reject(new Error("Error fetching device info: " + error));
                 } else {
                     const deviceData = data;
-                    api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, (error, data) => {
+                    api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, {marketingCode:code}, (error, data) => {
                         if (error) {
                             reject(new Error("Error fetching device info: " + error));
                         } else {
