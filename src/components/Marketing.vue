@@ -1,7 +1,7 @@
 <template>
   <div class="bubble_style">
     <img src="@/assets/bubblepoint.png" width="100%" />
-    <v-dialog v-model="showDialog" max-width="400">
+    <v-dialog v-model="showDialog" max-width="400" @afterLeave="goToHome">
       <v-card>
         <v-card-title style="text-align: center;">Dein Rabatt Coupon</v-card-title>
         <v-card-text>
@@ -12,7 +12,8 @@
           <p>✅ QR-Code an der entsprechenden Maschine scannen und URL im Browser öffnen</p>
           <p>✅ Rabatt wird automatisch angewendet – keine Eingabe nötig!</p>
           <p>✅ Waschen & sparen in einem Schritt!</p>
-          <v-alert style="margin-top:1rem" :type="marketing.eligible>0?'success':'warning'">{{ couponCode }}</v-alert>
+          <v-alert style="margin-top:1rem" :type="marketing.eligible > 0 ? 'success' : 'warning'">{{ couponCode
+            }}</v-alert>
           <br />
           <p style="font-size: x-small;">*Nur ein Rabatt pro Kunde einlösbar. Nicht mit anderen Aktionen kombinierbar.
           </p>
@@ -51,6 +52,13 @@ marketing.value = {
   uuid: uuid ? uuid : uuidv4(),
   eligible: DEFAULT_ELIGABLE_CNT,
 };
+const createNewMarketingLog = () => {
+  localStorage.setItem("uuid", marketing.value.uuid)
+  saveMarketing(marketing.value)
+  couponCode.value = marketing.value.code;
+  showDialog.value = true;
+}
+
 onMounted(() => {
 
   const init = async () => {
@@ -63,21 +71,18 @@ onMounted(() => {
         updateMarketing(marketing.value)
       }).catch((err) => {
         if (String(err).includes("Not Found")) {
-          localStorage.setItem("uuid", marketing.value.uuid)
-          saveMarketing(marketing.value)
-          couponCode.value = marketing.value.code;
-          showDialog.value = true;
+          createNewMarketingLog()
         }
       })
     } else {
-      marketing = createNewMarketingLog()
+      createNewMarketingLog()
     }
     couponCode.value = marketing.value.code;
     getDiscountByCode(marketing.value.code).then((res) => {
       if (marketing.value.eligible > 0) {
-      couponCode.value = res.percentage + "% Rabatt - " + res.name;
+        couponCode.value = res.percentage + "% Rabatt - " + res.name;
       } else {
-        couponCode.value = "Bereits eingelöst: "+ res.percentage + "% Rabatt - " + res.name;
+        couponCode.value = "Bereits eingelöst: " + res.percentage + "% Rabatt - " + res.name;
       }
     })
     showDialog.value = true;
