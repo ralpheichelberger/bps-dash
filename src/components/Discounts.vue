@@ -23,6 +23,15 @@
                         <th class="text-left">
                             Marketing Code
                         </th>
+                        <th class="text-left">
+                            Locations
+                        </th>
+                        <th class="text-left">
+                            Von
+                        </th>
+                        <th class="text-left">
+                            Bis
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,13 +41,16 @@
                         <td class="text-right">{{ item.percentage }}</td>
                         <td class="text-left">{{ item.name }}</td>
                         <td class="text-left">{{ item.code }}</td>
+                        <td class="text-left">{{ locationList(item) }}</td>
+                        <td class="text-left">{{ toDate(item.from) }}</td>
+                        <td class="text-left">{{ toDate(item.to) }}</td>
                     </tr>
                 </tbody>
             </v-table>
         </v-card-text>
     </v-card>
     <v-dialog id="price-line-edit-dialog" v-model="discountEdit" max-width="800px">
-        <DiscountEdit :discount="discount" :update="update" @close="discountEdit = false" @save="saveChanges"
+        <DiscountEdit :discount="discount" :locations="locations" :update="update" @close="discountEdit = false" @save="saveChanges"
             @delete="deleteItem" />
     </v-dialog>
     <v-snackbar v-model="snackbar.show" :color="snackbar.color">
@@ -47,12 +59,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useDiscount } from '../composables/useDiscount';
 const { discounts, getDiscounts, updateDiscount, deleteDiscount, newDiscount } = useDiscount()
 const discount = ref(null)
 const discountEdit = ref(false)
 const update = ref(false)
+
+const props = defineProps({
+    locations: {
+        type: Array,
+        default: () => [],
+    },
+})
+
 // Simple snackbar state to display feedback
 const snackbar = ref({
     show: false,
@@ -112,5 +132,16 @@ const saveChanges = () => {
         snackbar.value.show = true
     }
 }
-
+const locationList = (item) => {
+    if (item.locations) {
+        return item.locations.join(', ')
+    }
+    return 'All'
+}
+const toDate = (timestamp) => {
+    if (timestamp) {
+        return new Date(timestamp).toISOString().split('T')[0]
+    }
+    return ''
+}
 </script>

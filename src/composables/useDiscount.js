@@ -35,7 +35,7 @@ export function useDiscount() {
     return new Promise((resolve, reject) => {
       api.updateDiscount(discount, (error, data) => {
         if (error) {
-          reject(new Error("Error updating discount: " + error));
+          reject(error);
         } else {
           resolve(data);
         }
@@ -46,7 +46,7 @@ export function useDiscount() {
     return new Promise((resolve, reject) => {
       api.deleteDiscount(discount.id, (error, data) => {
         if (error) {
-          reject(new Error("Error deleting discount: " + error));
+          reject(error);
         } else {
           resolve(data);
         }
@@ -57,7 +57,7 @@ export function useDiscount() {
     return new Promise((resolve, reject) => {
       api.getDiscount(id, (error, data) => {
         if (error) {
-          reject(new Error("Error fetching discount: " + error));
+          reject(error);
         } else {
           resolve(data);
         }
@@ -69,7 +69,7 @@ export function useDiscount() {
     return new Promise((resolve, reject) => {
       api.getDiscountByCode(code, (error, data) => {
         if (error) {
-          reject(new Error("Error fetching discount: " + error));
+          reject(error);
         } else {
           resolve(data);
         }
@@ -81,7 +81,7 @@ export function useDiscount() {
     return new Promise((resolve, reject) => {
       api.getMarketings(uuid, (error, data) => {
         if (error) {
-          reject(new Error("Error fetching marketing code: " + error));
+          reject(error);
         } else {
           resolve(data)
         }

@@ -19,7 +19,7 @@
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="discounts">
-                        <Discounts></Discounts>
+                        <Discounts :locations="locations"></Discounts>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="locations">

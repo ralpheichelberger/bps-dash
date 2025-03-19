@@ -1,7 +1,7 @@
 <template>
   <div class="bubble_style">
     <img src="@/assets/bubblepoint.png" width="100%" />
-    <v-dialog v-model="showDialog" max-width="400" @afterLeave="goToHome">
+    <v-dialog v-if="couponCode" v-model="showDialog" max-width="400" @afterLeave="goToHome">
       <v-card>
         <v-card-title style="text-align: center;">Dein Rabatt Coupon</v-card-title>
         <v-card-text>
@@ -84,6 +84,9 @@ onMounted(() => {
       } else {
         couponCode.value = "Bereits eingelöst: " + res.percentage + "% Rabatt - " + res.name;
       }
+    }).catch((err) => {
+      couponCode.value=""
+      goToHome()
     })
     showDialog.value = true;
   }

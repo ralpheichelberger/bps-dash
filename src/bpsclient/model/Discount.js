@@ -69,6 +69,15 @@ class Discount {
             if (data.hasOwnProperty('code')) {
                 obj['code'] = ApiClient.convertToType(data['code'], 'String');
             }
+            if (data.hasOwnProperty('locations')) {
+                obj['locations'] = ApiClient.convertToType(data['locations'], ['String']);
+            }
+            if (data.hasOwnProperty('from')) {
+                obj['from'] = ApiClient.convertToType(data['from'], 'Number');
+            }
+            if (data.hasOwnProperty('to')) {
+                obj['to'] = ApiClient.convertToType(data['to'], 'Number');
+            }
             if (data.hasOwnProperty('userinfo')) {
                 obj['userinfo'] = ApiClient.convertToType(data['userinfo'], 'String');
             }
@@ -102,6 +111,10 @@ class Discount {
         // ensure the json data is a string
         if (data['code'] && !(typeof data['code'] === 'string' || data['code'] instanceof String)) {
             throw new Error("Expected the field `code` to be a primitive type in the JSON string but got " + data['code']);
+        }
+        // ensure the json data is an array
+        if (!Array.isArray(data['locations'])) {
+            throw new Error("Expected the field `locations` to be an array in the JSON data but got " + data['locations']);
         }
         // ensure the json data is a string
         if (data['userinfo'] && !(typeof data['userinfo'] === 'string' || data['userinfo'] instanceof String)) {
@@ -142,6 +155,24 @@ Discount.prototype['name'] = undefined;
  * @member {String} code
  */
 Discount.prototype['code'] = undefined;
+
+/**
+ * list of locations where the discount is valid
+ * @member {Array.<String>} locations
+ */
+Discount.prototype['locations'] = undefined;
+
+/**
+ * start date of the discount
+ * @member {Number} from
+ */
+Discount.prototype['from'] = undefined;
+
+/**
+ * end date of the discount
+ * @member {Number} to
+ */
+Discount.prototype['to'] = undefined;
 
 /**
  * information about the discount for the user
