@@ -29,7 +29,7 @@
 
 <script setup>
 const DEFAULT_ELIGABLE_CNT = 1;
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAPI } from "../composables/useAPI.js"
 import { v4 as uuidv4 } from 'uuid';
