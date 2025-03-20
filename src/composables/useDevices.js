@@ -6,7 +6,7 @@ const { api } = useAuth();
 export function useDevices() {
 
     const devices = ref(null);
-    const getDevices = async (location,from_time) => {
+    const getDevices = async (location, from_time) => {
         return new Promise((resolve, reject) => {
             api.getDevices({ location: location, from: from_time }, (error, data) => {
                 if (error) {
@@ -32,7 +32,7 @@ export function useDevices() {
     }
 
     const deviceInfo = ref(null);
-    const getDeviceInfo = async (deviceId,code) => {
+    const getDeviceInfo = async (deviceId, code) => {
         if (!deviceId) {
             throw new Error("No deviceId set");
         }
@@ -45,7 +45,7 @@ export function useDevices() {
                     reject(new Error("Error fetching device info: " + error));
                 } else {
                     const deviceData = data;
-                    api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, {marketingCode:code}, (error, data) => {
+                    api.getDeviceInfo(deviceData.location, deviceData.typ, deviceData.nr, { marketingCode: code }, (error, data) => {
                         if (error) {
                             reject(new Error("Error fetching device info: " + error));
                         } else {
@@ -147,6 +147,38 @@ export function useDevices() {
         return locationTypDevices;
     }
 
+
+    const setDeviceOutOfOrder = (deviceId) => {
+        return new Promise((resolve, reject) => {
+            const req = {
+                id: deviceId,
+                out_of_order: true
+            }
+            api.deviceOutOfOrder(req, (error, data) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+    const setDeviceAvailable = (deviceId) => {
+        return new Promise((resolve, reject) => {
+            const req = {
+                id: deviceId,
+                out_of_order: false
+            }
+            api.deviceOutOfOrder(req, (error, data) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
     return {
         devices,
         deviceInfo,
@@ -157,6 +189,8 @@ export function useDevices() {
         getLocationTypDevices,
         updateDevice,
         newDevice,
+        setDeviceAvailable,
+        setDeviceOutOfOrder,
     };
 }
 

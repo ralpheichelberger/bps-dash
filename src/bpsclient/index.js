@@ -16,6 +16,7 @@ import ApiClient from './ApiClient';
 import CreditJournal from './model/CreditJournal';
 import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
+import DeviceOutOfOrderRequest from './model/DeviceOutOfOrderRequest';
 import DeviceRawLog from './model/DeviceRawLog';
 import DeviceState from './model/DeviceState';
 import DeviceType from './model/DeviceType';
@@ -104,6 +105,12 @@ export {
      * @property {module:model/DeviceInfo}
      */
     DeviceInfo,
+
+    /**
+     * The DeviceOutOfOrderRequest model constructor.
+     * @property {module:model/DeviceOutOfOrderRequest}
+     */
+    DeviceOutOfOrderRequest,
 
     /**
      * The DeviceRawLog model constructor.

@@ -5,10 +5,14 @@
 			<v-spacer></v-spacer>
 			<v-btn id="delete" color="error" :disabled="!update" text="Delete" variant="plain"
 				@click="emit('delete-device')"></v-btn>
-			<!-- <v-btn id="close" text="Close" variant="plain" @click="dialog = false"></v-btn> -->
+			<v-btn id="outoforder" :text="deviceActive ? 'disable' : 'activate'" variant="plain"
+				@click="setOutOfOrder"></v-btn>
 			<v-btn id="save" color="primary" text="Save" variant="tonal" @click="saveChanges"></v-btn>
 		</v-card-actions>
 		<v-card-title>
+			<span v-if="!deviceActive" style="color:red">
+				OUT OF ORDER
+			</span>
 			<v-row dense>
 				<v-combobox id="device_type" v-model="device.typ" :items="deviceTypes" label="Device type" required
 					hide-details>
@@ -22,7 +26,8 @@
 						:items="locationItems" @update:modelValue="fetchLocationDevices"></v-select>
 				</v-col>
 				<v-col cols="12">
-					<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="!update" label="Device ID" required>
+					<v-text-field id="device-id" type="number" v-model.number="device.id" :disabled="!update"
+						label="Device ID" required>
 					</v-text-field>
 				</v-col>
 				<v-col cols="12">
@@ -93,9 +98,39 @@ import { ref, watch, computed } from 'vue'
 import * as bps from '../bpsclient';
 import { useDevices } from '@/composables/useDevices';
 import { useAPI } from '@/composables/useAPI';
-
+import { de } from 'vuetify/locale';
 const { priceLines, getPriceLines } = useAPI()
-const { devices, getDevices, updateDevice, newDevice } = useDevices()
+const { devices, getDevices, updateDevice, newDevice,
+	deviceInfo, getDeviceInfo, setDeviceOutOfOrder, setDeviceAvailable } = useDevices()
+const deviceActive = ref(true)
+const setOutOfOrder = () => {
+	if (confirm('Are you sure you want to set this device ' + (deviceActive.value ? 'out of order?' : 'active?'))) {
+		if (deviceActive.value) {
+			setDeviceOutOfOrder(props.device.id).then(() => {
+				updateDeviceInfo()
+				snackbar.value.text = `Device ${props.device.nr} set out of order`
+				snackbar.value.color = 'success'
+				snackbar.value.show = true
+			}).catch((error) => {
+				snackbar.value.text = error || 'An error occurred while setting the device out of order'
+				snackbar.value.color = 'error'
+				snackbar.value.show = true
+			});
+		} else {
+			setDeviceAvailable(props.device.id).then(() => {
+				updateDeviceInfo()
+				snackbar.value.text = `Device ${props.device.nr} set active`
+				snackbar.value.color = 'success'
+				snackbar.value.show = true
+			}).catch((error) => {
+				snackbar.value.text = error || 'An error occurred while setting the device active'
+				snackbar.value.color = 'error'
+				snackbar.value.show = true
+			});
+		}
+	}
+}
+
 getPriceLines()
 const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
 const props = defineProps({
@@ -104,6 +139,12 @@ const props = defineProps({
 	deviceTypes: Array,
 	update: Boolean,
 })
+const updateDeviceInfo = () => {
+	getDeviceInfo(props.device.id).then(() => {
+		deviceActive.value = deviceInfo.value.state != 'outoforder'
+	})
+}
+updateDeviceInfo()
 const update_pump_relays = () => {
 	if (props.device.detergent.nr === 0) {
 		props.device.detergent.nr = props.device.nr
@@ -112,7 +153,7 @@ const update_pump_relays = () => {
 		props.device.softener.nr = props.device.nr
 	}
 }
-const emit = defineEmits(['reload', 'close','delete-device'])
+const emit = defineEmits(['reload', 'close', 'delete-device'])
 
 const locationItems = ref([])
 props.locations.forEach(element => {

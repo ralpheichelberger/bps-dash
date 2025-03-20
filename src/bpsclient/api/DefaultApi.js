@@ -16,6 +16,7 @@ import ApiClient from "../ApiClient";
 import CreditJournal from '../model/CreditJournal';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
+import DeviceOutOfOrderRequest from '../model/DeviceOutOfOrderRequest';
 import DeviceRawLog from '../model/DeviceRawLog';
 import DeviceType from '../model/DeviceType';
 import DeviceUpdateLastPingRequest from '../model/DeviceUpdateLastPingRequest';
@@ -237,6 +238,47 @@ export default class DefaultApi {
       let returnType = Status;
       return this.apiClient.callApi(
         '/price_line', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the deviceOutOfOrder operation.
+     * @callback module:api/DefaultApi~deviceOutOfOrderCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Marks a device as out of order
+     * @param {module:model/DeviceOutOfOrderRequest} deviceOutOfOrderRequest 
+     * @param {module:api/DefaultApi~deviceOutOfOrderCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deviceOutOfOrder(deviceOutOfOrderRequest, callback) {
+      let postBody = deviceOutOfOrderRequest;
+      // verify the required parameter 'deviceOutOfOrderRequest' is set
+      if (deviceOutOfOrderRequest === undefined || deviceOutOfOrderRequest === null) {
+        throw new Error("Missing the required parameter 'deviceOutOfOrderRequest' when calling deviceOutOfOrder");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/device_out_of_order', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
