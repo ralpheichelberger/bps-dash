@@ -15,9 +15,13 @@ import Home2 from './Home2.vue';
 
 const routes = [
     { path: '/B/:id?', name: 'User', component: User, props: true },
+    { path: '/b/:id?', name: 'User', component: User, props: true },
     { path: '/P/:deviceId', name: 'PayDevice', component: PayDevice , props: true},
+    { path: '/p/:deviceId', name: 'PayDevice', component: PayDevice , props: true},
     { path: '/M/:code', name: 'Marketing', component: Marketing , props: true},
+    { path: '/m/:code', name: 'Marketing', component: Marketing , props: true},
     { path: '/admin', name: 'Admin', component: Admin },
+    { path: '/Admin', name: 'Admin', component: Admin },
     // { path: '/t', name: 'AdminTree', component: AdminTree }, // TODO new admin
     { path: '/', name: 'Home', component: Home },
     { path: '/manual/all.png', name: 'Home2', component: Home2 },
