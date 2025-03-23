@@ -14,25 +14,25 @@
 import ApiClient from '../ApiClient';
 
 /**
- * The User model module.
- * @module model/User
+ * The Customer model module.
+ * @module model/Customer
  * @version 0.1.0
  */
-class User {
+class Customer {
     /**
-     * Constructs a new <code>User</code>.
-     * @alias module:model/User
-     * @param typ {module:model/User.TypEnum} 
+     * Constructs a new <code>Customer</code>.
+     * @alias module:model/Customer
+     * @param typ {module:model/Customer.TypEnum} 
      * @param id {String} 
      * @param name {String} 
      * @param active {Boolean} 
      * @param credit {Number} credit amout in euro cent
      * @param token {String} token for the password
-     * @param prefs {Object} preferences of the user
+     * @param prefs {Object} preferences of the customer
      */
     constructor(typ, id, name, active, credit, token, prefs) { 
         
-        User.initialize(this, typ, id, name, active, credit, token, prefs);
+        Customer.initialize(this, typ, id, name, active, credit, token, prefs);
     }
 
     /**
@@ -51,15 +51,15 @@ class User {
     }
 
     /**
-     * Constructs a <code>User</code> from a plain JavaScript object, optionally creating a new instance.
+     * Constructs a <code>Customer</code> from a plain JavaScript object, optionally creating a new instance.
      * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @param {module:model/User} obj Optional instance to populate.
-     * @return {module:model/User} The populated <code>User</code> instance.
+     * @param {module:model/Customer} obj Optional instance to populate.
+     * @return {module:model/Customer} The populated <code>Customer</code> instance.
      */
     static constructFromObject(data, obj) {
         if (data) {
-            obj = obj || new User();
+            obj = obj || new Customer();
 
             if (data.hasOwnProperty('typ')) {
                 obj['typ'] = ApiClient.convertToType(data['typ'], 'String');
@@ -87,13 +87,13 @@ class User {
     }
 
     /**
-     * Validates the JSON data with respect to <code>User</code>.
+     * Validates the JSON data with respect to <code>Customer</code>.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>User</code>.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>Customer</code>.
      */
     static validateJSON(data) {
         // check to make sure all required properties are present in the JSON string
-        for (const property of User.RequiredProperties) {
+        for (const property of Customer.RequiredProperties) {
             if (!data.hasOwnProperty(property)) {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
@@ -121,45 +121,45 @@ class User {
 
 }
 
-User.RequiredProperties = ["typ", "id", "name", "active", "credit", "token", "prefs"];
+Customer.RequiredProperties = ["typ", "id", "name", "active", "credit", "token", "prefs"];
 
 /**
- * @member {module:model/User.TypEnum} typ
+ * @member {module:model/Customer.TypEnum} typ
  */
-User.prototype['typ'] = undefined;
+Customer.prototype['typ'] = undefined;
 
 /**
  * @member {String} id
  */
-User.prototype['id'] = undefined;
+Customer.prototype['id'] = undefined;
 
 /**
  * @member {String} name
  */
-User.prototype['name'] = undefined;
+Customer.prototype['name'] = undefined;
 
 /**
  * @member {Boolean} active
  */
-User.prototype['active'] = undefined;
+Customer.prototype['active'] = undefined;
 
 /**
  * credit amout in euro cent
  * @member {Number} credit
  */
-User.prototype['credit'] = undefined;
+Customer.prototype['credit'] = undefined;
 
 /**
  * token for the password
  * @member {String} token
  */
-User.prototype['token'] = undefined;
+Customer.prototype['token'] = undefined;
 
 /**
- * preferences of the user
+ * preferences of the customer
  * @member {Object} prefs
  */
-User.prototype['prefs'] = undefined;
+Customer.prototype['prefs'] = undefined;
 
 
 
@@ -170,7 +170,7 @@ User.prototype['prefs'] = undefined;
  * @enum {String}
  * @readonly
  */
-User['TypEnum'] = {
+Customer['TypEnum'] = {
 
     /**
      * value: "admin"
@@ -179,10 +179,10 @@ User['TypEnum'] = {
     "admin": "admin",
 
     /**
-     * value: "user"
+     * value: "customer"
      * @const
      */
-    "user": "user",
+    "customer": "customer",
 
     /**
      * value: "staff"
@@ -199,5 +199,5 @@ User['TypEnum'] = {
 
 
 
-export default User;
+export default Customer;
 

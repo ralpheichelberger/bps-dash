@@ -111,7 +111,7 @@ export function useAPI() {
 
   const uploadModuleProgramm = async (moduleProgramm) => {
     return new Promise((resolve, reject) => {
-      api.moduleProgramm(moduleProgramm.typ, moduleProgramm.version, moduleProgramm.file, moduleProgramm.checksum, (error, data) => {
+      api.moduleProgramm(moduleProgramm.typ, moduleProgramm.version, moduleProgramm.file, moduleProgramm.checksum, {info:moduleProgramm.info}, (error, data) => {
         if (error) {
           reject(new Error("Error uploading module programm: " + error));
         } else {
@@ -121,11 +121,47 @@ export function useAPI() {
     });
   }
 
+  const programms = ref([]);
+  const getModuleProgramms = async () => {
+    return new Promise((resolve, reject) => {
+      api.getModuleProgramms((error, data) => {
+        if (error) {
+          reject(new Error("Error fetching module programms: " + error));
+        } else {
+          programms.value = data;
+          resolve(data);
+        }
+      });
+    });
+  }
+  const getModuleProgramm = async (typ, version) => {
+    return new Promise((resolve, reject) => {
+      api.getModuleProgramm(typ, version, (error, data) => {
+        if (error) {
+          reject(new Error("Error fetching module programm: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
 
+  const deleteModuleProgramm = async (checksum) => {
+    return new Promise((resolve, reject) => {
+      api.deleteModuleProgramm(checksum, (error, data) => {
+        if (error) {
+          reject(new Error("Error deleting module programm: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
 
   return {
     locations,
     priceLines,
+    programms,
     newPriceLine,
     getLocations,
     getPriceLines,
@@ -133,6 +169,8 @@ export function useAPI() {
     deletePriceLine,
     cent2euro,
     uploadModuleProgramm,
+    getModuleProgramms,
+    deleteModuleProgramm,
     saveMarketing,
     updateMarketing,
     getMarketing,

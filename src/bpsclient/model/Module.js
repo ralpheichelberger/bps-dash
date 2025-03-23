@@ -177,37 +177,37 @@ Module['UpdatestatusEnum'] = {
      * value: "outdated"
      * @const
      */
-    "outdated": "outdated",
+    "ModuleUpdateStatusOutdated": "outdated",
 
     /**
      * value: "start"
      * @const
      */
-    "start": "start",
+    "ModuleUpdateStatusStart": "start",
 
     /**
      * value: "error"
      * @const
      */
-    "error": "error",
+    "ModuleUpdateStatusError": "error",
 
     /**
      * value: "testing"
      * @const
      */
-    "testing": "testing",
+    "ModuleUpdateStatusTesting": "testing",
 
     /**
      * value: "inprogress"
      * @const
      */
-    "inprogress": "inprogress",
+    "ModuleUpdateStatusInProgress": "inprogress",
 
     /**
      * value: "done"
      * @const
      */
-    "done": "done"
+    "ModuleUpdateStatusDone": "done"
 };
 
 

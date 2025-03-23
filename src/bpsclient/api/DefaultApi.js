@@ -14,6 +14,7 @@
 
 import ApiClient from "../ApiClient";
 import CreditJournal from '../model/CreditJournal';
+import DbModuleProgramm from '../model/DbModuleProgramm';
 import Device from '../model/Device';
 import DeviceInfo from '../model/DeviceInfo';
 import DeviceOutOfOrderRequest from '../model/DeviceOutOfOrderRequest';
@@ -196,6 +197,48 @@ export default class DefaultApi {
       let returnType = Status;
       return this.apiClient.callApi(
         '/discount', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the deleteModuleProgramm operation.
+     * @callback module:api/DefaultApi~deleteModuleProgrammCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Deletes a module programm
+     * @param {String} checksum The checksum of the binary
+     * @param {module:api/DefaultApi~deleteModuleProgrammCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    deleteModuleProgramm(checksum, callback) {
+      let postBody = null;
+      // verify the required parameter 'checksum' is set
+      if (checksum === undefined || checksum === null) {
+        throw new Error("Missing the required parameter 'checksum' when calling deleteModuleProgramm");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'checksum': checksum
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/module_programm', 'DELETE',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -1199,14 +1242,14 @@ export default class DefaultApi {
      * Callback function to receive the result of the getModuleProgramms operation.
      * @callback module:api/DefaultApi~getModuleProgrammsCallback
      * @param {String} error Error message, if any.
-     * @param {Array.<module:model/ModuleProgramm>} data The data returned by the service call.
+     * @param {Array.<module:model/DbModuleProgramm>} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
      * Returns list of module programms
      * @param {module:api/DefaultApi~getModuleProgrammsCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link Array.<module:model/ModuleProgramm>}
+     * data is of type: {@link Array.<module:model/DbModuleProgramm>}
      */
     getModuleProgramms(callback) {
       let postBody = null;
@@ -1223,7 +1266,7 @@ export default class DefaultApi {
       let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = [ModuleProgramm];
+      let returnType = [DbModuleProgramm];
       return this.apiClient.callApi(
         '/module_programms', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -1542,10 +1585,13 @@ export default class DefaultApi {
      * @param {String} version 
      * @param {File} file 
      * @param {String} checksum 
+     * @param {Object} opts Optional parameters
+     * @param {String} [info] additional info
      * @param {module:api/DefaultApi~moduleProgrammCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/ModuleProgramm200Response}
      */
-    moduleProgramm(typ, version, file, checksum, callback) {
+    moduleProgramm(typ, version, file, checksum, opts, callback) {
+      opts = opts || {};
       let postBody = null;
       // verify the required parameter 'typ' is set
       if (typ === undefined || typ === null) {
@@ -1574,7 +1620,8 @@ export default class DefaultApi {
         'typ': typ,
         'version': version,
         'file': file,
-        'checksum': checksum
+        'checksum': checksum,
+        'info': opts['info']
       };
 
       let authNames = ['BearerAuth'];

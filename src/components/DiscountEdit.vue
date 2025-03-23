@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useDiscount } from '../composables/useDiscount.js'
 const props = defineProps({
     discount: {

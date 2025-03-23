@@ -14,19 +14,19 @@
 import ApiClient from '../ApiClient';
 
 /**
- * The GetUserByTokenRequest model module.
- * @module model/GetUserByTokenRequest
+ * The GetCustomerByTokenRequest model module.
+ * @module model/GetCustomerByTokenRequest
  * @version 0.1.0
  */
-class GetUserByTokenRequest {
+class GetCustomerByTokenRequest {
     /**
-     * Constructs a new <code>GetUserByTokenRequest</code>.
-     * @alias module:model/GetUserByTokenRequest
-     * @param token {String} The token of the user
+     * Constructs a new <code>GetCustomerByTokenRequest</code>.
+     * @alias module:model/GetCustomerByTokenRequest
+     * @param token {String} The token of the customer
      */
     constructor(token) { 
         
-        GetUserByTokenRequest.initialize(this, token);
+        GetCustomerByTokenRequest.initialize(this, token);
     }
 
     /**
@@ -39,15 +39,15 @@ class GetUserByTokenRequest {
     }
 
     /**
-     * Constructs a <code>GetUserByTokenRequest</code> from a plain JavaScript object, optionally creating a new instance.
+     * Constructs a <code>GetCustomerByTokenRequest</code> from a plain JavaScript object, optionally creating a new instance.
      * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @param {module:model/GetUserByTokenRequest} obj Optional instance to populate.
-     * @return {module:model/GetUserByTokenRequest} The populated <code>GetUserByTokenRequest</code> instance.
+     * @param {module:model/GetCustomerByTokenRequest} obj Optional instance to populate.
+     * @return {module:model/GetCustomerByTokenRequest} The populated <code>GetCustomerByTokenRequest</code> instance.
      */
     static constructFromObject(data, obj) {
         if (data) {
-            obj = obj || new GetUserByTokenRequest();
+            obj = obj || new GetCustomerByTokenRequest();
 
             if (data.hasOwnProperty('token')) {
                 obj['token'] = ApiClient.convertToType(data['token'], 'String');
@@ -57,13 +57,13 @@ class GetUserByTokenRequest {
     }
 
     /**
-     * Validates the JSON data with respect to <code>GetUserByTokenRequest</code>.
+     * Validates the JSON data with respect to <code>GetCustomerByTokenRequest</code>.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>GetUserByTokenRequest</code>.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>GetCustomerByTokenRequest</code>.
      */
     static validateJSON(data) {
         // check to make sure all required properties are present in the JSON string
-        for (const property of GetUserByTokenRequest.RequiredProperties) {
+        for (const property of GetCustomerByTokenRequest.RequiredProperties) {
             if (!data.hasOwnProperty(property)) {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
@@ -79,18 +79,18 @@ class GetUserByTokenRequest {
 
 }
 
-GetUserByTokenRequest.RequiredProperties = ["token"];
+GetCustomerByTokenRequest.RequiredProperties = ["token"];
 
 /**
- * The token of the user
+ * The token of the customer
  * @member {String} token
  */
-GetUserByTokenRequest.prototype['token'] = undefined;
+GetCustomerByTokenRequest.prototype['token'] = undefined;
 
 
 
 
 
 
-export default GetUserByTokenRequest;
+export default GetCustomerByTokenRequest;
 

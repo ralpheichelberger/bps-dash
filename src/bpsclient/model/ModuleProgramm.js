@@ -79,6 +79,9 @@ class ModuleProgramm {
             if (data.hasOwnProperty('verified')) {
                 obj['verified'] = ApiClient.convertToType(data['verified'], 'Boolean');
             }
+            if (data.hasOwnProperty('info')) {
+                obj['info'] = ApiClient.convertToType(data['info'], 'String');
+            }
         }
         return obj;
     }
@@ -106,6 +109,10 @@ class ModuleProgramm {
         // ensure the json data is a string
         if (data['checksum'] && !(typeof data['checksum'] === 'string' || data['checksum'] instanceof String)) {
             throw new Error("Expected the field `checksum` to be a primitive type in the JSON string but got " + data['checksum']);
+        }
+        // ensure the json data is a string
+        if (data['info'] && !(typeof data['info'] === 'string' || data['info'] instanceof String)) {
+            throw new Error("Expected the field `info` to be a primitive type in the JSON string but got " + data['info']);
         }
 
         return true;
@@ -155,6 +162,12 @@ ModuleProgramm.prototype['timestamp'] = undefined;
  * @member {Boolean} verified
  */
 ModuleProgramm.prototype['verified'] = undefined;
+
+/**
+ * additional info
+ * @member {String} info
+ */
+ModuleProgramm.prototype['info'] = undefined;
 
 
 

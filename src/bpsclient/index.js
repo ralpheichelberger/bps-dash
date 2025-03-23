@@ -14,6 +14,7 @@
 
 import ApiClient from './ApiClient';
 import CreditJournal from './model/CreditJournal';
+import DbModuleProgramm from './model/DbModuleProgramm';
 import Device from './model/Device';
 import DeviceInfo from './model/DeviceInfo';
 import DeviceOutOfOrderRequest from './model/DeviceOutOfOrderRequest';
@@ -93,6 +94,12 @@ export {
      * @property {module:model/CreditJournal}
      */
     CreditJournal,
+
+    /**
+     * The DbModuleProgramm model constructor.
+     * @property {module:model/DbModuleProgramm}
+     */
+    DbModuleProgramm,
 
     /**
      * The Device model constructor.
