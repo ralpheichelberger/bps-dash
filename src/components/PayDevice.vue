@@ -270,7 +270,6 @@ initialize();
 getUser()
   .then((dbUser) => {
     user.value = dbUser;
-    // console.log("user", user.value);
     reloadUser(user);
   })
   .catch((error) => {

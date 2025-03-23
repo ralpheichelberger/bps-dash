@@ -175,7 +175,7 @@ const saveChanges = () => {
 			snackbar.value.color = 'success'
 			snackbar.value.show = true
 		}).catch((error) => {
-			snackbar.value.text = error || 'An error occurred while saving the device'
+			snackbar.value.text = error.response?.body?.message || error || 'An error occurred while saving the device'
 			snackbar.value.color = 'error'
 			snackbar.value.show = true
 		});
@@ -185,7 +185,7 @@ const saveChanges = () => {
 			snackbar.value.color = 'success'
 			snackbar.value.show = true
 		}).catch((error) => {
-			snackbar.value.text = error || 'An error occurred while saving the device'
+			snackbar.value.text = error.response?.body?.message ||  error || 'An error occurred while saving the device'
 			snackbar.value.color = 'error'
 			snackbar.value.show = true
 		});

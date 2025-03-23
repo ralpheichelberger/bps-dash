@@ -140,7 +140,7 @@
     <v-card class="bubble_style">
       <v-card-title style="font-size: 5rem"> Sorry :( </v-card-title>
       <v-card-text style="font-size: x-large">
-        {{ errorMessage }}
+        <span class="errorMessage">{{ errorMessage }}</span>
         <br />Bitte wenden Sie sich an unseren Kundenservice!
         <br />
         <v-expansion-panels>
@@ -217,30 +217,36 @@ setTimeout(() => {
 const saveCustomer = () => {
   updateUser(customer.value);
 };
-getUser(props.id)
-  .then((dbUser) => {
-    localStorage.setItem("user", JSON.stringify(dbUser));
-    user.value = dbUser;
-    if (user.value) {
-      if (user.value.typ=='admin') getDiscounts();
-      payments(user.value.id)
+getUser(props.id).then((dbUser) => {
+  localStorage.setItem("user", JSON.stringify(dbUser));
+  user.value = dbUser;
+  if (user.value) {
+    if (user.value.typ == 'admin') getDiscounts().catch((error) => {
+      if (error.response && error.response.status == 401) {
+        errorUnauthorized();
+      }
+    });
+    payments(user.value.id)
       .then((data) => {
         userPayments.value = data;
       })
       .catch((error) => {
-        console.log(error);
         if (error.response && error.response.status == 401) {
           errorUnauthorized();
         }
       });
-    }
-  })
-  .catch((error) => {
-    if (error.response && error.response.status == 401) {
-      errorUnauthorized();
-    }
-  });
-  const errorUnauthorized = () => {
+  }
+}).catch((error) => {
+  if (error.response && error.response.status == 401) {
+    errorUnauthorized();
+  } else {
+    snackbar.value.text = error.response?.error?.message || error || "An error occurred while loading the user";
+    snackbar.value.color = "error";
+    errorMessage.value = "Fehler beim Laden des Kundenkontos.";
+    snackbar.value.show = true;
+  }
+});
+const errorUnauthorized = () => {
   localStorage.removeItem("user");
   errorDialog.value = true;
   errorMessage.value = "Kundenkonto gesperrt.";
@@ -285,7 +291,6 @@ const topUpCredit = (topAmount, details) => {
         userPayments.value = data;
       })
       .catch((error) => {
-        console.log(error);
         if (error.response && error.response.status == 401) {
           errorUnauthorized();
         }
@@ -340,4 +345,10 @@ const topUpCustomerCredit = () => {
 
 <style>
 @import "./User.css";
+
+.errorMessage {
+  color: red;
+  background-color: yellow;
+  font-size: 1.5rem;
+}
 </style>
