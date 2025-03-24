@@ -27,13 +27,13 @@
                     <v-btn @click="triggerSendUpdateCommand" color="">Trigger Update</v-btn>
                 </v-card-actions>
                 <v-card-title>Module Programms
+                    <v-icon @click="reload" class="btn btn-primary">mdi-reload</v-icon>
                     <v-btn style="float: right;" @click="newModuleProgramm">Neu</v-btn>
                 </v-card-title>
                 <v-card-subtitle>List of all uploaded module programms</v-card-subtitle>
                 <v-table>
                     <thead>
                         <tr>
-                            <th>Verified</th>
                             <th>Status</th>
                             <th>Type</th>
                             <th>Version</th>
@@ -42,17 +42,14 @@
                     </thead>
                     <tbody>
                         <tr v-for="item in programms" :key="item.id" @click="editUpload(item)">
-                            <td>
-                                <v-icon v-if="item.verified" color="green">mdi-check-circle</v-icon>
-                                <v-icon v-else color="red">mdi-close-circle</v-icon>
+                            <td :style="{ color: item.status === 'verified' ? 'green' : item.status === 'testing' ? 'orange' : 'red' }">
+                                {{ item.status.toUpperCase() }}
                             </td>
-                            <td>{{ item.status }}</td>
                             <td>{{ item.typ }}</td>
                             <td>{{ item.version }}</td>
                             <!-- <td>{{ item.checksum }}</td> -->
                         </tr>
                     </tbody>
-
                 </v-table>
             </v-card>
         </v-container>
@@ -81,8 +78,13 @@ import { ref } from 'vue';
 import { useAPI } from '@/composables/useAPI';
 const { programms, uploadModuleProgramm,
     getModuleProgramms, sendUpdateCommand, deleteModuleProgramm } = useAPI();
+    const reloading = ref(false);
 const reload = () => {
-    getModuleProgramms();
+    reloading.value = true;
+    setTimeout(() => {
+        getModuleProgramms();
+        reloading.value = false;
+    }, 300);
 };
 reload();
 const formData = ref({

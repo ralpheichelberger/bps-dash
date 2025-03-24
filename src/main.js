@@ -51,4 +51,4 @@ app.mount('#app');
 // }
 
 
-window.APP_VERSION = '0.9.0_250323T2038';
+window.APP_VERSION = '0.9.0_250324T2117';

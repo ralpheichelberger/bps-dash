@@ -3,7 +3,9 @@
     <v-card>
         <v-card-title :elevation="2">
             <v-sheet class="d-flex justify-space-between">
-                <v-app-bar-title>Preis Kategorien</v-app-bar-title>
+                <v-app-bar-title>Preis Kategorien
+                    <v-icon @click="reload" class="btn btn-primary">mdi-reload</v-icon>
+                </v-app-bar-title>
                 <v-btn @click="newItem" elevation="5">Neu</v-btn>
             </v-sheet>
         </v-card-title>
@@ -84,7 +86,7 @@ const reload = () => {
     getDiscounts()
     discountEdit.value = false
 }
-getDiscounts()
+reload()
 
 const newItem = () => {
     update.value = false
@@ -140,7 +142,7 @@ const locationList = (item) => {
 }
 const toDate = (timestamp) => {
     if (timestamp) {
-        return new Date(timestamp).toISOString().split('T')[0]
+        return new Date(timestamp*1000).toISOString().split('T')[0]
     }
     return ''
 }

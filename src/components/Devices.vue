@@ -143,7 +143,10 @@ const delDevice = (device) => {
 }
 
 const reload = () => {
-  getDevices(loc.value, from_time.value)
+  setTimeout(() => {
+    getDevices(loc.value, from_time.value)
+  }, 300)
+  // getDevices(loc.value, from_time.value)
   lastSort.value = ''
 }
 
