@@ -159,7 +159,7 @@ const triggerSendUpdateCommand = () => {
     if (!confirm('Do you want to trigger the update now?')) {
         return;
     }
-    const id_test_device = -9
+    const id_test_device = -9 // HARDCODED device id of test device -9 // TODO: get from device list
     sendUpdateCommand(id_test_device).then((response) => {
         snackbarMessage.value = response.message || 'Update command sent successfully!';
         snackbarColor.value = 'success';
