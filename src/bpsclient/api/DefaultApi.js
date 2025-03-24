@@ -1918,6 +1918,48 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the sendUpdateCommand operation.
+     * @callback module:api/DefaultApi~sendUpdateCommandCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * sends update command to the device
+     * @param {Number} id The ID of the device
+     * @param {module:api/DefaultApi~sendUpdateCommandCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    sendUpdateCommand(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling sendUpdateCommand");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/device_update_programm', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the testGet operation.
      * @callback module:api/DefaultApi~testGetCallback
      * @param {String} error Error message, if any.

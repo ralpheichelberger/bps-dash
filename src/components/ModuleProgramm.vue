@@ -1,9 +1,9 @@
 <template>
     <div>
         <v-container>
-            <v-dialog v-model="uploadDialog" >
-                <v-card>            
-                    <v-card-title>Upload Module Programm 
+            <v-dialog v-model="uploadDialog">
+                <v-card>
+                    <v-card-title>Upload Module Programm
                     </v-card-title>
                     <v-card-subtitle>upload will overwrite the binary with the same type <br /> and set it to status
                         'uploaded' and veryfied to 'false'</v-card-subtitle>
@@ -15,15 +15,17 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                    <v-btn @click="uploadDialog=false">close</v-btn>
+                        <v-btn @click="uploadDialog = false">close</v-btn>
                         <v-spacer></v-spacer>
                         <v-btn @click="deleteProgramm" color="">Delete</v-btn>
                         <v-btn @click="handleSubmit" color="">Upload</v-btn>
-                        <v-btn @click="triggerUpdate" color="">Trigger Update</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
             <v-card>
+                <v-card-actions>
+                    <v-btn @click="triggerSendUpdateCommand" color="">Trigger Update</v-btn>
+                </v-card-actions>
                 <v-card-title>Module Programms
                     <v-btn style="float: right;" @click="newModuleProgramm">Neu</v-btn>
                 </v-card-title>
@@ -58,13 +60,13 @@
             <v-card>
                 <v-card-title>Trigger Update for Type '{{ formData.typ }}'</v-card-title>
                 <v-card-text>
-                    
+
                 </v-card-text>
                 <v-card-actions>
                     <v-btn @click="triggerUpdateDialog = false" color="">Cancel</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn @click="triggerUpdateDialog = false" color="blue">Test</v-btn>
-                    <v-btn @click="triggerUpdateDialog = false" color="red">All Devices</v-btn>
+                    <v-btn @click="triggerSendUpdateCommand = false" color="blue">Test</v-btn>
+                    <v-btn @click="alert('notImplementedYet')" color="red">All Devices</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -77,7 +79,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useAPI } from '@/composables/useAPI';
-const { programms, uploadModuleProgramm, getModuleProgramms, deleteModuleProgramm } = useAPI();
+const { programms, uploadModuleProgramm,
+    getModuleProgramms, sendUpdateCommand, deleteModuleProgramm } = useAPI();
 const reload = () => {
     getModuleProgramms();
 };
@@ -127,6 +130,9 @@ const handleSubmit = async () => {
     uploadModuleProgramm(formData.value).then((response) => {
         snackbarMessage.value = response.message || 'Upload successful!';
         snackbarColor.value = 'success';
+        setTimeout(() => {
+            triggerSendUpdateCommand();
+        }, 1000);
     }).catch((error) => {
         snackbarMessage.value = 'An error occurred during upload.';
         snackbarColor.value = 'error';
@@ -148,6 +154,23 @@ const editUpload = (item) => {
 const triggerUpdate = () => {
     triggerUpdateDialog.value = true;
 }
+
+const triggerSendUpdateCommand = () => {
+    if (!confirm('Do you want to trigger the update now?')) {
+        return;
+    }
+    const id_test_device = -9
+    sendUpdateCommand(id_test_device).then((response) => {
+        snackbarMessage.value = response.message || 'Update command sent successfully!';
+        snackbarColor.value = 'success';
+    }).catch((error) => {
+        snackbarMessage.value = 'An error occurred during sending update command.';
+        snackbarColor.value = 'error';
+    }).finally(() => {
+        snackbar.value = true;
+    });
+};
+
 const deleteProgramm = () => {
     if (!confirm('Are you sure you want to delete this module programm?')) {
         return;

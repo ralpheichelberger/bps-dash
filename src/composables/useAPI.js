@@ -158,6 +158,18 @@ export function useAPI() {
     });
   }
 
+  const sendUpdateCommand = async (deviceid) => {
+    return new Promise((resolve, reject) => {
+      api.sendUpdateCommand(deviceid, (error, data) => {
+        if (error) {
+          reject(new Error("Error sending update command: " + error));
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
   return {
     locations,
     priceLines,
@@ -169,6 +181,7 @@ export function useAPI() {
     deletePriceLine,
     cent2euro,
     uploadModuleProgramm,
+    sendUpdateCommand,
     getModuleProgramms,
     deleteModuleProgramm,
     saveMarketing,
