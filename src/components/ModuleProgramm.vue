@@ -25,10 +25,11 @@
             <v-card>
                 <v-card-actions>
                     <v-btn @click="triggerSendUpdateCommand" color="">Trigger Update</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn style="float: right;" @click="newModuleProgramm">Neu</v-btn>
                 </v-card-actions>
                 <v-card-title>Module Programms
                     <v-icon @click="reload" class="btn btn-primary">mdi-reload</v-icon>
-                    <v-btn style="float: right;" @click="newModuleProgramm">Neu</v-btn>
                 </v-card-title>
                 <v-card-subtitle>List of all uploaded module programms</v-card-subtitle>
                 <v-table>
