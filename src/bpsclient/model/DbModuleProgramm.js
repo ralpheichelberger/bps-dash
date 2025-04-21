@@ -219,6 +219,24 @@ DbModuleProgramm['StatusEnum'] = {
     "ModuleProgrammStatusTesting": "testing",
 
     /**
+     * value: "testing_download"
+     * @const
+     */
+    "ModuleProgrammStatusTestingDownload": "testing_download",
+
+    /**
+     * value: "testing_mqtt"
+     * @const
+     */
+    "ModuleProgrammStatusTestingMQTT": "testing_mqtt",
+
+    /**
+     * value: "testing_mqtt_go"
+     * @const
+     */
+    "ModuleProgrammStatusTestingMQTTGo": "testing_mqtt_go",
+
+    /**
      * value: "verified"
      * @const
      */

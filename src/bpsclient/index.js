@@ -16,6 +16,7 @@ import ApiClient from './ApiClient';
 import CreditJournal from './model/CreditJournal';
 import DbModuleProgramm from './model/DbModuleProgramm';
 import Device from './model/Device';
+import DeviceData from './model/DeviceData';
 import DeviceInfo from './model/DeviceInfo';
 import DeviceOutOfOrderRequest from './model/DeviceOutOfOrderRequest';
 import DeviceRawLog from './model/DeviceRawLog';
@@ -24,6 +25,7 @@ import DeviceType from './model/DeviceType';
 import DeviceUpdateLastPingRequest from './model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from './model/DeviceUpdatePumpCountsRequest';
 import DeviceUpdateStatusRequest from './model/DeviceUpdateStatusRequest';
+import DevicesLastState from './model/DevicesLastState';
 import Discount from './model/Discount';
 import GetUserByTokenRequest from './model/GetUserByTokenRequest';
 import Location from './model/Location';
@@ -46,6 +48,7 @@ import TopupCreditRequest from './model/TopupCreditRequest';
 import TypDeviceLocations from './model/TypDeviceLocations';
 import TypDevices from './model/TypDevices';
 import UpdateModuleBinary404Response from './model/UpdateModuleBinary404Response';
+import UpdateModuleProgrammStatusRequest from './model/UpdateModuleProgrammStatusRequest';
 import User from './model/User';
 import WasherStatus from './model/WasherStatus';
 import DefaultApi from './api/DefaultApi';
@@ -108,6 +111,12 @@ export {
     Device,
 
     /**
+     * The DeviceData model constructor.
+     * @property {module:model/DeviceData}
+     */
+    DeviceData,
+
+    /**
      * The DeviceInfo model constructor.
      * @property {module:model/DeviceInfo}
      */
@@ -154,6 +163,12 @@ export {
      * @property {module:model/DeviceUpdateStatusRequest}
      */
     DeviceUpdateStatusRequest,
+
+    /**
+     * The DevicesLastState model constructor.
+     * @property {module:model/DevicesLastState}
+     */
+    DevicesLastState,
 
     /**
      * The Discount model constructor.
@@ -286,6 +301,12 @@ export {
      * @property {module:model/UpdateModuleBinary404Response}
      */
     UpdateModuleBinary404Response,
+
+    /**
+     * The UpdateModuleProgrammStatusRequest model constructor.
+     * @property {module:model/UpdateModuleProgrammStatusRequest}
+     */
+    UpdateModuleProgrammStatusRequest,
 
     /**
      * The User model constructor.

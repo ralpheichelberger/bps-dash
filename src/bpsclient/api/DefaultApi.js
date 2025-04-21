@@ -16,6 +16,7 @@ import ApiClient from "../ApiClient";
 import CreditJournal from '../model/CreditJournal';
 import DbModuleProgramm from '../model/DbModuleProgramm';
 import Device from '../model/Device';
+import DeviceData from '../model/DeviceData';
 import DeviceInfo from '../model/DeviceInfo';
 import DeviceOutOfOrderRequest from '../model/DeviceOutOfOrderRequest';
 import DeviceRawLog from '../model/DeviceRawLog';
@@ -23,6 +24,7 @@ import DeviceType from '../model/DeviceType';
 import DeviceUpdateLastPingRequest from '../model/DeviceUpdateLastPingRequest';
 import DeviceUpdatePumpCountsRequest from '../model/DeviceUpdatePumpCountsRequest';
 import DeviceUpdateStatusRequest from '../model/DeviceUpdateStatusRequest';
+import DevicesLastState from '../model/DevicesLastState';
 import Discount from '../model/Discount';
 import GetUserByTokenRequest from '../model/GetUserByTokenRequest';
 import Location from '../model/Location';
@@ -37,6 +39,7 @@ import Status from '../model/Status';
 import TopupCreditRequest from '../model/TopupCreditRequest';
 import TypDeviceLocations from '../model/TypDeviceLocations';
 import UpdateModuleBinary404Response from '../model/UpdateModuleBinary404Response';
+import UpdateModuleProgrammStatusRequest from '../model/UpdateModuleProgrammStatusRequest';
 import User from '../model/User';
 
 /**
@@ -902,6 +905,90 @@ export default class DefaultApi {
       let returnType = [Device];
       return this.apiClient.callApi(
         '/devices', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getDevicesData operation.
+     * @callback module:api/DefaultApi~getDevicesDataCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/DeviceData>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a list of devices data
+     * @param {String} location The shop location ID
+     * @param {module:api/DefaultApi~getDevicesDataCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<module:model/DeviceData>}
+     */
+    getDevicesData(location, callback) {
+      let postBody = null;
+      // verify the required parameter 'location' is set
+      if (location === undefined || location === null) {
+        throw new Error("Missing the required parameter 'location' when calling getDevicesData");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'location': location
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [DeviceData];
+      return this.apiClient.callApi(
+        '/devices_data', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the getDevicesLastState operation.
+     * @callback module:api/DefaultApi~getDevicesLastStateCallback
+     * @param {String} error Error message, if any.
+     * @param {Array.<module:model/DevicesLastState>} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns the last state of all devices
+     * @param {String} location The shop location ID
+     * @param {module:api/DefaultApi~getDevicesLastStateCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Array.<module:model/DevicesLastState>}
+     */
+    getDevicesLastState(location, callback) {
+      let postBody = null;
+      // verify the required parameter 'location' is set
+      if (location === undefined || location === null) {
+        throw new Error("Missing the required parameter 'location' when calling getDevicesLastState");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'location': location
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = [DevicesLastState];
+      return this.apiClient.callApi(
+        '/devices_last_state', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -1850,7 +1937,7 @@ export default class DefaultApi {
 
     /**
      * Adds a credit journal entry and updates the user's credit
-     * @param {module:model/Payment} payment 
+     * @param {Array.<module:model/Payment>} payment 
      * @param {module:api/DefaultApi~paymentCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Status}
      */
@@ -2190,6 +2277,47 @@ export default class DefaultApi {
       let returnType = File;
       return this.apiClient.callApi(
         '/update_module_binary', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the updateModuleProgrammStatus operation.
+     * @callback module:api/DefaultApi~updateModuleProgrammStatusCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Updates the status of a module programm
+     * @param {module:model/UpdateModuleProgrammStatusRequest} updateModuleProgrammStatusRequest 
+     * @param {module:api/DefaultApi~updateModuleProgrammStatusCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    updateModuleProgrammStatus(updateModuleProgrammStatusRequest, callback) {
+      let postBody = updateModuleProgrammStatusRequest;
+      // verify the required parameter 'updateModuleProgrammStatusRequest' is set
+      if (updateModuleProgrammStatusRequest === undefined || updateModuleProgrammStatusRequest === null) {
+        throw new Error("Missing the required parameter 'updateModuleProgrammStatusRequest' when calling updateModuleProgrammStatus");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/module_programm_status', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

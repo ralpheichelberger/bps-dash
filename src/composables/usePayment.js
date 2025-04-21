@@ -32,7 +32,7 @@ export function usePayment() {
             updateAuth(paymentBody.card_id);
         }
         return new Promise((resolve, reject) => {
-            api.payment(paymentBody, (error, data) => {
+            api.payment([paymentBody], (error, data) => {
                 if (error) {
                     reject(error)
                 } else {

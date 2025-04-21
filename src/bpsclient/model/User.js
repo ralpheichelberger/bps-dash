@@ -213,7 +213,13 @@ User['TypEnum'] = {
      * value: "anonymous"
      * @const
      */
-    "anonymous": "anonymous"
+    "anonymous": "anonymous",
+
+    /**
+     * value: "register"
+     * @const
+     */
+    "register": "register"
 };
 
 

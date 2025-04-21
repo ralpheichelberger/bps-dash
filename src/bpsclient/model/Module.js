@@ -174,6 +174,12 @@ Module.prototype['durations'] = undefined;
 Module['UpdatestatusEnum'] = {
 
     /**
+     * value: "testing"
+     * @const
+     */
+    "ModuleUpdateStatusTesting": "testing",
+
+    /**
      * value: "outdated"
      * @const
      */
@@ -190,12 +196,6 @@ Module['UpdatestatusEnum'] = {
      * @const
      */
     "ModuleUpdateStatusError": "error",
-
-    /**
-     * value: "testing"
-     * @const
-     */
-    "ModuleUpdateStatusTesting": "testing",
 
     /**
      * value: "inprogress"
