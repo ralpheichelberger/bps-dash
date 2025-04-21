@@ -7,11 +7,12 @@
 				@click="emit('delete-device')"></v-btn>
 			<v-btn id="outoforder" :text="deviceActive ? 'disable' : 'activate'" variant="plain"
 				@click="setOutOfOrder"></v-btn>
-				<v-btn id="save" color="primary" text="Save" variant="outlined" elevation="5" @click="saveChanges"></v-btn>
-</v-card-actions>
-			<v-card-actions>
-				<v-btn id="update" :color="updateColor(device.module.updatestatus)" :text="'Update Status: '+device.module.updatestatus" variant="plain" @click="updateFirmware"></v-btn>
-			</v-card-actions>
+			<v-btn id="save" color="primary" text="Save" variant="outlined" elevation="5" @click="saveChanges"></v-btn>
+		</v-card-actions>
+		<v-card-actions>
+			<v-btn id="update" :color="updateColor(device.module.updatestatus)"
+				:text="'Update Status: ' + device.module.updatestatus" variant="plain" @click="updateFirmware"></v-btn>
+		</v-card-actions>
 		<v-card-title>
 			<span v-if="!deviceActive" style="color:red">
 				OUT OF ORDER
@@ -102,7 +103,7 @@ import * as bps from '../bpsclient';
 import { useDevices } from '@/composables/useDevices';
 import { useAPI } from '@/composables/useAPI';
 import { de } from 'vuetify/locale';
-const { priceLines, getPriceLines ,sendUpdateCommand} = useAPI()
+const { priceLines, getPriceLines, sendUpdateCommand } = useAPI()
 
 const { devices, getDevices, updateDevice, newDevice,
 	deviceInfo, getDeviceInfo, setDeviceOutOfOrder, setDeviceAvailable } = useDevices()
@@ -119,7 +120,7 @@ const updateColor = (status) => {
 }
 const updateFirmware = () => {
 	if (confirm('Are you sure you want to update the firmware of this device?')) {
-		sendUpdateCommand(props.device.id).then(() => {
+		sendUpdateCommand(props.device.id, false).then(() => {
 			snackbar.value.text = `Device ${props.device.nr} firmware update started`
 			snackbar.value.color = 'success'
 			snackbar.value.show = true
@@ -215,7 +216,7 @@ const saveChanges = () => {
 			snackbar.value.color = 'success'
 			snackbar.value.show = true
 		}).catch((error) => {
-			snackbar.value.text = error.response?.body?.message ||  error || 'An error occurred while saving the device'
+			snackbar.value.text = error.response?.body?.message || error || 'An error occurred while saving the device'
 			snackbar.value.color = 'error'
 			snackbar.value.show = true
 		});

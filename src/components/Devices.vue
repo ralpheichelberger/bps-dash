@@ -1,24 +1,33 @@
 <template>
   <v-card>
-    <v-card-title :elevation="2">
-      <v-sheet class="d-flex justify-space-between">
-        <v-app-bar-title>Geräte
-          <v-icon @click="reload" class="btn btn-primary">mdi-reload</v-icon>
-        </v-app-bar-title>
-        <v-select id="loc" v-model="loc" label="Location" required :items="locationItems"
-          @update:modelValue="reload" </v-select>
-          <v-btn @click="createNewDevice" elevation="5">Neu</v-btn>
-      </v-sheet>
-    </v-card-title>
+    <!-- <v-card-title :elevation="2"> -->
+    <v-card-actions>
+
+      <v-icon @click="reload" class="btn btn-primary">mdi-reload</v-icon>
+      <v-select id="loc" v-model="loc" label="Location" required :items="locationItems" @update:modelValue="reload">
+      </v-select>
+      <v-btn style="margin:0 .2rem" :disabled="!loc" @click="updateDialog = true">Update </v-btn>
+      <v-btn @click="createNewDevice" elevation="5">Neu</v-btn>
+    </v-card-actions>
+    <!-- <v-sheet class="d-flex justify-space-between"> -->
+
+    <!-- </v-sheet> -->
+    <!-- </v-card-title> -->
     <v-card-text>
       <v-table density="compact">
         <thead>
           <tr>
-            <th class="text-left" >
+            <th class="text-left">
               Maschinen
             </th>
-            <th class="text-left"@click="sort('priceLine')">
+            <th class="text-left" @click="sort('priceLine')">
               Preiskategorie
+            </th>
+            <th class="text-left" >
+              Status
+            </th>
+            <th class="text-left" >
+              Update
             </th>
             <th class="text-left" @click="sort('id')">
               ID
@@ -30,6 +39,14 @@
             <tr @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
               <td>{{ deviceName(item) }}</td>
               <td>{{ item.priceLine }}</td>
+              <td :style="{ color: item.status.busy ? 'green' : item.status.allow_start ? 'orange' : 'lightblue' }">
+                {{ item.status.busy ? 'running' : item.status.allow_start ? 'paid' : 'free' }}
+              </td>
+              <td :style="{ color: item.module.updatestatus === 'done' ? 'green' : 
+                item.module.updatestatus === 'start' ? 'lightblue' :
+                item.module.updatestatus === 'inprogress' ? 'orange' : 'red'  }">
+                {{ item.module.updatestatus }}
+              </td>
               <td>{{ item.id }}</td>
             </tr>
             <!-- <tr>
@@ -44,23 +61,38 @@
 
     <v-container v-if="props.locations">
       <v-dialog id="washer-edit-dialog" v-model="deviceEdit" max-width="800px">
-        <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" 
-          @close="deviceEdit = false" :update="updateDevice" @reload="reload"
-          @delete-device="delDevice(device)" />
+        <DeviceEdit :device="device" :locations="locations" :deviceTypes="deviceTypes" @close="deviceEdit = false"
+          :update="updateDevice" @reload="reload" @delete-device="delDevice(device)" />
       </v-dialog>
     </v-container>
   </v-card>
+  <v-dialog id="updateDevicesDialog" v-model="updateDialog" max-width="400px">
+    <v-card>
+      <v-card-actions>
+        <v-text-field label="Typ" type="text" name="typ" v-model="devicetyp"></v-text-field>
+        <!-- <v-spacer></v-spacer> -->
+        <v-btn @click="updateDialog = false">Abbrechen</v-btn>
+        <v-btn style="margin: 0 .6rem" @click="updateLocationDevices">Starten</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-snackbar v-model="snackbar.show" :color="snackbar.color">
+    {{ snackbar.text }}
+  </v-snackbar>
 </template>
 
 <script setup>
 import { ref, watch, watchEffect } from 'vue'
 import DeviceEdit from './DeviceEdit.vue'
 import { useDevices } from '@/composables/useDevices';
+import { useAPI } from '@/composables/useAPI';
 import { Module } from "../bpsclient";
+import { fa } from 'vuetify/lib/locale/index.mjs';
 // import StateBar from './StateBar.vue';
-
+const { sendUpdateCommand } = useAPI()
 const { devices, getDevices, deleteDevice } = useDevices()
 const loc = ref(null)
+const devicetyp = ref(null)
 const props = defineProps({
   locations: Array,
   deviceTypes: Array,
@@ -72,9 +104,26 @@ const updateDevice = ref(false)
 const locationItems = ref([])
 const from_time = ref(Math.floor(Date.now() / 1000) - 12 * 60 * 60) // current unix time - 12h
 const deviceName = (item) => { return item?.location + " / " + item?.typ.charAt(0).toUpperCase() + " / " + item?.nr }
+const updateDialog = ref(false)
+const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
+
+const updateLocationDevices = () => {
+  if (loc.value) {
+    sendUpdateCommand(0, false, { location: loc.value, typ: devicetyp.value }).then(() => {
+      snackbar.value.text = `Devices ${loc.value} firmware update started`
+      snackbar.value.color = 'success'
+      snackbar.value.show = true
+    }).catch((error) => {
+      snackbar.value.text = error || 'An error occurred while initiating the update'
+      snackbar.value.color = 'error'
+      snackbar.value.show = true
+    });
+    updateDialog.value = false
+  }
+}
 const createNewDevice = () => {
   device.value = {
-    id:0,
+    id: 0,
     typ: "washer",
     nr: 0,
     price_line: "washer_small",

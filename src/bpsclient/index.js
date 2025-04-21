@@ -13,6 +13,7 @@
 
 
 import ApiClient from './ApiClient';
+import CardData from './model/CardData';
 import CreditJournal from './model/CreditJournal';
 import DbModuleProgramm from './model/DbModuleProgramm';
 import Device from './model/Device';
@@ -91,6 +92,12 @@ export {
      * @property {module:ApiClient}
      */
     ApiClient,
+
+    /**
+     * The CardData model constructor.
+     * @property {module:model/CardData}
+     */
+    CardData,
 
     /**
      * The CreditJournal model constructor.

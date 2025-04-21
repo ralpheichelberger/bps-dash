@@ -13,6 +13,7 @@
 
 
 import ApiClient from "../ApiClient";
+import CardData from '../model/CardData';
 import CreditJournal from '../model/CreditJournal';
 import DbModuleProgramm from '../model/DbModuleProgramm';
 import Device from '../model/Device';
@@ -490,6 +491,58 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the getCardData operation.
+     * @callback module:api/DefaultApi~getCardDataCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/CardData} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Returns a card data
+     * @param {String} id the unique 9 characters card ID
+     * @param {String} location The shop location ID
+     * @param {Object} opts Optional parameters
+     * @param {String} [marketingCode] The marketing code
+     * @param {module:api/DefaultApi~getCardDataCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/CardData}
+     */
+    getCardData(id, location, opts, callback) {
+      opts = opts || {};
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling getCardData");
+      }
+      // verify the required parameter 'location' is set
+      if (location === undefined || location === null) {
+        throw new Error("Missing the required parameter 'location' when calling getCardData");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'id': id,
+        'location': location,
+        'marketing_code': opts['marketingCode']
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = CardData;
+      return this.apiClient.callApi(
+        '/card_data', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the getCreditJournal operation.
      * @callback module:api/DefaultApi~getCreditJournalCallback
      * @param {String} error Error message, if any.
@@ -880,7 +933,6 @@ export default class DefaultApi {
      * Returns list of device
      * @param {Object} opts Optional parameters
      * @param {String} [location] The shop location ID as a filter - if not given or empty devices of all shops are returned
-     * @param {Number} [from] UTC timestamp start from - if this parameter is given a list of device states from this time is added to each device
      * @param {module:api/DefaultApi~getDevicesCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Array.<module:model/Device>}
      */
@@ -891,8 +943,7 @@ export default class DefaultApi {
       let pathParams = {
       };
       let queryParams = {
-        'location': opts['location'],
-        'from': opts['from']
+        'location': opts['location']
       };
       let headerParams = {
       };
@@ -2015,20 +2066,32 @@ export default class DefaultApi {
     /**
      * sends update command to the device
      * @param {Number} id The ID of the device
+     * @param {Boolean} test The test mode
+     * @param {Object} opts Optional parameters
+     * @param {String} [location] The shop location ID
+     * @param {module:model/DeviceType} [typ] The type of the device
      * @param {module:api/DefaultApi~sendUpdateCommandCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Status}
      */
-    sendUpdateCommand(id, callback) {
+    sendUpdateCommand(id, test, opts, callback) {
+      opts = opts || {};
       let postBody = null;
       // verify the required parameter 'id' is set
       if (id === undefined || id === null) {
         throw new Error("Missing the required parameter 'id' when calling sendUpdateCommand");
       }
+      // verify the required parameter 'test' is set
+      if (test === undefined || test === null) {
+        throw new Error("Missing the required parameter 'test' when calling sendUpdateCommand");
+      }
 
       let pathParams = {
       };
       let queryParams = {
-        'id': id
+        'id': id,
+        'test': test,
+        'location': opts['location'],
+        'typ': opts['typ']
       };
       let headerParams = {
       };

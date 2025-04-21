@@ -74,6 +74,9 @@ class DeviceData {
             if (data.hasOwnProperty('price')) {
                 obj['price'] = ApiClient.convertToType(data['price'], 'Number');
             }
+            if (data.hasOwnProperty('impuls_duration')) {
+                obj['impuls_duration'] = ApiClient.convertToType(data['impuls_duration'], 'Number');
+            }
             if (data.hasOwnProperty('detergent')) {
                 obj['detergent'] = ApiClient.convertToType(data['detergent'], 'Boolean');
             }
@@ -132,6 +135,12 @@ DeviceData.prototype['typ'] = undefined;
  * @member {Number} price
  */
 DeviceData.prototype['price'] = undefined;
+
+/**
+ * duration for the relay the device in 1/10 of seconds
+ * @member {Number} impuls_duration
+ */
+DeviceData.prototype['impuls_duration'] = undefined;
 
 /**
  * if detergent is available

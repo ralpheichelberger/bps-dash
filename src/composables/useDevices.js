@@ -6,9 +6,9 @@ const { api } = useAuth();
 export function useDevices() {
 
     const devices = ref(null);
-    const getDevices = async (location, from_time) => {
+    const getDevices = async (location) => {
         return new Promise((resolve, reject) => {
-            api.getDevices({ location: location, from: from_time }, (error, data) => {
+            api.getDevices({ location: location }, (error, data) => {
                 if (error) {
                     reject(new Error("Error fetching devices: " + error));
                 } else {

@@ -158,9 +158,9 @@ export function useAPI() {
     });
   }
 
-  const sendUpdateCommand = async (deviceid) => {
+  const sendUpdateCommand = async (id,test,opts) => {
     return new Promise((resolve, reject) => {
-      api.sendUpdateCommand(deviceid, (error, data) => {
+      api.sendUpdateCommand(id,test,opts, (error, data) => {
         if (error) {
           reject(new Error("Error sending update command: " + error));
         } else {
