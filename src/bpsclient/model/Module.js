@@ -28,12 +28,13 @@ class Module {
      * @param binaryType {String} 
      * @param binaryVersion {String} 
      * @param updatestatus {module:model/Module.UpdatestatusEnum} 
+     * @param firmware {String} firmware version of the module
      * @param lastSeen {Number} 
      * @param lastPing {Number} 
      */
-    constructor(mac, binaryType, binaryVersion, updatestatus, lastSeen, lastPing) { 
+    constructor(mac, binaryType, binaryVersion, updatestatus, firmware, lastSeen, lastPing) { 
         
-        Module.initialize(this, mac, binaryType, binaryVersion, updatestatus, lastSeen, lastPing);
+        Module.initialize(this, mac, binaryType, binaryVersion, updatestatus, firmware, lastSeen, lastPing);
     }
 
     /**
@@ -41,11 +42,12 @@ class Module {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, mac, binaryType, binaryVersion, updatestatus, lastSeen, lastPing) { 
+    static initialize(obj, mac, binaryType, binaryVersion, updatestatus, firmware, lastSeen, lastPing) { 
         obj['mac'] = mac;
         obj['binary_type'] = binaryType;
         obj['binary_version'] = binaryVersion;
         obj['updatestatus'] = updatestatus;
+        obj['firmware'] = firmware;
         obj['last_seen'] = lastSeen;
         obj['last_ping'] = lastPing;
     }
@@ -72,6 +74,9 @@ class Module {
             }
             if (data.hasOwnProperty('updatestatus')) {
                 obj['updatestatus'] = ApiClient.convertToType(data['updatestatus'], 'String');
+            }
+            if (data.hasOwnProperty('firmware')) {
+                obj['firmware'] = ApiClient.convertToType(data['firmware'], 'String');
             }
             if (data.hasOwnProperty('last_seen')) {
                 obj['last_seen'] = ApiClient.convertToType(data['last_seen'], 'Number');
@@ -114,6 +119,10 @@ class Module {
         if (data['updatestatus'] && !(typeof data['updatestatus'] === 'string' || data['updatestatus'] instanceof String)) {
             throw new Error("Expected the field `updatestatus` to be a primitive type in the JSON string but got " + data['updatestatus']);
         }
+        // ensure the json data is a string
+        if (data['firmware'] && !(typeof data['firmware'] === 'string' || data['firmware'] instanceof String)) {
+            throw new Error("Expected the field `firmware` to be a primitive type in the JSON string but got " + data['firmware']);
+        }
         // validate the optional field `durations`
         if (data['durations']) { // data not null
           ModulDurations.validateJSON(data['durations']);
@@ -125,7 +134,7 @@ class Module {
 
 }
 
-Module.RequiredProperties = ["mac", "binary_type", "binary_version", "updatestatus", "last_seen", "last_ping"];
+Module.RequiredProperties = ["mac", "binary_type", "binary_version", "updatestatus", "firmware", "last_seen", "last_ping"];
 
 /**
  * @member {String} mac
@@ -146,6 +155,12 @@ Module.prototype['binary_version'] = undefined;
  * @member {module:model/Module.UpdatestatusEnum} updatestatus
  */
 Module.prototype['updatestatus'] = undefined;
+
+/**
+ * firmware version of the module
+ * @member {String} firmware
+ */
+Module.prototype['firmware'] = undefined;
 
 /**
  * @member {Number} last_seen

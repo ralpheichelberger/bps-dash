@@ -20,14 +20,21 @@
             <th class="text-left">
               Maschinen
             </th>
-            <th class="text-left" @click="sort('priceLine')">
-              Preiskategorie
-            </th>
-            <th class="text-left" >
+            <th class="text-left">
               Status
             </th>
-            <th class="text-left" >
+            <th class="text-left" @click="sort('module.lastseen')">
+              Seit
+            </th>
+            <th class="text-left">
               Update
+            </th>
+            <th class="text-left" @click="sort('module.firmware')">
+              firmware
+            </th>
+
+            <th class="text-left" @click="sort('priceLine')">
+              Preiskategorie
             </th>
             <th class="text-left" @click="sort('id')">
               ID
@@ -38,15 +45,19 @@
           <template v-for="item in devices" :key="item.id">
             <tr @click="device = Object.assign({}, item); deviceEdit = true; updateDevice = true">
               <td>{{ deviceName(item) }}</td>
-              <td>{{ item.priceLine }}</td>
               <td :style="{ color: item.status.busy ? 'green' : item.status.allow_start ? 'orange' : 'lightblue' }">
                 {{ item.status.busy ? 'running' : item.status.allow_start ? 'paid' : 'free' }}
               </td>
-              <td :style="{ color: item.module.updatestatus === 'done' ? 'green' : 
-                item.module.updatestatus === 'start' ? 'lightblue' :
-                item.module.updatestatus === 'inprogress' ? 'orange' : 'red'  }">
+              <td>{{ lastSeenSince(item) }}</td>
+              <td :style="{
+                color: item.module.updatestatus === 'done' ? 'green' :
+                  item.module.updatestatus === 'start' ? 'lightblue' :
+                    item.module.updatestatus === 'inprogress' ? 'orange' : 'red'
+              }">
                 {{ item.module.updatestatus }}
               </td>
+              <td>{{ item.module.firmware ? item.module.firmware.slice(0, 12) : '' }}</td>
+              <td>{{ item.priceLine }}</td>
               <td>{{ item.id }}</td>
             </tr>
             <!-- <tr>
@@ -106,7 +117,37 @@ const from_time = ref(Math.floor(Date.now() / 1000) - 12 * 60 * 60) // current u
 const deviceName = (item) => { return item?.location + " / " + item?.typ.charAt(0).toUpperCase() + " / " + item?.nr }
 const updateDialog = ref(false)
 const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
-
+const lastSeenSince = (item) => {
+  item.module.last_seen = 1745352000
+  if (item?.module?.last_seen && item.module.last_seen > 0) {
+    const now = Math.floor(Date.now() / 1000)
+    const elapsed = now - item.module.last_seen
+    if (elapsed < 60) {
+      return 'just now'
+    } else if (elapsed < 3600) {
+      return `${Math.floor(elapsed / 60)} min`
+    } else if (elapsed < 86400) {
+      return `${Math.floor(elapsed / 3600)} hours`
+    } else {
+      return `${Math.floor(elapsed / 86400)} days`
+    }
+  }
+  if (item?.module?.last_seen) {
+    const now = Math.floor(Date.now() / 1000)
+    const elapsed = now - item.module.lastSeen
+    const hours = Math.floor(elapsed / 3600)
+    const minutes = Math.floor((elapsed % 3600) / 60)
+    return `${hours}h ${minutes}m`
+  }
+  return ''
+}
+const lastSeenDateTime = (item) => {
+  if (item?.module?.lastSeen && item.module.last_seen > 0) {
+    const date = new Date(item.module.lastSeen * 1000)
+    return date.toLocaleString(fa, { timeZone: 'Europe/Berlin' })
+  }
+  return ''
+}
 const updateLocationDevices = () => {
   if (loc.value) {
     sendUpdateCommand(0, false, { location: loc.value, typ: devicetyp.value }).then(() => {
