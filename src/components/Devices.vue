@@ -118,7 +118,6 @@ const deviceName = (item) => { return item?.location + " / " + item?.typ.charAt(
 const updateDialog = ref(false)
 const snackbar = ref({ color: 'success', text: 'gespeichert', show: false })
 const lastSeenSince = (item) => {
-  item.module.last_seen = 1745352000
   if (item?.module?.last_seen && item.module.last_seen > 0) {
     const now = Math.floor(Date.now() / 1000)
     const elapsed = now - item.module.last_seen
