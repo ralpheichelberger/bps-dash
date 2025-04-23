@@ -27,11 +27,12 @@ loadScript({
             return actions.order.create({
                 purchase_units: [
                     {
-                        user_id: props.userId,
+                        // user_id: props.userId,
                         amount: {
                             value: props.amount,
                             currency_code: "EUR",
                         },
+                        reference_id: props.userId,
                     },
                 ],
             });

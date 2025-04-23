@@ -77,6 +77,7 @@
     <template v-if="!admin">
       <div v-if="payPalButtonVisible" class="payPalButton">
         <PayPalButton :amount="paymentAmount" :user-id="user ? user.id : 'anonym'"
+          :deviceName="deviceInfo.name"
           @transactionApproved="payDeviceAndAllowStart" />
       </div>
       <div v-if="!payPalButtonVisible" class="payPalButton" style="text-align: center">
