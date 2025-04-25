@@ -46,8 +46,9 @@
       {{ cent2euro(deviceInfo.userprice) }}
       {{ deviceInfo.type == "dryer" ? "/ " + deviceInfo.dryer_units + " min" : "" }}
       <br />
-      <span v-if="deviceInfo.price>deviceInfo.userprice" style="text-decoration: line-through; font-size: smaller; ">Normalpreis: {{
-        cent2euro(deviceInfo.price) }}
+      <span v-if="deviceInfo.price > deviceInfo.userprice"
+        style="text-decoration: line-through; font-size: smaller; ">Normalpreis: {{
+          cent2euro(deviceInfo.price) }}
         <v-icon icon="mdi-information" @click="showDiscounts"></v-icon></span>
     </div>
     <div v-if="deviceInfo && deviceInfo.type == 'dryer'" class="calcPrice">
@@ -76,8 +77,7 @@
     </div>
     <template v-if="!admin">
       <div v-if="payPalButtonVisible" class="payPalButton">
-        <PayPalButton :amount="paymentAmount" :user-id="user ? user.id : 'anonym'"
-          :deviceName="deviceInfo.name"
+        <PayPalButton :amount="paymentAmount" :user-id="user ? user.id : 'anonym'" :deviceName="deviceInfo.name"
           @transactionApproved="payDeviceAndAllowStart" />
       </div>
       <div v-if="!payPalButtonVisible" class="payPalButton" style="text-align: center">
@@ -92,7 +92,7 @@
         {{ admin ? "Freischalten" : "Mit Guthaben zahlen" }}
       </v-btn>
     </div>
-    <div v-if="payed" class="payedInfo">
+    <div v-if="payed && !admin" class="payedInfo">
       <v-icon icon="mdi-checkbox-marked-circle" end size="3rem"></v-icon>
       Maschine ist {{ admin ? "freigeschalten" : "bezahlt" }}
     </div>
@@ -201,10 +201,9 @@ const payPalButtonVisible = computed(() => {
 });
 
 const payWithCreditDisabled = computed(() => {
-  // is true if:
-  // payed
-  // washer status and not choosen or free
-  // not admin and not enough credit
+  if (admin.value) {
+    return false;
+  }
   if (!deviceInfo.value) {
     return true;
   }
@@ -257,9 +256,9 @@ async function initialize() {
       console.log(error);
     }
   }
-  
+
   try {
-    await getDeviceInfo(props.deviceId,marketing.value ? marketing.value.code : null);
+    await getDeviceInfo(props.deviceId, marketing.value ? marketing.value.code : null);
   } catch (error) {
     errorMessage.value = "Dieses Gerät ist leider nicht registriert";
     errorDetail.value = error;
@@ -387,8 +386,10 @@ const payDeviceAndAllowStart = (source, details) => {
     dryer_units: deviceInfo.value.dryer_units,
     source: source,
     details: details,
-    detergent: detergent.value,
-    softener: softener.value,
+    selection: {
+      detergent: detergent.value,
+      softener: softener.value,
+    },
     marketing_code: marketing.value ? marketing.value.code : null,
   };
   payment(paymentVariables).then(() => {
@@ -400,16 +401,17 @@ const payDeviceAndAllowStart = (source, details) => {
       marketing.value.eligible--;
       updateMarketing(marketing.value);
     }
-    // {{ deviceDisplayName() }} <br /> NR. {{ deviceNr() }}
-    // snackbar.value.text = `Die Zahlung war erfolgreich! ${deviceDisplayName()} NR. ${deviceNr()} ist freigeschalten`
-    // snackbar.value.color = 'success'
-    // snackbar.value.show = true
-  })
-    .catch((error) => {
-      errorMessage.value = "Die Zahlung konnte nicht abgeschlossen werden";
-      errorDetail.value = error;
-      errorDialog.value = true;
-    });
+    if (admin.value) {
+      snackbar.value.text = `Die Zahlung war erfolgreich! ${deviceDisplayName()} NR. ${deviceNr()} ist freigeschalten`
+      snackbar.value.color = 'success'
+      snackbar.value.show = true
+    }
+  }
+  ).catch((error) => {
+    errorMessage.value = "Die Zahlung konnte nicht abgeschlossen werden";
+    errorDetail.value = error;
+    errorDialog.value = true;
+  });
 };
 </script>
 
