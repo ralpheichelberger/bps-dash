@@ -1,11 +1,24 @@
 <template>
   <!-- TODO add AGBs -->
-  <div v-if="user" class="container bubble_style" :class="{ admin: admin }"
-    :style="'height:' + windowInnerHeight + 'px'">
+  <div
+    v-if="user"
+    class="container bubble_style"
+    :class="{ admin: admin }"
+    :style="'height:' + windowInnerHeight + 'px'"
+  >
     <div class="bcard user">
       <div v-if="admin" class="adminConfig">
-        <v-btn @click="navigateToAdmin" size="x-large" elevation="5" variant="outlined" @mousedown="startPress"
-          @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
+        <v-btn
+          @click="navigateToAdmin"
+          size="x-large"
+          elevation="5"
+          variant="outlined"
+          @mousedown="startPress"
+          @mouseup="cancelPress"
+          @mouseleave="cancelPress"
+          @touchstart="startPress"
+          @touchend="cancelPress"
+        >
           Config
         </v-btn>
       </div>
@@ -15,13 +28,26 @@
         <p v-if="user.typ == 'admin'">Admin</p>
       </div>
       <div v-if="!admin" class="text">Guthaben EUR</div>
-      <div v-if="!admin" :class="['balance', { 'glowing-text': triggerGlow }]" ref="balanceRef">
+      <div
+        v-if="!admin"
+        :class="['balance', { 'glowing-text': triggerGlow }]"
+        ref="balanceRef"
+      >
         {{ cent2euro(user.credit) }}
       </div>
       <div v-if="!admin" class="card-id">ID: {{ user.id }}</div>
       <div v-if="!admin" class="topUpButton">
-        <v-btn @click="topUpDialog = true" size="large" elevation="5" variant="outlined" @mousedown="startPress"
-          @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress" @touchend="cancelPress">
+        <v-btn
+          @click="topUpDialog = true"
+          size="large"
+          elevation="5"
+          variant="outlined"
+          @mousedown="startPress"
+          @mouseup="cancelPress"
+          @mouseleave="cancelPress"
+          @touchstart="startPress"
+          @touchend="cancelPress"
+        >
           Aufladen
         </v-btn>
       </div>
@@ -51,12 +77,18 @@
     <div class="footer-version">{{ APP_VERSION }}</div>
   </div>
   <v-dialog v-if="user" v-model="topUpDialog">
-    <TopUp :visible="topUpDialog" :user-id="user.id" @close="topUpDialog = false" @top-up="topUpCredit" />
+    <TopUp
+      :visible="topUpDialog"
+      :user-id="user.id"
+      @close="topUpDialog = false"
+      @top-up="topUpCredit"
+    />
   </v-dialog>
   <v-dialog v-if="customer" v-model="customerDialog">
     <v-card class="bubble_style customer pa-4" elevation="4">
-      <v-card-title class="headline">Customer Details
-        <v-btn style="float:right" icon="mdi-close" @click="customer = null"></v-btn>
+      <v-card-title class="headline"
+        >Customer Details
+        <v-btn style="float: right" icon="mdi-close" @click="customer = null"></v-btn>
 
         <v-card-subtitle>ID: {{ customer.id }} </v-card-subtitle>
       </v-card-title>
@@ -65,8 +97,14 @@
         <tbody>
           <tr>
             <td><strong>Name:</strong></td>
-            <td><v-text-field v-model="customer.name" density="compact" @blur="saveCustomer">
-              </v-text-field></td>
+            <td>
+              <v-text-field
+                v-model="customer.name"
+                density="compact"
+                @blur="saveCustomer"
+              >
+              </v-text-field>
+            </td>
           </tr>
           <tr>
             <td><strong>Balance:</strong></td>
@@ -83,10 +121,13 @@
           <tr>
             <td><strong>Active:</strong></td>
             <td>
-              <v-switch v-model="customer.active" :color="'green'" @update:modelValue="saveCustomer"></v-switch>
+              <v-switch
+                v-model="customer.active"
+                :color="'green'"
+                @update:modelValue="saveCustomer"
+              ></v-switch>
             </td>
           </tr>
-
         </tbody>
       </v-table>
       <v-divider></v-divider>
@@ -104,8 +145,14 @@
             <tr v-for="discount in discounts" :key="discount">
               <td>{{ discount.name }}</td>
               <td class="text-right">{{ discount.percentage }}</td>
-              <td><v-checkbox v-model="customer.discounts" :value="discount.id" @update:modelValue="saveCustomer">
-                </v-checkbox></td>
+              <td>
+                <v-checkbox
+                  v-model="customer.discounts"
+                  :value="discount.id"
+                  @update:modelValue="saveCustomer"
+                >
+                </v-checkbox>
+              </td>
             </tr>
           </tbody>
         </v-table>
@@ -129,8 +176,17 @@
           'activate' }} </v-btn> -->
         <v-spacer></v-spacer>
         <v-btn elevation="4" color="#050" dark @click="openRabatte">Discounts</v-btn>
-        <v-btn elevation="4" color="#050" dark @click="topUpCustomerCredit" :disabled="customerTopupAmount == 0 ||
-          (customerTopupType == 'cash' && customerTopupAmount < 0)"> Aufladen
+        <v-btn
+          elevation="4"
+          color="#050"
+          dark
+          @click="topUpCustomerCredit"
+          :disabled="
+            customerTopupAmount == 0 ||
+            (customerTopupType == 'cash' && customerTopupAmount < 0)
+          "
+        >
+          Aufladen
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -144,14 +200,22 @@
         <br />Bitte wenden Sie sich an unseren Kundenservice!
         <br />
         <v-expansion-panels>
-          <v-expansion-panel style="font-family: 'Courier New', Courier, monospace; font-size: small" title="Details"
-            :text="errorDetail">
+          <v-expansion-panel
+            style="font-family: 'Courier New', Courier, monospace; font-size: small"
+            title="Details"
+            :text="errorDetail"
+          >
           </v-expansion-panel>
         </v-expansion-panels>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="outlined" elevation="5" style="font-size: 1.5rem" @click="closeError">
+        <v-btn
+          variant="outlined"
+          elevation="5"
+          style="font-size: 1.5rem"
+          @click="closeError"
+        >
           Schließen
         </v-btn>
       </v-card-actions>
@@ -193,16 +257,18 @@ const props = defineProps(["id"]);
 const errorDialog = ref(false);
 const windowInnerHeight = ref(window.innerHeight);
 window.addEventListener("resize", updateListHeight);
+window.visualViewport?.addEventListener("resize", updateListHeight);
+
 function updateListHeight() {
   windowInnerHeight.value = window.innerHeight;
 }
-window.addEventListener('beforeunload', () => {
+window.addEventListener("beforeunload", () => {
   // This prevents the page from being cached in bfcache
 });
 
 const discountArray = computed(() => {
   if (customer.value && customer.value.discounts) {
-    return customer.value.discounts.join(", ")
+    return customer.value.discounts.join(", ");
   }
   return "keine";
 });
@@ -217,35 +283,41 @@ setTimeout(() => {
 const saveCustomer = () => {
   updateUser(customer.value);
 };
-getUser(props.id).then((dbUser) => {
-  localStorage.setItem("user", JSON.stringify(dbUser));
-  user.value = dbUser;
-  if (user.value) {
-    if (user.value.typ == 'admin') getDiscounts().catch((error) => {
-      if (error.response && error.response.status == 401) {
-        errorUnauthorized();
-      }
-    });
-    payments(user.value.id)
-      .then((data) => {
-        userPayments.value = data;
-      })
-      .catch((error) => {
-        if (error.response && error.response.status == 401) {
-          errorUnauthorized();
-        }
-      });
-  }
-}).catch((error) => {
-  if (error.response && error.response.status == 401) {
-    errorUnauthorized();
-  } else {
-    snackbar.value.text = error.response?.error?.message || error || "An error occurred while loading the user";
-    snackbar.value.color = "error";
-    errorMessage.value = "Fehler beim Laden des Kundenkontos.";
-    snackbar.value.show = true;
-  }
-});
+getUser(props.id)
+  .then((dbUser) => {
+    localStorage.setItem("user", JSON.stringify(dbUser));
+    user.value = dbUser;
+    if (user.value) {
+      if (user.value.typ == "admin")
+        getDiscounts().catch((error) => {
+          if (error.response && error.response.status == 401) {
+            errorUnauthorized();
+          }
+        });
+      payments(user.value.id)
+        .then((data) => {
+          userPayments.value = data;
+        })
+        .catch((error) => {
+          if (error.response && error.response.status == 401) {
+            errorUnauthorized();
+          }
+        });
+    }
+  })
+  .catch((error) => {
+    if (error.response && error.response.status == 401) {
+      errorUnauthorized();
+    } else {
+      snackbar.value.text =
+        error.response?.error?.message ||
+        error ||
+        "An error occurred while loading the user";
+      snackbar.value.color = "error";
+      errorMessage.value = "Fehler beim Laden des Kundenkontos.";
+      snackbar.value.show = true;
+    }
+  });
 const errorUnauthorized = () => {
   localStorage.removeItem("user");
   errorDialog.value = true;
@@ -282,10 +354,13 @@ const glow = () => {
 const topUpCredit = (topAmount, details) => {
   topUp(user.value.id, topAmount, details, "topup").then(() => {
     // wait for the transaction to be processed
-    setTimeout(reloadUser(user).then((u) => {
-      user.value = u;
-      setTimeout(glow(), 300)
-    }), 1000);
+    setTimeout(
+      reloadUser(user).then((u) => {
+        user.value = u;
+        setTimeout(glow(), 300);
+      }),
+      1000
+    );
     payments(user.value.id)
       .then((data) => {
         userPayments.value = data;
@@ -340,7 +415,6 @@ const topUpCustomerCredit = () => {
     });
   });
 };
-
 </script>
 
 <style>

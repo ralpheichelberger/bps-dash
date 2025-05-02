@@ -192,7 +192,8 @@ const { getUser, reloadUser } = useUser();
 const { deviceInfo, getDeviceInfo } = useDevices();
 const { topUp, payment } = usePayment();
 const { getMarketings, updateMarketing } = useDiscount();
-
+window.addEventListener("resize", updateListHeight);
+window.visualViewport?.addEventListener("resize", updateListHeight);
 const payPalButtonVisible = computed(() => {
   if (!deviceInfo.value) {
     return false;
@@ -235,12 +236,21 @@ const errorDialog = ref(false);
 setTimeout(() => {
   errorDialog.value = (!user.value || !deviceInfo.value) && !anonym.value;
 }, 3000);
-const windowInnerHeight = ref(window.innerHeight);
-window.addEventListener("resize", updateListHeight);
+
+
+const windowInnerHeight = ref(
+  window.visualViewport?.height || window.innerHeight
+);
+
 function updateListHeight() {
-  if (window.innerHeight > 650)
-    windowInnerHeight.value = window.innerHeight;
+  const currentHeight = window.visualViewport?.height || window.innerHeight;
+  if (currentHeight > 650) {
+    windowInnerHeight.value = currentHeight;
+  }
 }
+
+
+
 
 const uuid = localStorage.getItem('uuid');
 const props = defineProps(["deviceId"]);
