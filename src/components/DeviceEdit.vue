@@ -45,7 +45,7 @@
 					<v-text-field id="mac" v-model="device.module.mac" :disabled="disabled" label="MAC" required
 						hide-details></v-text-field>
 				</v-col>
-				<v-col v-if="(device.typ == 'washer' || device.typ == 'dryer') && priceLines" cols="12">
+				<v-col v-if="priceLines" cols="12">
 					<v-select id="price" v-model="device.priceLine" :disabled="disabled" label="Price line" required
 						hide-details :items="priceLinesItems"></v-select>
 				</v-col>
