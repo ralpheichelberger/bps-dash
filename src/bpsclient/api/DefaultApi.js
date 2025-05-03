@@ -13,6 +13,7 @@
 
 
 import ApiClient from "../ApiClient";
+import ActivateUserRequest from '../model/ActivateUserRequest';
 import CardData from '../model/CardData';
 import CreditJournal from '../model/CreditJournal';
 import DbModuleProgramm from '../model/DbModuleProgramm';
@@ -35,8 +36,10 @@ import Marketing from '../model/Marketing';
 import ModuleProgramm from '../model/ModuleProgramm';
 import ModuleProgramm200Response from '../model/ModuleProgramm200Response';
 import Payment from '../model/Payment';
+import Payment201Response from '../model/Payment201Response';
 import PriceLine from '../model/PriceLine';
 import Status from '../model/Status';
+import TopupCredit201Response from '../model/TopupCredit201Response';
 import TopupCreditRequest from '../model/TopupCreditRequest';
 import TypDeviceLocations from '../model/TypDeviceLocations';
 import UpdateModuleBinary404Response from '../model/UpdateModuleBinary404Response';
@@ -61,6 +64,47 @@ export default class DefaultApi {
         this.apiClient = apiClient || ApiClient.instance;
     }
 
+
+    /**
+     * Callback function to receive the result of the activateUser operation.
+     * @callback module:api/DefaultApi~activateUserCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Status} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Activates a user
+     * @param {module:model/ActivateUserRequest} activateUserRequest 
+     * @param {module:api/DefaultApi~activateUserCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Status}
+     */
+    activateUser(activateUserRequest, callback) {
+      let postBody = activateUserRequest;
+      // verify the required parameter 'activateUserRequest' is set
+      if (activateUserRequest === undefined || activateUserRequest === null) {
+        throw new Error("Missing the required parameter 'activateUserRequest' when calling activateUser");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['BearerAuth'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Status;
+      return this.apiClient.callApi(
+        '/user_activate', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
 
     /**
      * Callback function to receive the result of the allowStart operation.
@@ -1982,7 +2026,7 @@ export default class DefaultApi {
      * Callback function to receive the result of the payment operation.
      * @callback module:api/DefaultApi~paymentCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/Status} data The data returned by the service call.
+     * @param {module:model/Payment201Response} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -1990,7 +2034,7 @@ export default class DefaultApi {
      * Adds a credit journal entry and updates the user's credit
      * @param {Array.<module:model/Payment>} payment 
      * @param {module:api/DefaultApi~paymentCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/Status}
+     * data is of type: {@link module:model/Payment201Response}
      */
     payment(payment, callback) {
       let postBody = payment;
@@ -2011,7 +2055,7 @@ export default class DefaultApi {
       let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Status;
+      let returnType = Payment201Response;
       return this.apiClient.callApi(
         '/payment', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -2149,7 +2193,7 @@ export default class DefaultApi {
      * Callback function to receive the result of the topupCredit operation.
      * @callback module:api/DefaultApi~topupCreditCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/Status} data The data returned by the service call.
+     * @param {module:model/TopupCredit201Response} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -2157,7 +2201,7 @@ export default class DefaultApi {
      * Adds a credit journal entry and updates the user's credit
      * @param {module:model/TopupCreditRequest} topupCreditRequest 
      * @param {module:api/DefaultApi~topupCreditCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/Status}
+     * data is of type: {@link module:model/TopupCredit201Response}
      */
     topupCredit(topupCreditRequest, callback) {
       let postBody = topupCreditRequest;
@@ -2178,7 +2222,7 @@ export default class DefaultApi {
       let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Status;
+      let returnType = TopupCredit201Response;
       return this.apiClient.callApi(
         '/topup_credit', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,

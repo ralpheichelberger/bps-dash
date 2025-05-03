@@ -25,12 +25,13 @@ class WasherStatus {
      * @param timestamp {Number} 
      * @param allowStart {Boolean} 
      * @param busy {Boolean} 
+     * @param offline {Boolean} 
      * @param allowDetergent {Boolean} 
      * @param allowSoftener {Boolean} 
      */
-    constructor(timestamp, allowStart, busy, allowDetergent, allowSoftener) { 
+    constructor(timestamp, allowStart, busy, offline, allowDetergent, allowSoftener) { 
         
-        WasherStatus.initialize(this, timestamp, allowStart, busy, allowDetergent, allowSoftener);
+        WasherStatus.initialize(this, timestamp, allowStart, busy, offline, allowDetergent, allowSoftener);
     }
 
     /**
@@ -38,10 +39,11 @@ class WasherStatus {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, timestamp, allowStart, busy, allowDetergent, allowSoftener) { 
+    static initialize(obj, timestamp, allowStart, busy, offline, allowDetergent, allowSoftener) { 
         obj['timestamp'] = timestamp;
         obj['allow_start'] = allowStart;
         obj['busy'] = busy;
+        obj['offline'] = offline;
         obj['allow_detergent'] = allowDetergent;
         obj['allow_softener'] = allowSoftener;
     }
@@ -65,6 +67,9 @@ class WasherStatus {
             }
             if (data.hasOwnProperty('busy')) {
                 obj['busy'] = ApiClient.convertToType(data['busy'], 'Boolean');
+            }
+            if (data.hasOwnProperty('offline')) {
+                obj['offline'] = ApiClient.convertToType(data['offline'], 'Boolean');
             }
             if (data.hasOwnProperty('allow_detergent')) {
                 obj['allow_detergent'] = ApiClient.convertToType(data['allow_detergent'], 'Boolean');
@@ -95,7 +100,7 @@ class WasherStatus {
 
 }
 
-WasherStatus.RequiredProperties = ["timestamp", "allow_start", "busy", "allow_detergent", "allow_softener"];
+WasherStatus.RequiredProperties = ["timestamp", "allow_start", "busy", "offline", "allow_detergent", "allow_softener"];
 
 /**
  * @member {Number} timestamp
@@ -111,6 +116,11 @@ WasherStatus.prototype['allow_start'] = undefined;
  * @member {Boolean} busy
  */
 WasherStatus.prototype['busy'] = undefined;
+
+/**
+ * @member {Boolean} offline
+ */
+WasherStatus.prototype['offline'] = undefined;
 
 /**
  * @member {Boolean} allow_detergent

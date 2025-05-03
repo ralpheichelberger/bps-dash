@@ -10,6 +10,8 @@
 			<v-btn id="save" color="primary" text="Save" variant="outlined" elevation="5" @click="saveChanges"></v-btn>
 		</v-card-actions>
 		<v-card-actions>
+		<v-btn id="save" color="primary" text="set payed" variant="outlined" elevation="5"
+				@click="payAsAdmin"></v-btn>
 			<v-btn id="update" :color="updateColor(device.module.updatestatus)"
 				:text="'Update Status: ' + device.module.updatestatus" variant="plain" @click="updateFirmware"></v-btn>
 		</v-card-actions>
@@ -102,9 +104,10 @@ import { ref, watch, computed } from 'vue'
 import * as bps from '../bpsclient';
 import { useDevices } from '@/composables/useDevices';
 import { useAPI } from '@/composables/useAPI';
+import { usePayment } from '@/composables/usePayment';
 import { de } from 'vuetify/locale';
 const { priceLines, getPriceLines, sendUpdateCommand } = useAPI()
-
+const { payment } = usePayment()
 const { devices, getDevices, updateDevice, newDevice,
 	deviceInfo, getDeviceInfo, setDeviceOutOfOrder, setDeviceAvailable } = useDevices()
 const deviceActive = ref(true)
@@ -170,6 +173,8 @@ const props = defineProps({
 	deviceTypes: Array,
 	update: Boolean,
 })
+const user = ref(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null);
+
 const updateDeviceInfo = () => {
 	getDeviceInfo(props.device.id).then(() => {
 		deviceActive.value = deviceInfo.value.state != 'outoforder'
@@ -242,5 +247,33 @@ watch(priceLines, (priceLines) => {
 		}
 	})
 })
+const detergent = ref(false)
+const softener = ref(false)
+const payAsAdmin = (source, details) => {
+  const paymentVariables = {
+    card_id: user.id,
+    machine_name: deviceInfo.value.name,
+    amount: deviceInfo.value.userprice,
+    machine_id: props.device.id,
+    dryer_impulses: 1,
+    dryer_units: deviceInfo.value.dryer_units,
+    source: 'admin',
+    selection: {
+      detergent: detergent.value,
+      softener: softener.value,
+    },
+  };
+  payment(paymentVariables).then(() => {
+	  snackbar.value.text = `Device ${props.device.nr} for location ${props.device.location} payed`
+	  snackbar.value.color = 'success'
+	  snackbar.value.show = true
+	  emit('reload')
+  }).catch((error) => {
+	  snackbar.value.text = error.response?.body?.message || error || 'An error occurred while paying'
+	  snackbar.value.color = 'error'
+	  snackbar.value.show = true
+  });
+};
+
 
 </script>

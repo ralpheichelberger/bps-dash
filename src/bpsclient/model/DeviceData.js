@@ -28,13 +28,14 @@ class DeviceData {
      * @param nr {Number} 
      * @param typ {module:model/DeviceType} 
      * @param price {Number} price of the device in euro cent
+     * @param dryerunits {Number} minutes per impuls
      * @param detergent {Boolean} if detergent is available
      * @param softener {Boolean} if softener is available
      * @param state {module:model/DeviceState} 
      */
-    constructor(nr, typ, price, detergent, softener, state) { 
+    constructor(nr, typ, price, dryerunits, detergent, softener, state) { 
         
-        DeviceData.initialize(this, nr, typ, price, detergent, softener, state);
+        DeviceData.initialize(this, nr, typ, price, dryerunits, detergent, softener, state);
     }
 
     /**
@@ -42,10 +43,11 @@ class DeviceData {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, nr, typ, price, detergent, softener, state) { 
+    static initialize(obj, nr, typ, price, dryerunits, detergent, softener, state) { 
         obj['nr'] = nr;
         obj['typ'] = typ;
         obj['price'] = price;
+        obj['dryerunits'] = dryerunits;
         obj['detergent'] = detergent;
         obj['softener'] = softener;
         obj['state'] = state;
@@ -74,8 +76,8 @@ class DeviceData {
             if (data.hasOwnProperty('price')) {
                 obj['price'] = ApiClient.convertToType(data['price'], 'Number');
             }
-            if (data.hasOwnProperty('impuls_duration')) {
-                obj['impuls_duration'] = ApiClient.convertToType(data['impuls_duration'], 'Number');
+            if (data.hasOwnProperty('dryerunits')) {
+                obj['dryerunits'] = ApiClient.convertToType(data['dryerunits'], 'Number');
             }
             if (data.hasOwnProperty('detergent')) {
                 obj['detergent'] = ApiClient.convertToType(data['detergent'], 'Boolean');
@@ -113,7 +115,7 @@ class DeviceData {
 
 }
 
-DeviceData.RequiredProperties = ["nr", "typ", "price", "detergent", "softener", "state"];
+DeviceData.RequiredProperties = ["nr", "typ", "price", "dryerunits", "detergent", "softener", "state"];
 
 /**
  * @member {String} location
@@ -137,10 +139,10 @@ DeviceData.prototype['typ'] = undefined;
 DeviceData.prototype['price'] = undefined;
 
 /**
- * duration for the relay the device in 1/10 of seconds
- * @member {Number} impuls_duration
+ * minutes per impuls
+ * @member {Number} dryerunits
  */
-DeviceData.prototype['impuls_duration'] = undefined;
+DeviceData.prototype['dryerunits'] = undefined;
 
 /**
  * if detergent is available

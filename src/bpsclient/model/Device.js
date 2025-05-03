@@ -12,7 +12,6 @@
  */
 
 import ApiClient from '../ApiClient';
-import DeviceRawLog from './DeviceRawLog';
 import DeviceType from './DeviceType';
 import Module from './Module';
 import Pump from './Pump';
@@ -97,8 +96,8 @@ class Device {
             if (data.hasOwnProperty('status')) {
                 obj['status'] = WasherStatus.constructFromObject(data['status']);
             }
-            if (data.hasOwnProperty('logs')) {
-                obj['logs'] = ApiClient.convertToType(data['logs'], [DeviceRawLog]);
+            if (data.hasOwnProperty('last_state')) {
+                obj['last_state'] = ApiClient.convertToType(data['last_state'], 'String');
             }
         }
         return obj;
@@ -140,15 +139,9 @@ class Device {
         if (data['status']) { // data not null
           WasherStatus.validateJSON(data['status']);
         }
-        if (data['logs']) { // data not null
-            // ensure the json data is an array
-            if (!Array.isArray(data['logs'])) {
-                throw new Error("Expected the field `logs` to be an array in the JSON data but got " + data['logs']);
-            }
-            // validate the optional field `logs` (array)
-            for (const item of data['logs']) {
-                DeviceRawLog.validateJSON(item);
-            };
+        // ensure the json data is a string
+        if (data['last_state'] && !(typeof data['last_state'] === 'string' || data['last_state'] instanceof String)) {
+            throw new Error("Expected the field `last_state` to be a primitive type in the JSON string but got " + data['last_state']);
         }
 
         return true;
@@ -205,9 +198,9 @@ Device.prototype['softener'] = undefined;
 Device.prototype['status'] = undefined;
 
 /**
- * @member {Array.<module:model/DeviceRawLog>} logs
+ * @member {String} last_state
  */
-Device.prototype['logs'] = undefined;
+Device.prototype['last_state'] = undefined;
 
 
 

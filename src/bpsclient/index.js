@@ -13,6 +13,7 @@
 
 
 import ApiClient from './ApiClient';
+import ActivateUserRequest from './model/ActivateUserRequest';
 import CardData from './model/CardData';
 import CreditJournal from './model/CreditJournal';
 import DbModuleProgramm from './model/DbModuleProgramm';
@@ -39,12 +40,14 @@ import Module from './model/Module';
 import ModuleProgramm from './model/ModuleProgramm';
 import ModuleProgramm200Response from './model/ModuleProgramm200Response';
 import Payment from './model/Payment';
+import Payment201Response from './model/Payment201Response';
 import PriceLine from './model/PriceLine';
 import Pump from './model/Pump';
 import PumpRelay from './model/PumpRelay';
 import PumpRelayStatus from './model/PumpRelayStatus';
 import Selection from './model/Selection';
 import Status from './model/Status';
+import TopupCredit201Response from './model/TopupCredit201Response';
 import TopupCreditRequest from './model/TopupCreditRequest';
 import TypDeviceLocations from './model/TypDeviceLocations';
 import TypDevices from './model/TypDevices';
@@ -92,6 +95,12 @@ export {
      * @property {module:ApiClient}
      */
     ApiClient,
+
+    /**
+     * The ActivateUserRequest model constructor.
+     * @property {module:model/ActivateUserRequest}
+     */
+    ActivateUserRequest,
 
     /**
      * The CardData model constructor.
@@ -250,6 +259,12 @@ export {
     Payment,
 
     /**
+     * The Payment201Response model constructor.
+     * @property {module:model/Payment201Response}
+     */
+    Payment201Response,
+
+    /**
      * The PriceLine model constructor.
      * @property {module:model/PriceLine}
      */
@@ -284,6 +299,12 @@ export {
      * @property {module:model/Status}
      */
     Status,
+
+    /**
+     * The TopupCredit201Response model constructor.
+     * @property {module:model/TopupCredit201Response}
+     */
+    TopupCredit201Response,
 
     /**
      * The TopupCreditRequest model constructor.

@@ -2,7 +2,7 @@
 set -x
 # Define paths relative to the workspace directory
 WORKSPACE_DIR=~/workspace
-API_YAML="bp_immanuel/api/bps.yaml"
+API_YAML="bps-api/api/bps.yaml"
 TEMP_DIR="tmp/bpsclient"
 OUTPUT_DIR="bps-dash/src/bpsclient"
 

@@ -47,6 +47,13 @@ export default class DeviceState {
         "DeviceStateOutOfOrder" = "outoforder";
 
     
+        /**
+         * value: "offline"
+         * @const
+         */
+        "DeviceStateOffline" = "offline";
+
+    
 
     /**
     * Returns a <code>DeviceState</code> enum value from a Javascript object name.
